@@ -3,6 +3,7 @@ import morgan  from "morgan";
 import path    from 'path';
 
 import eventoRouter from './modules/evento/evento.router.js';
+import usuarioRouter from './modules/usuario/usuario.router.js';
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 // Rutas
 // app.use(require('./'));
 app.use('/api/evento', eventoRouter);
+app.use('/api/usuario', usuarioRouter);
 
 // Archivos Publicos
 // app.use(express.static(path.join(__dirname, 'public')));
