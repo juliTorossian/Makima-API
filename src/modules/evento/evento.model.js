@@ -1,5 +1,3 @@
-// const { pool } = require('../bd.js');
-
 //TOOK VER TODOS LOS EVENTOS
 //TOOK CREAR NUEVOS EVENTOS
 //TOOK MODIFICAR EVENTOS
@@ -17,7 +15,6 @@ import { pool } from '../../db.js';
 export const buscarEventos = async (page) => {
     const totalRows = 5;
     page = parseInt(page);
-    // console.log(page);
 
     let paginacion = false;
     let params = [];
@@ -37,15 +34,10 @@ export const buscarEventos = async (page) => {
         params.push(0);
     }
 
-    // console.log(query);
-    // console.log(params);
     const [ total ] = await pool.query("SELECT count(eventoId) as 'total' FROM evento");
     const totalPages = Math.ceil(total[0].total / totalRows);
 
     const [rows] = await pool.query(query, params);
-
-    // console.log(rows);
-    // console.log(rows[0]);
 
     const results = {
         "info": {
@@ -63,7 +55,6 @@ export const buscarEventos = async (page) => {
 export const buscarEventosPorUsuario = async (page, usuario) => {
     const totalRows = 5;
     page = parseInt(page);
-    // console.log(page);
 
     let paginacion = false;
     let params = [];
@@ -85,15 +76,10 @@ export const buscarEventosPorUsuario = async (page, usuario) => {
         params.push(usuario);
     }
 
-    // console.log(query);
-    // console.log(params);
     const [ total ] = await pool.query("SELECT COUNT(e.eventoId) as 'total' FROM audiEvento AS auE INNER JOIN evento AS e ON e.eventoId = auE.audiEEvento WHERE auE.audiEEtapa = e.eventoEtapa AND auE.audiEUsuario = " +usuario);
     const totalPages = Math.ceil(total[0].total / totalRows);
 
     const [rows] = await pool.query(query, params);
-
-    // console.log(rows);
-    // console.log(rows[0]);
 
     const results = {
         "info": {
@@ -111,7 +97,6 @@ export const buscarEventosPorUsuario = async (page, usuario) => {
 export const buscarEventosPorRol = async (page, rol) => {
     const totalRows = 5;
     page = parseInt(page);
-    // console.log(page);
 
     let paginacion = false;
     let params = [];
@@ -132,16 +117,11 @@ export const buscarEventosPorRol = async (page, rol) => {
         params.push(0);
         params.push(rol);
     }
-
-    // console.log(query);
-    // console.log(params);
+    
     const [ total ] = await pool.query("SELECT COUNT(e.eventoId) as 'total' FROM audiEvento AS auE INNER JOIN evento AS e ON e.eventoId = auE.audiEEvento INNER JOIN usuario as usu ON usu.usuarioId = auE.audiEUsuario WHERE auE.audiEEtapa = e.eventoEtapa AND usu.usuarioRol = '" +rol.toUpperCase() +"'");
     const totalPages = Math.ceil(total[0].total / totalRows);
 
     const [rows] = await pool.query(query, params);
-
-    // console.log(rows);
-    // console.log(rows[0]);
 
     const results = {
         "info": {
@@ -177,7 +157,6 @@ export const eventoPorId = async (eventoId) => {
         const params = [eventoId]
 
         const [rows] = await pool.query(query, params);
-        // console.log(rows);
 
         return rows[0];
     }catch (err){
@@ -189,12 +168,6 @@ export const eventoPorId = async (eventoId) => {
 };
 
 export const nuevoEvento = async (nEvento) => {
-
-    // (eventoTipo,eventoNumero,    eventoTitulo    ,eventoCerrado,eventoEtapa,eventoCliente,eventoProducto,eventoUsuarioAlta,   eventoFechaAlta   ,eventoEstimacion)
-    // (  "CUS"   ,    1000    ,"Evento de Testeo 1",      0      ,     1     ,       1     ,      1       ,        1        ,"2022-12-05 21:05:00",        19      )
-
-    //TODO 1. Insert en evento
-    //TODO 2. Insert en audiEvento
      
     /** 
     * ! Objeto que tiene que llegar por parametro (nEvento)
@@ -245,12 +218,6 @@ export const nuevoEvento = async (nEvento) => {
 
 
 export const modificarEvento = async (eventoM) => {
-
-    // (eventoTipo,eventoNumero,    eventoTitulo    ,eventoCerrado,eventoEtapa,eventoCliente,eventoProducto,eventoUsuarioAlta,   eventoFechaAlta   ,eventoEstimacion)
-    // (  "CUS"   ,    1000    ,"Evento de Testeo 1",      0      ,     1     ,       1     ,      1       ,        1        ,"2022-12-05 21:05:00",        19      )
-
-    //TODO 1. Insert en evento
-    //TODO 2. Insert en audiEvento
      
     /** 
     * ! Objeto que tiene que llegar por parametro (eventoM)
@@ -330,7 +297,6 @@ export const avanzarEvento = async (eventoId, usuarioAsignado) => {
 
     let [ nEtapa ] = await pool.query("SELECT getEtapaSig_evento('" +datosEvento.tipo +"', " +datosEvento.etapa +") AS nuevaEtapa");
     nEtapa = nEtapa[0];
-    // console.log(nEtapa);
 
     let query = 'CALL circular_evento(?, ?, ?)';
     let params = [eventoId, nEtapa.nuevaEtapa, usuarioAsignado];
@@ -338,8 +304,6 @@ export const avanzarEvento = async (eventoId, usuarioAsignado) => {
 
     
     const [rows] = await pool.query(query, params);
-
-    // console.log(rows.affectedRows);
 
     return rows.affectedRows
 };
@@ -351,33 +315,23 @@ export const retrocederEvento = async (eventoId, usuarioAsignado) => {
 
     let [ nEtapa ] = await pool.query("SELECT getEtapaAnt_evento('" +datosEvento.tipo +"', " +datosEvento.etapa +") AS nuevaEtapa");
     nEtapa = nEtapa[0];
-    // console.log(nEtapa);
 
     let query = 'CALL circular_evento(?, ?, ?)';
-    let params = [eventoId, nEtapa.nuevaEtapa, usuarioAsignado];
-
-
+    let params = [eventoId, nEtapa.nuevaEtapa, usuarioAsignado]
     
     const [rows] = await pool.query(query, params);
-
-    // console.log(rows.affectedRows);
 
     return rows.affectedRows
 };
 
 export const reasignarEvento = async (eventoId, usuarioAsignado) => {
 
-    //CALL insert_audiEvento(eventoId, etapa, usuario);
-
     const datosEvento = await getDatosEvento(eventoId);
-    // console.log(datosEvento);
 
     const query  = "CALL insert_audiEvento(?, ?, ?)"
     const params = [eventoId, datosEvento.etapa, usuarioAsignado];
 
     const [rows] = await pool.query(query, params);
-
-    // console.log(rows.affectedRows);
 
     return rows.affectedRows
 }
@@ -389,7 +343,6 @@ export const estimarEvento = async (eventoId, estimacion) => {
 
     const [rows] = await pool.query(query, params);
 
-    // console.log(rows.affectedRows);
 
     return rows.affectedRows
 
@@ -400,10 +353,8 @@ export const estimarEvento = async (eventoId, estimacion) => {
 
 // SUBS
 
-
 async function getDatosEvento(id){
     let [ datosEvento ] = await pool.query("SELECT eventoTipo AS tipo, eventoEtapa AS etapa FROM evento as e WHERE e.eventoId = " +id);
-    // console.log(datosEvento);
     datosEvento = datosEvento[0];
     return datosEvento;
 }

@@ -1,7 +1,6 @@
 import { buscarEventos, buscarEventosPorUsuario, buscarEventosPorRol, eventoPorId, nuevoEvento, modificarEvento, eliminarEvento, avanzarEvento, retrocederEvento, reasignarEvento, estimarEvento } from "./evento.model.js";
 
 export const eventos = async (req, res) => {
-    // console.log(req.query.page)
     const eventos = await buscarEventos(req.query.page);
     res.json(eventos);
 }
@@ -22,23 +21,6 @@ export const eventoXRol = async (req, res) => {
 }
 
 export const eventoNuevo = async (req, res) => {
-    // {
-    //     "tipo": "CUS",                          //* tipo de evento
-    //     "titulo": "Titulo del nuevo evento",    //* titulo del evento
-    //     "cliente": 2,                           //* id del cliente
-    //     "producto": 2,                          //* id del programa
-    //     "usuAlta": 1                            //* id del usuario de alta
-    // }
-
-    console.log(req.body);
-
-    // const nEvento = {
-    //     "tipo": "CUS",
-    //     "titulo": "nuevo Evento desde la api",
-    //     "cliente": 1,
-    //     "producto": 2,
-    //     "usuAlta": 1
-    // }
 
     let ok = await nuevoEvento(req.body);
 
@@ -51,14 +33,6 @@ export const eventoNuevo = async (req, res) => {
 }
 
 export const modEvento = async (req, res) => {
-    // {
-    //     "id": 1                                 //* id evento
-    //     "titulo": "Titulo del nuevo evento",    //* titulo del evento
-    //     "cliente": 2,                           //* id del cliente
-    //     "producto": 2,                          //* id del programa
-    // }
-
-    // console.log(req.body);
 
     let ok = await modificarEvento(req.body);
 
@@ -71,10 +45,6 @@ export const modEvento = async (req, res) => {
 }
 
 export const delEvento = async (req, res) => {
-
-    // eventoId     //* id evento
-
-    // console.log(req.body);
 
     let ok = await eliminarEvento(req.query.eventoId);
 
