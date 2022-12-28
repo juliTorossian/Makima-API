@@ -2,22 +2,42 @@ import { buscarEventos, buscarEventosPorUsuario, buscarEventosPorRol, eventoPorI
 
 export const eventos = async (req, res) => {
     const eventos = await buscarEventos(req.query.page);
-    res.json(eventos);
+
+    if (!(eventos == null)){
+        res.json(eventos);
+    }else{
+        res.status(404).send('error');
+    }
 }
 
 export const eventoXId = async (req, res) => {
     const evento = await eventoPorId(req.params.eventoId);
-    res.json(evento);
+    
+    if (!(evento == null)){
+        res.json(evento);
+    }else{
+        res.status(404).send('error');
+    }
 }
 
 export const eventoXUsuario = async (req, res) => {
-    const evento = await buscarEventosPorUsuario(req.query.page, req.params.usuario);
-    res.json(evento);
+    const eventos = await buscarEventosPorUsuario(req.query.page, req.params.usuario);
+    
+    if (!(eventos == null)){
+        res.json(eventos);
+    }else{
+        res.status(404).send('error');
+    }
 }
 
 export const eventoXRol = async (req, res) => {
-    const evento = await buscarEventosPorRol(req.query.page, req.params.rol);
-    res.json(evento);
+    const eventos = await buscarEventosPorRol(req.query.page, req.params.rol);
+    
+    if (!(eventos == null)){
+        res.json(eventos);
+    }else{
+        res.status(404).send('error');
+    }
 }
 
 export const eventoNuevo = async (req, res) => {
