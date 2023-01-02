@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan  from "morgan";
 import path    from 'path';
+import cors    from 'cors';
 
 import eventoRouter from './modules/evento/evento.router.js';
 import usuarioRouter from './modules/usuario/usuario.router.js';
@@ -9,6 +10,7 @@ const app = express();
 
 // Middlewares
 app.use(morgan('dev'));
+app.use(cors())
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());

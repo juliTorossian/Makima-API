@@ -87,7 +87,6 @@ export const buscarEventosPorUsuario = async (page, usuario) => {
             params.push(page);
             params.push(totalRows);
             params.push(usuario);
-
         }else{
             params.push(paginacion);
             params.push(0);
@@ -266,22 +265,9 @@ export const modificarEvento = async (eventoM) => {
     * ! no espera este att
     {
         "id": 1                                 //* id del evento
-        "tipo": "CUS",                          //! tipo de evento
-        "numero": "??",                         //! numeto de Evento
         "titulo": "Titulo del nuevo evento",    //* titulo del evento
-        "cerrado": 0                            //! siempre es false
-        "etapa": 1                              //! siempre nace en 1
         "cliente": 2,                           //* id del cliente
         "producto": 2,                          //* id del programa
-        "usuAlta": 1                            //! id del usuario de alta
-        "fechaAlta": now()                      //! fecha del momento
-    }
-
-    {
-        "evento": idEvento,                     //* id del evento insertado
-        "etapa": 1,                             //i la etapa inicial siempre es 1
-        "usuario": idUsuario,                   //i en este caso siempre es el usuario de alta
-        "fecha": now()                          //* fecha del momento
     }
     **/
 
