@@ -15,7 +15,7 @@ BEGIN
 								ta.tareaNombre,
 								(SELECT clienteNombre FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'cliente',
 								(SELECT productoNombre FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'producto',
-								(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'Usuario Alta' 
+								(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'usuarioAlta' 
 						FROM evento as e
 						INNER JOIN evento_tarea as tet ON tet.etEvento = e.eventoTipo
 						INNER JOIN tarea as ta ON ta.tareaId = tet.etTarea
