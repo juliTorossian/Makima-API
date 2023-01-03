@@ -5,6 +5,7 @@ import cors    from 'cors';
 
 import eventoRouter from './modules/evento/evento.router.js';
 import usuarioRouter from './modules/usuario/usuario.router.js';
+import clienteRouter from './modules/cliente/cliente.router.js';
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 // app.use(require('./'));
 app.use('/api/evento', eventoRouter);
 app.use('/api/usuario', usuarioRouter);
+app.use('/api/cliente', clienteRouter);
 
 // Archivos Publicos
 // app.use(express.static(path.join(__dirname, 'public')));
