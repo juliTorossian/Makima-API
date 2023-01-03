@@ -17,7 +17,7 @@ import { pool } from '../../db.js';
  *
  *i @param page: nuemero de pagina - en el caso de ser 0 o undefined se retornaran todos los eventos
 */
-export const buscarEventos = async (page) => {
+export const getEventos = async (page) => {
 
     try{
         const totalRows = 5;
@@ -70,7 +70,7 @@ export const buscarEventos = async (page) => {
  *i @param page: nuemero de pagina - en el caso de ser 0 o undefined se retornaran todos los eventos
  *i        usuario: id de usuario con el cual se realiza el filtro
 */
-export const buscarEventosPorUsuario = async (page, usuario) => {
+export const getEventosUsuario = async (page, usuario) => {
     try{
         const totalRows = 5;
         page = parseInt(page);
@@ -123,7 +123,7 @@ export const buscarEventosPorUsuario = async (page, usuario) => {
  *i @param page: nuemero de pagina - en el caso de ser 0 o undefined se retornaran todos los eventos
  *i        rol:  codigo de rol con el cual se realiza el filtro
 */
-export const buscarEventosPorRol = async (page, rol) => {
+export const getEventosRol = async (page, rol) => {
     try{
         const totalRows = 5;
         page = parseInt(page);
@@ -176,7 +176,7 @@ export const buscarEventosPorRol = async (page, rol) => {
  *
  *i @param eventoId: id del evento a buscar
 */
-export const eventoPorId = async (eventoId) => {
+export const getEvento = async (eventoId) => {
 
     try{
         const query = "SELECT 	e.eventoId,                                                                                                     \
@@ -212,7 +212,7 @@ export const eventoPorId = async (eventoId) => {
  *
  *i @param nEvento: objeto con los datos necesarios del evento - especificado mas abajo
 */
-export const nuevoEvento = async (nEvento) => {
+export const insertEvento = async (nEvento) => {
      
     /** 
     * i Objeto que tiene que llegar por parametro (nEvento)
@@ -258,7 +258,7 @@ export const nuevoEvento = async (nEvento) => {
  *
  *i @param eventoM: objeto con los datos modificados del evento - especificado mas abajo
 */
-export const modificarEvento = async (eventoM) => {
+export const updateEvento = async (eventoM) => {
      
     /** 
     * i Objeto que tiene que llegar por parametro (eventoM)
@@ -302,7 +302,7 @@ export const modificarEvento = async (eventoM) => {
  *
  *i @param eventoId: id del evento a eliminar - soft delete
 */
-export const eliminarEvento = async (eventoId) => {
+export const deleteEvento = async (eventoId) => {
 
     try{
 
