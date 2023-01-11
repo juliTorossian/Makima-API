@@ -1,7 +1,7 @@
-import { buscarEventos, buscarEventosPorUsuario, buscarEventosPorRol, eventoPorId, nuevoEvento, modificarEvento, eliminarEvento, avanzarEvento, retrocederEvento, reasignarEvento, estimarEvento } from "./evento.model.js";
+import * as model from "./evento.model.js";
 
-export const eventos = async (req, res) => {
-    const eventos = await buscarEventos(req.query.page);
+export const getEventos = async (req, res) => {
+    const eventos = await model.getEventos(req.query.page);
 
     if (!(eventos == null)){
         res.json(eventos);
@@ -10,8 +10,8 @@ export const eventos = async (req, res) => {
     }
 }
 
-export const eventoXId = async (req, res) => {
-    const evento = await eventoPorId(req.params.eventoId);
+export const getEvento = async (req, res) => {
+    const evento = await model.getEvento(req.params.eventoId);
     
     if (!(evento == null)){
         res.json(evento);
@@ -20,8 +20,8 @@ export const eventoXId = async (req, res) => {
     }
 }
 
-export const eventoXUsuario = async (req, res) => {
-    const eventos = await buscarEventosPorUsuario(req.query.page, req.params.usuario);
+export const getEventosUsuario = async (req, res) => {
+    const eventos = await model.getEventosUsuario(req.query.page, req.params.usuario);
     
     if (!(eventos == null)){
         res.json(eventos);
@@ -30,8 +30,8 @@ export const eventoXUsuario = async (req, res) => {
     }
 }
 
-export const eventoXRol = async (req, res) => {
-    const eventos = await buscarEventosPorRol(req.query.page, req.params.rol);
+export const getEventosRol = async (req, res) => {
+    const eventos = await model.getEventosRol(req.query.page, req.params.rol);
     
     if (!(eventos == null)){
         res.json(eventos);
@@ -40,21 +40,9 @@ export const eventoXRol = async (req, res) => {
     }
 }
 
-export const eventoNuevo = async (req, res) => {
+export const insertEvento = async (req, res) => {
 
-    let ok = await nuevoEvento(req.body);
-
-    if (ok > 0){
-        res.send("ok");
-    }else{
-        res.status(404).send('error');
-    }
-
-}
-
-export const modEvento = async (req, res) => {
-
-    let ok = await modificarEvento(req.body);
+    let ok = await model.insertEvento(req.body);
 
     if (ok > 0){
         res.send("ok");
@@ -64,9 +52,9 @@ export const modEvento = async (req, res) => {
 
 }
 
-export const delEvento = async (req, res) => {
+export const updateEvento = async (req, res) => {
 
-    let ok = await eliminarEvento(req.query.eventoId);
+    let ok = await model.updateEvento(req.body);
 
     if (ok > 0){
         res.send("ok");
@@ -76,8 +64,20 @@ export const delEvento = async (req, res) => {
 
 }
 
-export const avzEvento = async (req, res) => {
-    const ok = await avanzarEvento(req.params.evento, req.query.usuario);
+export const deleteEvento = async (req, res) => {
+
+    let ok = await model.deleteEvento(req.query.eventoId);
+
+    if (ok > 0){
+        res.send("ok");
+    }else{
+        res.status(404).send('error');
+    }
+
+}
+
+export const avanzarEvento = async (req, res) => {
+    const ok = await model.avanzarEvento(req.params.evento, req.query.usuario);
 
     if (ok > 0){
         res.send("ok");
@@ -85,8 +85,8 @@ export const avzEvento = async (req, res) => {
         res.status(404).send('error');
     }
 }
-export const rtcEvento = async (req, res) => {
-    const ok = await retrocederEvento(req.params.evento, req.query.usuario);
+export const retrocederEvento = async (req, res) => {
+    const ok = await model.retrocederEvento(req.params.evento, req.query.usuario);
 
     if (ok > 0){
         res.send("ok");
@@ -95,8 +95,8 @@ export const rtcEvento = async (req, res) => {
     }
 }
 
-export const reAsinEvento = async (req, res) => {
-    const ok = await reasignarEvento(req.params.evento, req.query.usuario);
+export const reasignarEvento = async (req, res) => {
+    const ok = await model.reasignarEvento(req.params.evento, req.query.usuario);
 
     if (ok > 0){
         res.send("ok");
@@ -105,8 +105,8 @@ export const reAsinEvento = async (req, res) => {
     }
 }
 
-export const estEvento = async (req, res) => {
-    const ok = await estimarEvento(req.params.evento, req.query.estimado);
+export const estimarEvento = async (req, res) => {
+    const ok = await model.estimarEvento(req.params.evento, req.query.estimado);
 
     if (ok > 0){
         res.send("ok");
