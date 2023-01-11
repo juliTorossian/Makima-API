@@ -2,15 +2,14 @@ import { pool } from '../../db.js';
 
 
 /** 
- ** Busca todos los clientes en la base de datos
+ ** Busca todos los productos en la base de datos
  *
- *! @param page: nuemero de pagina - en el caso de ser 0 o undefined se retornaran todos los eventos
 */
-export const getClientes = async () => {
+export const getProductos = async () => {
 
     try{
 
-        const query = "SELECT * FROM cliente";
+        const query = "SELECT * FROM producto";
         let params = []
 
         const [rows] = await pool.query(query, params);
@@ -25,12 +24,12 @@ export const getClientes = async () => {
     }
 }
 
-export const getCliente = async (clienteId) => {
+export const getProducto = async (productoId) => {
 
     try{
 
-        const query = "SELECT * FROM cliente WHERE clienteId = ?";
-        let params = [clienteId]
+        const query = "SELECT * FROM producto WHERE productoId = ?";
+        let params = [productoId]
 
         const [rows] = await pool.query(query, params);
 

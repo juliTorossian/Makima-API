@@ -1,11 +1,11 @@
 import express from 'express';
 import morgan  from "morgan";
-import path    from 'path';
 import cors    from 'cors';
 
 import eventoRouter from './modules/evento/evento.router.js';
 import usuarioRouter from './modules/usuario/usuario.router.js';
 import clienteRouter from './modules/cliente/cliente.router.js';
+import productoRouter from './modules/producto/producto.router.js';
 
 const app = express();
 
@@ -23,6 +23,7 @@ app.use(express.json());
 app.use('/api/evento', eventoRouter);
 app.use('/api/usuario', usuarioRouter);
 app.use('/api/cliente', clienteRouter);
+app.use('/api/producto', productoRouter);
 
 // Archivos Publicos
 // app.use(express.static(path.join(__dirname, 'public')));
