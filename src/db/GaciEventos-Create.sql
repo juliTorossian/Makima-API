@@ -172,8 +172,6 @@ ALTER TABLE `audiEvento` ADD FOREIGN KEY (`audiEEvento`) REFERENCES `evento` (`e
 
 ALTER TABLE `audiEvento` ADD FOREIGN KEY (`audiEUsuario`) REFERENCES `usuario` (`usuarioId`);
 
-ALTER TABLE `producto` ADD FOREIGN KEY (`productoModulo`) REFERENCES `producto` (`productoEntorno`);
-
 
 CREATE TABLE parametros(
 	paramId     char(10) primary key,
