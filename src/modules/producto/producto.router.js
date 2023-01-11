@@ -6,7 +6,7 @@ const productoRouter = express.Router();
 
 
 productoRouter.get('/', controller.getProductos);
-productoRouter.get('/:clienteId', controller.getProducto);
+productoRouter.get('/:productoId', controller.getProducto);
 // productoRouter.post('/', );
 // productoRouter.put('/:clienteId', );
 // productoRouter.delete('/:clienteId', );
