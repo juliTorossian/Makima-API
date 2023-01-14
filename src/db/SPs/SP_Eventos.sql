@@ -1,7 +1,9 @@
 -- SELECT EVENTOS
 
+USE gacieven;
+
 DELIMITER $$
-DROP PROCEDURE IF EXISTS select_eventos$$
+DROP PROCEDURE IF EXISTS select_eventos$$ 
 CREATE PROCEDURE select_eventos(paginacion boolean, pagina int, cantidad int)
 BEGIN
 	
@@ -50,7 +52,7 @@ BEGIN
 END$$
 DELIMITER ;
 
-CALL select_eventos(3, 10);
+CALL select_eventos(0, 3, 10);
 
 -- SELECT POR USUARIO
 
@@ -270,6 +272,7 @@ CALL circular_evento(20, 2, 1);
 -- MISELANIOUS
 
 DELIMITER $$
+DROP FUNCTION IF EXISTS getUltimoNumero_eventos;
 CREATE FUNCTION getUltimoNumero_eventos(tipo CHAR(3)) RETURNS INT
 BEGIN
     DECLARE ultimoNumero INT;
