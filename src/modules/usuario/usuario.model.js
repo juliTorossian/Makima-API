@@ -8,7 +8,7 @@ export const existeUsuario = async (usuario, password) => {
 
     const [rows] = await pool.query(query, params);
 
-    console.log(rows[0]);
+    // console.log(rows[0]);
     return rows[0];
 
 }

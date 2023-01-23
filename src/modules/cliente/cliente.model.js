@@ -15,7 +15,7 @@ export const getClientes = async () => {
 
         const [rows] = await pool.query(query, params);
 
-        console.log(rows);
+        // console.log(rows);
 
         return rows;
 
@@ -34,7 +34,7 @@ export const getCliente = async (clienteId) => {
 
         const [rows] = await pool.query(query, params);
 
-        console.log(rows[0]);
+        // console.log(rows[0]);
 
         return rows[0];
 

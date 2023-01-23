@@ -184,7 +184,9 @@ export const getEvento = async (eventoId) => {
                             e.eventoNumero,                                                                                                 \
                             e.eventoTitulo,                                                                                                 \
                             ta.tareaNombre,                                                                                                 \
+                            (SELECT clienteId FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'clienteId',                    \
                             (SELECT clienteNombre FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'cliente',                    \
+                            (SELECT productoId FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'productoId',               \
                             (SELECT productoNombre FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'producto',               \
                             (SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'usuarioAlta'        \
                     FROM evento as e                                                                                                        \
@@ -242,7 +244,7 @@ export const insertEvento = async (nEvento) => {
 
         const [rows] = await pool.query(query, params);
 
-        console.log(rows.affectedRows);
+        // console.log(rows.affectedRows);
 
         return rows.affectedRows;
 
@@ -275,6 +277,8 @@ export const updateEvento = async (eventoM) => {
 
         //i CALL update_eventos(30, "Titulo actualizado", 1, 1)
 
+        // console.log(eventoM);
+
         const query = "CALL update_eventos(?,?,?,?)";
         let params = [
             eventoM.id,
@@ -282,11 +286,12 @@ export const updateEvento = async (eventoM) => {
             eventoM.cliente,
             eventoM.producto
         ]
+        // console.log(params);
 
         const [rows] = await pool.query(query, params);
 
-        console.log(rows);
-        console.log(rows.affectedRows);
+        // console.log(rows);
+        // console.log(rows.affectedRows);
 
         return rows.affectedRows;
 
@@ -309,13 +314,22 @@ export const deleteEvento = async (eventoId) => {
         //i CALL delete_eventos(30);
 
         const query = "CALL delete_eventos(?)";
+        // const query =  "UPDATE evento                   \
+        //                 SET                             \
+        //                     eventoCerrado = true        \
+        //                 WHERE                           \
+        //                     eventoId = ?                \
+        //                 ";          
+
+        // console.log(eventoId);
+
         let params = [
             eventoId
         ]
 
         const [rows] = await pool.query(query, params);
 
-        console.log(rows.affectedRows);
+        // console.log(rows);
 
         return rows.affectedRows;
 

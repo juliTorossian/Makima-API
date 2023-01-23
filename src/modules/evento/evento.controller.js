@@ -66,7 +66,7 @@ export const updateEvento = async (req, res) => {
 
 export const deleteEvento = async (req, res) => {
 
-    let ok = await model.deleteEvento(req.query.eventoId);
+    let ok = await model.deleteEvento(req.params.eventoId);
 
     if (ok > 0){
         res.send("ok");
