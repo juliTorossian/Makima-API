@@ -53,7 +53,8 @@ CREATE TABLE `tarea` (
 
 CREATE TABLE `tipoEvento` (
   `tipoEventoId` char(3) PRIMARY KEY,
-  `tipoEventoDesc` varchar(60)
+  `tipoEventoDesc` varchar(60),
+  `tipoEventoActivo` boolean
 );
 
 CREATE TABLE `evento_tarea` (
