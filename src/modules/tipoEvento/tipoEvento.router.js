@@ -10,6 +10,8 @@ tipoEventoRouter.post('/', controller.insertTipoEvento);
 tipoEventoRouter.put('/', controller.updateTipoEvento);
 tipoEventoRouter.delete('/:tipoEventoId', controller.deleteTipoEvento);
 
+tipoEventoRouter.post('/:eventoId/asignarTareas', controller.asignarTareas);
+
 // tipoEventoRouter.get('/usuario/:usuario', controller.getEventosUsuario);
 // tipoEventoRouter.get('/rol/:rol', controller.getEventosRol);
 
