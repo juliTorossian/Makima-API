@@ -4,6 +4,10 @@
 // TOOK ELIMINAR UN TIPO DE EVENTO
 // TODO VER UN TIPO DE EVENTO (?)
 
+// TOOK PODER ASIGNAR TAREAS EN UN ORDEN
+// TOOK PODER MODIFICAR ESE ORDEN
+
+
 import { pool } from '../../db.js';
 
 
@@ -104,7 +108,7 @@ export const deleteTipoEvento = async (tipoEventoId) => {
         const query = "CALL delete_tipoEvento(?)";
         let params = [
             tipoEventoId
-        ]
+        ];
 
         const [rows] = await pool.query(query, params);
         return rows.affectedRows;
@@ -112,6 +116,85 @@ export const deleteTipoEvento = async (tipoEventoId) => {
     }catch (err){
         console.error(err);
         return 0;
+    }
+
+}
+
+/** 
+ ** Asignar tareas en orden
+ *
+ *i @param tareas: lista de las tareas a agregar con su orden
+*/
+export const asignarTareas = async (tareas) => {
+
+    /** 
+    * i Objeto que tiene que llegar por parametro (tareas)
+    [
+        {
+            "tipoEvento": "CUS",            //* tipo de evento
+            "tareas": [
+                {
+                "id": 1,                    //* id de la tarea
+                "orden": 1                  //* orden de la tarea
+                },
+                {
+                "id": 3,                    //* id de la tarea
+                "orden": 2                  //* orden de la tarea
+                }
+            ]
+        }
+    ]
+    **/
+   
+    try{
+        let params = [];
+        const query = "INSERT INTO evento_tarea(etEvento, etTarea, etEtapa) VALUES ?";
+        tareas.tareas.forEach(tarea => {
+            let aux = [tareas.tipoEvento, tarea.id, tarea.orden]
+            params.push(aux)
+        });
+
+        // console.log(params);
+
+        // limpio evento_tarea
+        let ok = await limpiarTareasTipoEvento(tareas.tipoEvento);
+
+        // console.log(ok);
+
+        if (!(ok < 0)){
+            const [rows] = await pool.query(query, [params]);
+            return rows.affectedRows;
+        }else{
+            console.error("Error al limpiar evento_tarea");
+            return 0;
+        }
+
+
+    }catch (err){
+        console.error(err);
+        return 0;
+    }
+
+}
+
+
+//*     MISSELANEOUS
+
+const limpiarTareasTipoEvento = async (tipoEvento) => {
+    let ok = 0;
+    try{
+        const query = "DELETE FROM evento_tarea WHERE etEvento = ?";
+        let params = [
+            tipoEvento
+        ];
+
+        const [rows] = await pool.query(query, params);
+        // console.log(rows);
+        return rows.affectedRows;
+
+    }catch (err){
+        console.error(err);
+        return -1;
     }
 
 }

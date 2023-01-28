@@ -45,3 +45,14 @@ export const deleteTipoEvento = async (req, res) => {
     }
 
 }
+
+export const asignarTareas = async (req, res) => {
+
+    let ok = await model.asignarTareas(req.body)
+
+    if (ok > 0){
+        res.status(201).send("ok");
+    }else{
+        res.status(404).send('error');
+    }
+}
