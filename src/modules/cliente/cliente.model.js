@@ -72,7 +72,7 @@ export const insertCliente = async (cliente) => {
 
     try{
 
-        const query = "INSERT cliente(clienteSigla, clienteNombre, clienteActivo) VALUE (?, ?, true)";
+        const query = "INSERT cliente(clienteId, clienteSigla, clienteNombre, clienteActivo) VALUE ((SELECT getNewId()), ?, ?, true)";
         let params = [
             cliente.sigla,
             cliente.nombre

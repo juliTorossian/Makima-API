@@ -18,7 +18,7 @@ WHERE productoId = 3
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS delete_producto$$
-CREATE PROCEDURE delete_producto(id INT)
+CREATE PROCEDURE delete_producto(id char(24))
 BEGIN
 
 	DECLARE cantidadEventos INT;
@@ -60,7 +60,7 @@ SELECT * FROM producto WHERE productoActivo = true AND productoId = "2";
 -- MISSELANEOUS
 
 DELIMITER $$
-CREATE FUNCTION getCantEventosxProducto(id INT) RETURNS INT
+CREATE FUNCTION getCantEventosxProducto(id char(24)) RETURNS INT
 BEGIN
     DECLARE cantidad INT;
 	SET cantidad = (	SELECT count(eventoId)
