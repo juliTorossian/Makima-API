@@ -43,7 +43,7 @@ export const insertTarea = async (nTarea) => {
     **/
 
     try{
-        const query = 'INSERT INTO tarea(tareaNombre, tareaRol) VALUES (?, ?)';
+        const query = 'INSERT INTO tarea(tareaId, tareaNombre, tareaRol) VALUES ((SELECT getNewId()), ?, ?)';
         let params = [
             nTarea.nombre,
             nTarea.rol

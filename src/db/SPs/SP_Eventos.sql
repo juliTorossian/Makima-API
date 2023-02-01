@@ -164,7 +164,7 @@ CALL select_eventos_rol(false, 3, 10, "ADMIN");
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS insert_audiEvento$$
-CREATE PROCEDURE insert_audiEvento(evento int, etapa int, usuario int)
+CREATE PROCEDURE insert_audiEvento(evento char(24), etapa int, usuario int)
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
@@ -181,7 +181,7 @@ DELIMITER ;
 -- INSERT EVENTOS
 DELIMITER $$
 DROP PROCEDURE IF EXISTS insert_eventos$$
-CREATE PROCEDURE insert_eventos(tipo char(3), titulo varchar(200), cliente int, producto int, usuario int)
+CREATE PROCEDURE insert_eventos(tipo char(3), titulo varchar(200), cliente char(24), producto char(24), usuario char(24))
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
@@ -190,8 +190,8 @@ BEGIN
 	END;
 	SET @numero = (SELECT getUltimoNumero_eventos(tipo)) + 1;
 	
-	INSERT INTO evento(eventoTipo,eventoNumero,eventoTitulo,eventoCerrado,eventoEtapa,eventoCliente,eventoProducto,eventoUsuarioAlta,eventoFechaAlta) 
-	VALUES (tipo,@numero,titulo,0,1,cliente,producto,usuario,now());
+	INSERT INTO evento(eventoId, eventoTipo,eventoNumero,eventoTitulo,eventoCerrado,eventoEtapa,eventoCliente,eventoProducto,eventoUsuarioAlta,eventoFechaAlta) 
+	VALUES ((SELECT getNewId()), tipo,@numero,titulo,0,1,cliente,producto,usuario,now());
 
 	SET @eventoId = (SELECT LAST_INSERT_ID());
     
@@ -206,7 +206,7 @@ CALL insert_eventos("MEJ", "insert desde sp", 1, 2, 1);
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS update_eventos$$
-CREATE PROCEDURE update_eventos(eventoCodigo int, titulo varchar(200), cliente int, producto int)
+CREATE PROCEDURE update_eventos(eventoCodigo char(24), titulo varchar(200), cliente char(24), producto char(24))
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
@@ -233,7 +233,7 @@ CALL update_eventos(30, "Titulo actualizado", 1, 1);
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS delete_eventos$$
-CREATE PROCEDURE delete_eventos(eventoCodigo int)
+CREATE PROCEDURE delete_eventos(eventoCodigo char(24))
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
@@ -257,7 +257,7 @@ CALL delete_eventos(30);
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS circular_evento$$
-CREATE PROCEDURE circular_evento(id int, etapa int, usuario int)
+CREATE PROCEDURE circular_evento(id char(24), etapa int, usuario char(24))
 BEGIN
 	UPDATE evento
     SET eventoEtapa = etapa

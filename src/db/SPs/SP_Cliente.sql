@@ -17,7 +17,7 @@ WHERE clienteId = 3
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS delete_cliente$$
-CREATE PROCEDURE delete_cliente(id INT)
+CREATE PROCEDURE delete_cliente(id char(24))
 BEGIN
 
 	DECLARE cantidadEventos INT;
@@ -59,7 +59,7 @@ SELECT * FROM cliente WHERE clienteId = 2 AND clienteActivo = true;
 -- MISSELANEOUS
 
 DELIMITER $$
-CREATE FUNCTION getCantEventosxCliente(id INT) RETURNS INT
+CREATE FUNCTION getCantEventosxCliente(id char(24)) RETURNS INT
 BEGIN
     DECLARE cantidad INT;
 	SET cantidad = (	SELECT count(eventoId)

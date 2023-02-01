@@ -70,7 +70,7 @@ export const insertProducto = async (producto) => {
 
     try{
 
-        const query = "INSERT producto(productoNombre, productoModulo, productoSubModulo, productoEntorno, productoActivo) VALUE (?, ?, ?, ?, true)";
+        const query = "INSERT producto(productoId, productoNombre, productoModulo, productoSubModulo, productoEntorno, productoActivo) VALUE ((SELECT getNewId()), ?, ?, ?, ?, true)";
         let params = [
             producto.nombre,
             producto.modulo,
