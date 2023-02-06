@@ -46,6 +46,8 @@ export const getEventos = async (page) => {
 
         const [rows] = await pool.query(query, params);
 
+        // console.log(rows);
+
         const results = {
             "info": {
                 "total": total[0].total,
@@ -244,7 +246,7 @@ export const insertEvento = async (nEvento) => {
 
         const [rows] = await pool.query(query, params);
 
-        // console.log(rows.affectedRows);
+        // console.log(rows);
 
         return rows.affectedRows;
 

@@ -7,7 +7,7 @@ const eventoRouter = express.Router();
 eventoRouter.get('/', controller.getEventos);
 eventoRouter.get('/:eventoId', controller.getEvento);
 eventoRouter.post('/', controller.insertEvento);
-eventoRouter.put('/:eventoId', controller.updateEvento);
+eventoRouter.put('/', controller.updateEvento);
 eventoRouter.delete('/:eventoId', controller.deleteEvento);
 
 eventoRouter.get('/usuario/:usuario', controller.getEventosUsuario);

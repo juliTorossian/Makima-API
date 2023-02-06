@@ -54,6 +54,8 @@ export const insertEvento = async (req, res) => {
 
 export const updateEvento = async (req, res) => {
 
+    
+
     let ok = await model.updateEvento(req.body);
 
     if (ok > 0){
