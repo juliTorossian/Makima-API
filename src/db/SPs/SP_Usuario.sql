@@ -72,3 +72,20 @@ FROM usuario
 WHERE 	usuarioUsuario = "JTAdmin" AND
 		usuarioPass = "123"
 ;
+
+DELIMITER $$
+CREATE FUNCTION getCantEventosxUsuario(id CHAR(24)) RETURNS INT
+BEGIN
+    DECLARE cantidad INT;
+	SET cantidad = (	SELECT count(ae.audiEId) 
+						FROM audievento AS ae
+						INNER JOIN evento AS e ON e.eventoId = ae.audiEEvento
+						WHERE 	ae.audiEEvento = id      	AND
+								e.eventoCerrado = false		AND
+								e.eventoEtapa = ae.audiEEtapa
+                    );
+	RETURN cantidad;
+END$$
+DELIMITER ;
+
+SELECT getCantEventosxUsuario("JTADMIN");

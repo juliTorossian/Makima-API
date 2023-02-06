@@ -5,7 +5,7 @@
 // TOOK VER USUARIOS
 // TOOK VER UN USUARIO
 // TOOK VER LOS USUARIOS DE UN ROL
-// TODO CAMBIAR CONTRASEÑA
+// TOOK CAMBIAR CONTRASEÑA
 
 import { pool } from '../../db.js';
 
@@ -98,29 +98,6 @@ export const deleteUsuario = async (usuarioId) => {
 
     try{
         const query = 'CALL delete_usuario(?)';
-        let params = [
-            usuarioId
-        ];
-
-        const [rows] = await pool.query(query, params);
-        return rows.affectedRows;
-
-    }catch (err){
-        console.error(err);
-        return 0;
-    }
-
-}
-
-/** 
- ** Reactiva un nuevo usuario
- *
- *i @param usuarioId: id del usuario a eliminar
-*/
-export const reactivarUsuario = async (usuarioId) => {
-
-    try{
-        const query = 'UPDATE usuario SET usuarioActivo = true WHERE usuarioId = ?';
         let params = [
             usuarioId
         ];
