@@ -96,7 +96,7 @@ export const getEventosUsuario = async (page, usuario) => {
             params.push(usuario);
         }
 
-        const [ total ] = await pool.query("SELECT COUNT(e.eventoId) as 'total' FROM audiEvento AS auE INNER JOIN evento AS e ON e.eventoId = auE.audiEEvento WHERE auE.audiEEtapa = e.eventoEtapa AND auE.audiEUsuario = " +usuario);
+        const [ total ] = await pool.query("SELECT COUNT(e.eventoId) as 'total' FROM audiEvento AS auE INNER JOIN evento AS e ON e.eventoId = auE.audiEEvento WHERE auE.audiEEtapa = e.eventoEtapa AND auE.audiEUsuario = '" +usuario+"'");
         const totalPages = Math.ceil(total[0].total / totalRows);
 
         const [rows] = await pool.query(query, params);
@@ -362,7 +362,9 @@ export const avanzarEvento = async (eventoId, usuarioAsignado) => {
 
         const [rows] = await pool.query(query, params);
 
-        return rows.affectedRows
+        // console.log(rows);
+
+        return 1;
     
     }catch (err){
         console.error(err);
@@ -458,7 +460,7 @@ export const estimarEvento = async (eventoId, estimacion) => {
  *  }
 */
 async function getDatosEvento(id){
-    let [ datosEvento ] = await pool.query("SELECT eventoTipo AS tipo, eventoEtapa AS etapa FROM evento as e WHERE e.eventoId = " +id);
+    let [ datosEvento ] = await pool.query("SELECT eventoTipo AS tipo, eventoEtapa AS etapa FROM evento as e WHERE e.eventoId = '" +id +"'");
     datosEvento = datosEvento[0];
     return datosEvento;
 }
