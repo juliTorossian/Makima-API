@@ -26,7 +26,8 @@ CREATE TABLE `producto` (
   `productoNombre` varchar(60),
   `productoModulo` char(4),
   `productoSubModulo` char(4),
-  `productoEntorno` char(5)
+  `productoEntorno` char(5),
+  `productoActivo` boolean
 );
 
 CREATE TABLE `rol` (
@@ -42,7 +43,8 @@ CREATE TABLE `usuario` (
   `usuarioMail` varchar(60) NOT NULL,
   `usuarioUsuario` varchar(45) NOT NULL,
   `usuarioPass` varchar(25) NOT NULL,
-  `usuarioRol` char(5) NOT NULL
+  `usuarioRol` char(5) NOT NULL,
+  `usuarioActivo` boolean
 );
 
 CREATE TABLE `tarea` (

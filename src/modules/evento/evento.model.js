@@ -235,6 +235,7 @@ export const insertEvento = async (nEvento) => {
     **/
 
     try{
+
         const query = "CALL insert_eventos(?,?,?,?,?)";
         let params = [
             nEvento.tipo,
@@ -246,9 +247,9 @@ export const insertEvento = async (nEvento) => {
 
         const [rows] = await pool.query(query, params);
 
-        // console.log(rows);
+        const eventoId = rows[0][0].eventoId;
 
-        return rows.affectedRows;
+        return eventoId;
 
     }catch (err){
         console.error(err);

@@ -52,13 +52,13 @@ export const iniciarSesion = async (req, res) => {
 
     const usuario = await model.existeUsuario(req.query.usuario, req.query.password);
 
-    res.send(usuario); 
+    // res.send(usuario); 
 
-    // if (usuario){
-    //     res.send(true); 
-    // }else{
-    //     res.status(404).send('error');
-    // }
+    if (usuario){
+        res.send(usuario); 
+    }else{
+        res.status(404).send('error');
+    }
 }
 
 export const getUsuarios = async (req, res) => {
