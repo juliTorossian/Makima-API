@@ -170,7 +170,7 @@ export const getTareasRol = async (rol) => {
 export const getTareasEvento = async (eventoId) => {
 
     try{
-        let query = 'SELECT t.tareaId, t.tareaNombre, t.tareaRol, et.etEvento FROM tarea AS t INNER JOIN evento_tarea AS et ON et.etTarea = t.tareaId WHERE et.etEvento = ?';
+        let query = 'SELECT t.tareaId, t.tareaNombre, t.tareaRol, et.etEvento FROM tarea AS t INNER JOIN evento_tarea AS et ON et.etTarea = t.tareaId WHERE et.etEvento = ? ORDER BY etEtapa';
         let params = [
             eventoId
         ];
