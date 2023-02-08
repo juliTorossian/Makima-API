@@ -107,7 +107,7 @@ export const updateRol = async (rol) => {
 
     try{
 
-        const query = "UPDATE rol SET rolDescripcion = ?, rolNivel ? WHERE rolId = ?";
+        const query = "UPDATE rol SET rolDescripcion = ?, rolNivel = ? WHERE rolId = ?";
         let params = [
             rol.descripcion,
             rol.nivel,

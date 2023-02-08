@@ -10,6 +10,16 @@ export const getTipoEventos = async (req, res) => {
     }
 }
 
+export const getTipoEvento = async (req, res) => {
+    const tipoEvento = await model.getTipoEvento(req.params.tipoEventoId);
+
+    if (!(tipoEvento == null)){
+        res.json(tipoEvento);
+    }else{
+        res.status(404).send('error');
+    }
+}
+
 export const insertTipoEvento = async (req, res) => {
 
     let ok = await model.insertTipoEvento(req.body);

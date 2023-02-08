@@ -10,6 +10,16 @@ export const getTareas = async (req, res) => {
     }
 }
 
+export const getTarea = async (req, res) => {
+    const tarea = await model.getTarea(req.params.tareaId);
+
+    if (!(tarea == null)){
+        res.json(tarea);
+    }else{
+        res.status(404).send('error');
+    }
+}
+
 export const insertTarea = async (req, res) => {
 
     let ok = await model.insertTarea(req.body);
