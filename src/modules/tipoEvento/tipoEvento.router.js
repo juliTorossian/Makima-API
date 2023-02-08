@@ -5,7 +5,7 @@ const tipoEventoRouter = express.Router();
 
 
 tipoEventoRouter.get('/', controller.getTipoEventos);
-// tipoEventoRouter.get('/:eventoId', controller.getEvento);
+tipoEventoRouter.get('/:tipoEventoId', controller.getTipoEvento);
 tipoEventoRouter.post('/', controller.insertTipoEvento);
 tipoEventoRouter.put('/', controller.updateTipoEvento);
 tipoEventoRouter.delete('/:tipoEventoId', controller.deleteTipoEvento);

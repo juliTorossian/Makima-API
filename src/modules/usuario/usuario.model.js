@@ -121,7 +121,11 @@ export const deleteUsuario = async (usuarioId) => {
 export const existeUsuario = async (usuario, password) => {
 
     
-    let query = 'SELECT COUNT(usuarioId) FROM usuario WHERE usuarioUsuario = ? AND usuarioPass = ?';
+    // let query = 'SELECT COUNT(usuarioId) AS cant FROM usuario WHERE usuarioUsuario = ? AND usuarioPass = ?';
+    // let query = 'SELECT * FROM usuario WHERE usuarioUsuario = ? AND usuarioPass = ?';
+
+    let query = 'SELECT usuarioId, usuarioNombre, usuarioApellido, usuarioUsuario, usuarioRol, rolDescripcion FROM usuario INNER JOIN rol ON rolId = usuarioRol WHERE usuarioUsuario = ? AND usuarioPass = ?';
+
     let params = [
         usuario, 
         password
@@ -129,8 +133,11 @@ export const existeUsuario = async (usuario, password) => {
 
     const [rows] = await pool.query(query, params);
 
-    console.log(rows);
-    return rows[0];
+    // console.log(rows);
+    // console.log(rows[0]);
+
+    // return (rows[0].cant > 0);
+    return (rows[0]);
 
 }
 

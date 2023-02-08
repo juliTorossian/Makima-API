@@ -4,10 +4,10 @@ import * as controller from './tarea.controller.js';
 const tareaRouter = express.Router();
 
 tareaRouter.get('/', controller.getTareas);
-// tareaRouter.get('/:eventoId', controller.getEvento);
+tareaRouter.get('/:tareaId', controller.getTarea);
 tareaRouter.post('/', controller.insertTarea);
 tareaRouter.put('/', controller.updateTarea);
-tareaRouter.delete('/:tipoEventoId', controller.deleteTarea);
+tareaRouter.delete('/:tareaId', controller.deleteTarea);
 
 tareaRouter.get('/rol/:rol', controller.getTareasRol);
 

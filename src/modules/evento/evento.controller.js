@@ -42,10 +42,10 @@ export const getEventosRol = async (req, res) => {
 
 export const insertEvento = async (req, res) => {
 
-    let ok = await model.insertEvento(req.body);
+    let eventoId = await model.insertEvento(req.body);
 
-    if (ok > 0){
-        res.send("ok");
+    if (!(eventoId === "" || eventoId === undefined)){
+        res.send(eventoId);
     }else{
         res.status(404).send('error');
     }
@@ -53,6 +53,8 @@ export const insertEvento = async (req, res) => {
 }
 
 export const updateEvento = async (req, res) => {
+
+    
 
     let ok = await model.updateEvento(req.body);
 

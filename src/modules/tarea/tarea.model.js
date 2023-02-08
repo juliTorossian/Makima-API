@@ -26,6 +26,27 @@ export const getTareas = async () => {
         return 0;
     }
 };
+/** 
+ ** Busca todas las tareas
+ *
+*/
+export const getTarea = async (id) => {
+
+    try{
+        let query = 'SELECT * FROM tarea WHERE tareaId = ?';
+        let params = [
+            id
+        ];
+
+        const [rows] = await pool.query(query, params);
+
+        return rows;
+    
+    }catch (err){
+        console.error(err);
+        return 0;
+    }
+};
 
 /** 
  ** Crea una nueva tarea

@@ -30,6 +30,27 @@ export const getTipoEventos = async () => {
         return 0;
     }
 };
+/** 
+ ** Busca todos los tipos de eventos
+ *
+*/
+export const getTipoEvento = async (id) => {
+
+    try{
+        let query = 'SELECT * FROM tipoevento WHERE tipoEventoActivo = true AND tipoEventoId = ?';
+        let params = [
+            id
+        ];
+
+        const [rows] = await pool.query(query, params);
+
+        return rows;
+    
+    }catch (err){
+        console.error(err);
+        return 0;
+    }
+};
 
 /** 
  ** Crea un nuevo tipo de evento
@@ -154,14 +175,14 @@ export const asignarTareas = async (tareas) => {
             params.push(aux)
         });
 
-        // console.log(params);
+        console.log(params);
 
         // limpio evento_tarea
         let ok = await limpiarTareasTipoEvento(tareas.tipoEvento);
 
         // console.log(ok);
 
-        if (!(ok < 0)){
+        if (!(ok < 0) && (params.length > 0)){
             const [rows] = await pool.query(query, [params]);
             return rows.affectedRows;
         }else{

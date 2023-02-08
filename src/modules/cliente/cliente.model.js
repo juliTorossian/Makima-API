@@ -16,7 +16,8 @@ export const getClientes = async () => {
 
     try{
 
-        const query = "SELECT * FROM cliente WHERE clienteActivo = true";
+        // const query = "SELECT * FROM cliente WHERE clienteActivo = true";
+        const query = "SELECT * FROM cliente";
         let params = []
 
         const [rows] = await pool.query(query, params);
@@ -40,7 +41,8 @@ export const getCliente = async (clienteId) => {
 
     try{
 
-        const query = "SELECT * FROM cliente WHERE clienteId = ? AND clienteActivo = true";
+        // const query = "SELECT * FROM cliente WHERE clienteId = ? AND clienteActivo = true";
+        const query = "SELECT * FROM cliente WHERE clienteId = ?";
         let params = [clienteId]
 
         const [rows] = await pool.query(query, params);
