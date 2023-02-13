@@ -443,6 +443,38 @@ export const estimarEvento = async (eventoId, estimacion) => {
 
 };
 
+/** 
+ ** get datos para tabla tareasPorTipo
+ *
+*/
+
+export const getTareasPorTipo = async () => {
+
+    try{
+
+        const query = "SELECT 	count(e.eventoId) AS cantidadEventos,   \
+                                e.eventoTipo,   \
+                                (SELECT t.tareaNombre   \
+                                FROM tarea AS t     \
+                                INNER JOIN evento_tarea AS et ON et.etTarea = t.tareaId \
+                                WHERE et.etEvento = e.eventoTipo AND et.etEtapa = e.eventoEtapa) AS tarea   \
+                        FROM evento as e    \
+                        GROUP BY e.eventoEtapa, e.eventoTipo    \
+                        ORDER BY e.eventoTipo, e.eventoEtapa";
+        let params = []
+
+        const [rows] = await pool.query(query, params);
+
+        // console.log(rows);
+
+        return rows;
+
+    }catch (err) {
+        console.error(err);
+        return null;
+    }
+}
+
 
 
 

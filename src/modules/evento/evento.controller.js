@@ -116,3 +116,23 @@ export const estimarEvento = async (req, res) => {
         res.status(404).send('error');
     }
 }
+
+export const getTareasPorTipo = async (req, res) => {
+    const tareasTipo = await model.getTareasPorTipo();
+    
+    if (!(tareasTipo == null)){
+        res.json(tareasTipo);
+    }else{
+        res.status(404).send('error');
+    }
+}
+
+export const getTareasPorTipoOld = async (req, res) => {
+    const tareasTipo = await model.getTareasPorTipo();
+    
+    if (!(tareasTipo == null)){
+        res.json(tareasTipo);
+    }else{
+        res.status(404).send('error');
+    }
+}

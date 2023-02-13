@@ -18,5 +18,7 @@ eventoRouter.get('/:evento/circular/r', controller.retrocederEvento);
 eventoRouter.get('/:evento/reasignar', controller.reasignarEvento);
 eventoRouter.get('/:evento/estimar', controller.estimarEvento);
 
+eventoRouter.get('/dashboard/tareaPortipo', controller.getTareasPorTipo);
+
 
 export default eventoRouter;
