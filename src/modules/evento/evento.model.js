@@ -492,7 +492,11 @@ export const getTareasPorTipo = async () => {
  *  }
 */
 async function getDatosEvento(id){
-    let [ datosEvento ] = await pool.query("SELECT eventoTipo AS tipo, eventoEtapa AS etapa FROM evento as e WHERE e.eventoId = '" +id +"'");
+    let [ datosEvento ] = await pool.query("SELECT  eventoTipo AS tipo,     \
+                                                    eventoEtapa AS etapa    \
+                                            FROM evento as e    \
+                                            WHERE e.eventoId = '" +id +"'"
+                                            );
     datosEvento = datosEvento[0];
     return datosEvento;
 }
