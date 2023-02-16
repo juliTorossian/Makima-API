@@ -17,6 +17,9 @@ eventoRouter.get('/:evento/circular/a', controller.avanzarEvento);
 eventoRouter.get('/:evento/circular/r', controller.retrocederEvento);
 eventoRouter.get('/:evento/reasignar', controller.reasignarEvento);
 eventoRouter.get('/:evento/estimar', controller.estimarEvento);
+eventoRouter.post('/:evento/comentar', controller.comentarEvento);
+eventoRouter.get('/:evento/comentarios', controller.getComentariosEvento);
+eventoRouter.get('/:evento/vida', controller.getVidaEvento);
 
 
 export default eventoRouter;
