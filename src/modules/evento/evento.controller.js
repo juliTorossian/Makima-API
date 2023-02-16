@@ -42,10 +42,10 @@ export const getEventosRol = async (req, res) => {
 
 export const insertEvento = async (req, res) => {
 
-    let ok = await model.insertEvento(req.body);
+    let eventoId = await model.insertEvento(req.body);
 
-    if (ok > 0){
-        res.send("ok");
+    if (!(eventoId === "" || eventoId === undefined)){
+        res.send(eventoId);
     }else{
         res.status(404).send('error');
     }
@@ -53,6 +53,8 @@ export const insertEvento = async (req, res) => {
 }
 
 export const updateEvento = async (req, res) => {
+
+    
 
     let ok = await model.updateEvento(req.body);
 
@@ -66,7 +68,7 @@ export const updateEvento = async (req, res) => {
 
 export const deleteEvento = async (req, res) => {
 
-    let ok = await model.deleteEvento(req.query.eventoId);
+    let ok = await model.deleteEvento(req.params.eventoId);
 
     if (ok > 0){
         res.send("ok");
@@ -114,3 +116,34 @@ export const estimarEvento = async (req, res) => {
         res.status(404).send('error');
     }
 }
+
+export const comentarEvento = async (req, res) => {
+    const ok = await model.comentarEvento(req.body);
+
+    if (ok > 0){
+        res.send("ok");
+    }else{
+        res.status(404).send('error');
+    }
+}
+
+export const getComentariosEvento = async (req, res) => {
+    const comentarios = await model.getComentariosEvento(req.params.evento);
+
+    if (comentarios.length > 0){
+        res.json(comentarios);
+    }else{
+        res.status(404).send('error');
+    }
+}
+
+export const getVidaEvento = async (req, res) => {
+    const vida = await model.getVidaEvento(req.params.evento);
+
+    if (vida.length > 0){
+        res.json(vida);
+    }else{
+        res.status(404).send('error');
+    }
+}
+

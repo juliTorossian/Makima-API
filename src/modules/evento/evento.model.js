@@ -9,6 +9,10 @@
 //TOOK REASIGNAR EVENTO
 //TOOK ESTIMAR EVENTO
 
+//TOOK AGREGAR COMENTARIO AL EVENTO
+//TOOK VER COMENTARIOS DE UN EVENTO
+//TOOKVER VIDA DEL EVENTO
+
 import { pool } from '../../db.js';
 
 
@@ -45,6 +49,8 @@ export const getEventos = async (page) => {
         const totalPages = Math.ceil(total[0].total / totalRows);
 
         const [rows] = await pool.query(query, params);
+
+        // console.log(rows);
 
         const results = {
             "info": {
@@ -94,7 +100,7 @@ export const getEventosUsuario = async (page, usuario) => {
             params.push(usuario);
         }
 
-        const [ total ] = await pool.query("SELECT COUNT(e.eventoId) as 'total' FROM audiEvento AS auE INNER JOIN evento AS e ON e.eventoId = auE.audiEEvento WHERE auE.audiEEtapa = e.eventoEtapa AND auE.audiEUsuario = " +usuario);
+        const [ total ] = await pool.query("SELECT COUNT(e.eventoId) as 'total' FROM audiEvento AS auE INNER JOIN evento AS e ON e.eventoId = auE.audiEEvento WHERE auE.audiEEtapa = e.eventoEtapa AND auE.audiEUsuario = '" +usuario+"'");
         const totalPages = Math.ceil(total[0].total / totalRows);
 
         const [rows] = await pool.query(query, params);
@@ -184,9 +190,11 @@ export const getEvento = async (eventoId) => {
                             e.eventoNumero,                                                                                                 \
                             e.eventoTitulo,                                                                                                 \
                             ta.tareaNombre,                                                                                                 \
+                            (SELECT clienteId FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'clienteId',                    \
                             (SELECT clienteNombre FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'cliente',                    \
+                            (SELECT productoId FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'productoId',               \
                             (SELECT productoNombre FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'producto',               \
-                            (SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'Usuario Alta'        \
+                            (SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'usuarioAlta'        \
                     FROM evento as e                                                                                                        \
                     INNER JOIN evento_tarea as tet ON tet.etEvento = e.eventoTipo                                                           \
                     INNER JOIN tarea as ta ON ta.tareaId = tet.etTarea                                                                      \
@@ -231,6 +239,7 @@ export const insertEvento = async (nEvento) => {
     **/
 
     try{
+
         const query = "CALL insert_eventos(?,?,?,?,?)";
         let params = [
             nEvento.tipo,
@@ -242,9 +251,9 @@ export const insertEvento = async (nEvento) => {
 
         const [rows] = await pool.query(query, params);
 
-        console.log(rows.affectedRows);
+        const eventoId = rows[0][0].eventoId;
 
-        return rows.affectedRows;
+        return eventoId;
 
     }catch (err){
         console.error(err);
@@ -275,6 +284,8 @@ export const updateEvento = async (eventoM) => {
 
         //i CALL update_eventos(30, "Titulo actualizado", 1, 1)
 
+        // console.log(eventoM);
+
         const query = "CALL update_eventos(?,?,?,?)";
         let params = [
             eventoM.id,
@@ -282,11 +293,12 @@ export const updateEvento = async (eventoM) => {
             eventoM.cliente,
             eventoM.producto
         ]
+        // console.log(params);
 
         const [rows] = await pool.query(query, params);
 
-        console.log(rows);
-        console.log(rows.affectedRows);
+        // console.log(rows);
+        // console.log(rows.affectedRows);
 
         return rows.affectedRows;
 
@@ -309,13 +321,22 @@ export const deleteEvento = async (eventoId) => {
         //i CALL delete_eventos(30);
 
         const query = "CALL delete_eventos(?)";
+        // const query =  "UPDATE evento                   \
+        //                 SET                             \
+        //                     eventoCerrado = true        \
+        //                 WHERE                           \
+        //                     eventoId = ?                \
+        //                 ";          
+
+        // console.log(eventoId);
+
         let params = [
             eventoId
         ]
 
         const [rows] = await pool.query(query, params);
 
-        console.log(rows.affectedRows);
+        // console.log(rows);
 
         return rows.affectedRows;
 
@@ -345,7 +366,9 @@ export const avanzarEvento = async (eventoId, usuarioAsignado) => {
 
         const [rows] = await pool.query(query, params);
 
-        return rows.affectedRows
+        // console.log(rows);
+
+        return 1;
     
     }catch (err){
         console.error(err);
@@ -424,6 +447,111 @@ export const estimarEvento = async (eventoId, estimacion) => {
 
 };
 
+/** 
+ ** Comenta el evento
+ *
+ *i @param comentario: comentario realizado al evento, con usuario
+*/
+export const comentarEvento = async (comentario) => {
+     
+    /** 
+    * i Objeto que tiene que llegar por parametro
+    {
+        "eventoId": id,            //* id del evento
+        "comentario": "??",        //* comentario al evento
+        "usuario": "usuarioId",    //* usuario que realizo el comentario
+    }
+    **/
+
+    try{
+
+        const query = "CALL comentar_evento(?,?,?)";
+        let params = [
+            comentario.eventoId,
+            comentario.comentario,
+            comentario.usuario
+        ]
+
+        const [rows] = await pool.query(query, params);
+
+        // const eventoId = rows[0][0].eventoId;
+
+        return 1;
+
+    }catch (err){
+        console.error(err);
+        return 0;
+    }
+
+}
+
+/** 
+ ** Ver los comentarios de un evento
+ *
+ *i @param eventoId: evento a cual consultar
+*/
+export const getComentariosEvento = async (eventoId) => {
+
+    try{
+
+
+        const query = " SELECT ea.eAdId, ea.eAdComentario, ea.eAdFecha, ae.audiEUsuario, u.usuarioUsuario  \
+                        FROM eventoadicion AS ea    \
+                        INNER JOIN audievento AS ae ON ae.audiEAdi = ea.eAdId     \
+                        INNER JOIN usuario AS u ON u.usuarioId = ae.audiEUsuario    \
+                        WHERE ea.eAdTipo = 'COMENTARIO'     \
+                        ORDER BY ea.eAdFecha DESC";
+        let params = [
+            eventoId
+        ];
+
+        const [rows] = await pool.query(query, params);
+
+        return rows;
+
+    }catch (err){
+        console.error(err);
+        return 0;
+    }
+
+}
+
+/** 
+ ** Ver la vida de un evento
+ *
+ *i @param eventoId: evento a cual consultar
+*/
+export const getVidaEvento = async (eventoId) => {
+
+    try{
+
+
+        const query = ` SELECT 	(SELECT CONCAT(eventoTipo, "-", eventoNumero) FROM evento WHERE eventoId = ae.audiEEvento) AS evento,   \
+                                audiEEtapa,     \
+                                (SELECT usuarioUsuario FROM usuario WHERE usuarioId = ae.audiEUsuario) AS usuario,  \
+                                audiEAccion,    \
+                                ea.eAdComentario,   \
+                                audiEFecha  \
+                        FROM audievento AS ae   \
+                        LEFT JOIN eventoadicion AS ea ON ea.eAdId = ae.audiEAdi \
+                        WHERE ae.audiEEvento = "${eventoId}"   \
+                        ORDER BY ae.audiEFecha DESC`;
+
+        let params = [
+            eventoId
+        ];
+
+        const [rows] = await pool.query(query, params);
+
+        return rows;
+
+    }catch (err){
+        console.error(err);
+        return 0;
+    }
+
+}
+
 
 
 
@@ -441,7 +569,7 @@ export const estimarEvento = async (eventoId, estimacion) => {
  *  }
 */
 async function getDatosEvento(id){
-    let [ datosEvento ] = await pool.query("SELECT eventoTipo AS tipo, eventoEtapa AS etapa FROM evento as e WHERE e.eventoId = " +id);
+    let [ datosEvento ] = await pool.query("SELECT eventoTipo AS tipo, eventoEtapa AS etapa FROM evento as e WHERE e.eventoId = '" +id +"'");
     datosEvento = datosEvento[0];
     return datosEvento;
 }

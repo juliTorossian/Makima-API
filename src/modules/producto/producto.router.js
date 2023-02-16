@@ -7,14 +7,11 @@ const productoRouter = express.Router();
 
 productoRouter.get('/', controller.getProductos);
 productoRouter.get('/:productoId', controller.getProducto);
-// productoRouter.post('/', );
-// productoRouter.put('/:clienteId', );
-// productoRouter.delete('/:clienteId', );
+productoRouter.post('/', controller.insertProducto);
+productoRouter.put('/', controller.updateProducto);
+productoRouter.delete('/:productoId', controller.deleteProducto);
 
-// productoRouter.get('/:evento/circular/a', avzEvento);
-// productoRouter.get('/:evento/circular/r', rtcEvento);
-// productoRouter.get('/:evento/reasignar', reAsinEvento);
-// productoRouter.get('/:evento/estimar', estEvento);
+productoRouter.get('/:productoId/reactivar', controller.reactivarProducto);
 
 
 export default productoRouter;
