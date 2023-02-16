@@ -116,3 +116,34 @@ export const estimarEvento = async (req, res) => {
         res.status(404).send('error');
     }
 }
+
+export const comentarEvento = async (req, res) => {
+    const ok = await model.comentarEvento(req.body);
+
+    if (ok > 0){
+        res.send("ok");
+    }else{
+        res.status(404).send('error');
+    }
+}
+
+export const getComentariosEvento = async (req, res) => {
+    const comentarios = await model.getComentariosEvento(req.params.evento);
+
+    if (comentarios.length > 0){
+        res.json(comentarios);
+    }else{
+        res.status(404).send('error');
+    }
+}
+
+export const getVidaEvento = async (req, res) => {
+    const vida = await model.getVidaEvento(req.params.evento);
+
+    if (vida.length > 0){
+        res.json(vida);
+    }else{
+        res.status(404).send('error');
+    }
+}
+
