@@ -561,12 +561,14 @@ export const getVidaEvento = async (eventoId) => {
 
         const query = ` SELECT 	(SELECT CONCAT(eventoTipo, "-", eventoNumero) FROM evento WHERE eventoId = ae.audiEEvento) AS evento,   \
                                 audiEEtapa,     \
+                                (SELECT t.tareaNombre FROM tarea AS t INNER JOIN evento_tarea AS et ON et.etTarea = t.tareaId WHERE et.etEvento = e.eventoTipo AND et.etEtapa = audiEEtapa) AS tarea,   \
                                 (SELECT usuarioUsuario FROM usuario WHERE usuarioId = ae.audiEUsuario) AS usuario,  \
                                 audiEAccion,    \
                                 ea.eAdComentario,   \
                                 audiEFecha  \
                         FROM audievento AS ae   \
                         LEFT JOIN eventoadicion AS ea ON ea.eAdId = ae.audiEAdi \
+                        INNER JOIN evento AS e ON e.eventoId = ae.audiEEvento   \
                         WHERE ae.audiEEvento = "${eventoId}"   \
                         ORDER BY ae.audiEFecha DESC`;
 
@@ -584,6 +586,7 @@ export const getVidaEvento = async (eventoId) => {
     }
 }
 
+/*
  ** get datos para tabla tareasPorTipo
  *
 */
