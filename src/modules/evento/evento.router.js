@@ -22,5 +22,7 @@ eventoRouter.get('/:evento/comentarios', controller.getComentariosEvento);
 eventoRouter.get('/:evento/vida', controller.getVidaEvento);
 eventoRouter.get('/:evento/detalle', controller.getEventoDetalle);
 
+eventoRouter.get('/dashboard/tareaPortipo', controller.getTareasPorTipo);
+
 
 export default eventoRouter;

@@ -146,6 +146,15 @@ export const getComentariosEvento = async (req, res) => {
         res.status(404).send('error');
     }
 }
+export const getTareasPorTipo = async (req, res) => {
+    const tareasTipo = await model.getTareasPorTipo();
+    
+    if (!(tareasTipo == null)){
+        res.json(tareasTipo);
+    }else{
+        res.status(404).send('error');
+    }
+}
 
 export const getVidaEvento = async (req, res) => {
     const vida = await model.getVidaEvento(req.params.evento);
@@ -156,4 +165,3 @@ export const getVidaEvento = async (req, res) => {
         res.status(404).send('error');
     }
 }
-
