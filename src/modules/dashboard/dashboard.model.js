@@ -11,9 +11,12 @@ export const getUltimosMovimientos = async (cantidad) => {
     try{
         let params = [];
         let query = 'SELECT 	(SELECT CONCAT(eventoTipo, "-", eventoNumero) FROM evento WHERE eventoId = ae.audiEEvento) AS evento,   \
+                                (SELECT tipoEventoColor FROM tipoEvento WHERE tipoEventoId = e.eventoTipo) AS eventoColor,  \
                                 audiEEtapa, \
                                 (SELECT t.tareaNombre FROM tarea AS t INNER JOIN evento_tarea AS et ON et.etTarea = t.tareaId WHERE et.etEvento = e.eventoTipo AND et.etEtapa = audiEEtapa) AS tarea,   \
+                                audiEUsuario AS usuarioId ,   \
                                 (SELECT usuarioUsuario FROM usuario WHERE usuarioId = ae.audiEUsuario) AS usuario,  \
+                                (SELECT usuarioColor FROM usuario WHERE usuarioId = ae.audiEUsuario) AS usuarioColor,  \
                                 audiEAccion,    \
                                 ea.eAdComentario,   \
                                 audiEFecha  \
