@@ -216,6 +216,39 @@ export const getEvento = async (eventoId) => {
 };
 
 /** 
+ ** Devuelve detalle del evento
+ *i siguienteTarea
+ *i anteriorTarea
+ *i rollbackTarea
+ *i 
+ *
+ *i @param eventoId: id del evento a buscar
+*/
+export const getEventoDetalle = async (eventoId) => {
+
+    try{
+        const query = "SELECT 	e.eventoId,     \
+                                e.eventoTipo,   \
+                                e.eventoNumero, \
+                                (SELECT etTarea FROM evento_tarea AS et WHERE et.etEvento = e.eventoTipo AND et.etEtapa = (e.eventoEtapa + 1)) AS sigTarea, \
+                                (SELECT etTarea FROM evento_tarea AS et WHERE et.etEvento = e.eventoTipo AND et.etEtapa = (e.eventoEtapa - 1)) AS antTarea  \
+                        FROM evento AS e    \
+                        WHERE e.eventoId = ?    \
+                    "
+        const params = [eventoId]
+
+        const [rows] = await pool.query(query, params);
+
+        return rows[0];
+    }catch (err){
+        console.error(err);
+        return null;
+    }
+
+
+};
+
+/** 
  ** Crea un nuevo evento
  *
  *i @param nEvento: objeto con los datos necesarios del evento - especificado mas abajo

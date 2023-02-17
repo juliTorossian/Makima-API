@@ -20,6 +20,16 @@ export const getEvento = async (req, res) => {
     }
 }
 
+export const getEventoDetalle = async (req, res) => {
+    const evento = await model.getEventoDetalle(req.params.evento);
+    
+    if (!(evento == null)){
+        res.json(evento);
+    }else{
+        res.status(404).send('error');
+    }
+}
+
 export const getEventosUsuario = async (req, res) => {
     const eventos = await model.getEventosUsuario(req.query.page, req.params.usuario);
     
