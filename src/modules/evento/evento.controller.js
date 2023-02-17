@@ -20,6 +20,16 @@ export const getEvento = async (req, res) => {
     }
 }
 
+export const getEventoDetalle = async (req, res) => {
+    const evento = await model.getEventoDetalle(req.params.evento);
+    
+    if (!(evento == null)){
+        res.json(evento);
+    }else{
+        res.status(404).send('error');
+    }
+}
+
 export const getEventosUsuario = async (req, res) => {
     const eventos = await model.getEventosUsuario(req.query.page, req.params.usuario);
     
@@ -117,6 +127,25 @@ export const estimarEvento = async (req, res) => {
     }
 }
 
+export const comentarEvento = async (req, res) => {
+    const ok = await model.comentarEvento(req.body);
+
+    if (ok > 0){
+        res.send("ok");
+    }else{
+        res.status(404).send('error');
+    }
+}
+
+export const getComentariosEvento = async (req, res) => {
+    const comentarios = await model.getComentariosEvento(req.params.evento);
+
+    if (comentarios.length > 0){
+        res.json(comentarios);
+    }else{
+        res.status(404).send('error');
+    }
+}
 export const getTareasPorTipo = async (req, res) => {
     const tareasTipo = await model.getTareasPorTipo();
     
@@ -127,11 +156,11 @@ export const getTareasPorTipo = async (req, res) => {
     }
 }
 
-export const getTareasPorTipoOld = async (req, res) => {
-    const tareasTipo = await model.getTareasPorTipo();
-    
-    if (!(tareasTipo == null)){
-        res.json(tareasTipo);
+export const getVidaEvento = async (req, res) => {
+    const vida = await model.getVidaEvento(req.params.evento);
+
+    if (vida.length > 0){
+        res.json(vida);
     }else{
         res.status(404).send('error');
     }
