@@ -459,6 +459,7 @@ export const getTareasPorTipo = async () => {
                                 INNER JOIN evento_tarea AS et ON et.etTarea = t.tareaId \
                                 WHERE et.etEvento = e.eventoTipo AND et.etEtapa = e.eventoEtapa) AS tarea   \
                         FROM evento as e    \
+                        WHERE e.eventoCerrado = false   \
                         GROUP BY e.eventoEtapa, e.eventoTipo    \
                         ORDER BY e.eventoTipo, e.eventoEtapa";
         let params = []
