@@ -11,6 +11,7 @@ import tareaRouter      from './modules/tarea/tarea.router.js';
 import moduloRouter     from './modules/modulo/modulo.router.js';
 import entornoRouter    from './modules/entorno/entorno.router.js';
 import rolRouter        from './modules/rol/rol.router.js';
+import dashboardRouter  from './modules/dashboard/dashboard.router.js';
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use('/api/tarea'     , tareaRouter);
 app.use('/api/modulo'    , moduloRouter);
 app.use('/api/entorno'   , entornoRouter);
 app.use('/api/rol'       , rolRouter);
+app.use('/api/dashboard' , dashboardRouter);
 
 // Archivos Publicos
 // app.use(express.static(path.join(__dirname, 'public')));

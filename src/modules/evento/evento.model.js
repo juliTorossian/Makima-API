@@ -526,13 +526,12 @@ export const comentarEvento = async (comentario) => {
 export const getComentariosEvento = async (eventoId) => {
 
     try{
-
-
         const query = " SELECT ea.eAdId, ea.eAdComentario, ea.eAdFecha, ae.audiEUsuario, u.usuarioUsuario  \
                         FROM eventoadicion AS ea    \
                         INNER JOIN audievento AS ae ON ae.audiEAdi = ea.eAdId     \
                         INNER JOIN usuario AS u ON u.usuarioId = ae.audiEUsuario    \
-                        WHERE ea.eAdTipo = 'COMENTARIO'     \
+                        WHERE   ea.eAdTipo = 'COMENTARIO' AND     \
+                                ae.audiEEvento = ?  \
                         ORDER BY ea.eAdFecha DESC";
         let params = [
             eventoId
@@ -561,12 +560,14 @@ export const getVidaEvento = async (eventoId) => {
 
         const query = ` SELECT 	(SELECT CONCAT(eventoTipo, "-", eventoNumero) FROM evento WHERE eventoId = ae.audiEEvento) AS evento,   \
                                 audiEEtapa,     \
+                                (SELECT t.tareaNombre FROM tarea AS t INNER JOIN evento_tarea AS et ON et.etTarea = t.tareaId WHERE et.etEvento = e.eventoTipo AND et.etEtapa = audiEEtapa) AS tarea,   \
                                 (SELECT usuarioUsuario FROM usuario WHERE usuarioId = ae.audiEUsuario) AS usuario,  \
                                 audiEAccion,    \
                                 ea.eAdComentario,   \
                                 audiEFecha  \
                         FROM audievento AS ae   \
                         LEFT JOIN eventoadicion AS ea ON ea.eAdId = ae.audiEAdi \
+                        INNER JOIN evento AS e ON e.eventoId = ae.audiEEvento   \
                         WHERE ae.audiEEvento = "${eventoId}"   \
                         ORDER BY ae.audiEFecha DESC`;
 
@@ -584,6 +585,7 @@ export const getVidaEvento = async (eventoId) => {
     }
 }
 
+/*
  ** get datos para tabla tareasPorTipo
  *
 */
@@ -599,6 +601,7 @@ export const getTareasPorTipo = async () => {
                                 INNER JOIN evento_tarea AS et ON et.etTarea = t.tareaId \
                                 WHERE et.etEvento = e.eventoTipo AND et.etEtapa = e.eventoEtapa) AS tarea   \
                         FROM evento as e    \
+                        WHERE e.eventoCerrado = false   \
                         GROUP BY e.eventoEtapa, e.eventoTipo    \
                         ORDER BY e.eventoTipo, e.eventoEtapa";
         let params = []

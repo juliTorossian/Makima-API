@@ -23,19 +23,21 @@ export const insertUsuario = async (usuario) => {
         "mail": "mail@mail.com",    //* mail del usuario
         "usuario": "usuario",       //* usuario del usuario
         "password": 123,            //* contraseña del usuario
-        "rol": "ADMIN"              //* rol del usuario
+        "rol": "ADMIN",             //* rol del usuario
+        "color": "#D677A1"          //* color de usuario 
     }
     **/
 
     try{
-        const query = 'INSERT INTO usuario(usuarioId, usuarioNombre, usuarioApellido, usuarioMail, usuarioUsuario, usuarioPass, usuarioRol, usuarioActivo) VALUES ((SELECT getNewId()), ?, ?, ?, ?, ?, ?, true)';
+        const query = 'INSERT INTO usuario(usuarioId, usuarioNombre, usuarioApellido, usuarioMail, usuarioUsuario, usuarioPass, usuarioRol, usuarioActivo, usuarioColor) VALUES ((SELECT getNewId()), ?, ?, ?, ?, ?, ?, true, ?)';
         let params = [
             usuario.nombre,
             usuario.apellido,
             usuario.mail,
             usuario.usuario,
             usuario.password,
-            usuario.rol
+            usuario.rol,
+            usuario.color
         ];
 
         const [rows] = await pool.query(query, params);
@@ -63,12 +65,13 @@ export const updateUsuario = async (usuario) => {
         "mail": "mail@mail.com",    //* mail del usuario
         "usuario": "usuario",       //* usuario del usuario
         "password": 123,            //* contraseña del usuario
-        "rol": "ADMIN"              //* rol del usuario
+        "rol": "ADMIN",             //* rol del usuario
+        "color": "#D677A1"          //* color de usuario 
     }
     **/
 
     try{
-        const query = 'UPDATE usuario SET usuarioNombre = ?, usuarioApellido = ?, usuarioMail = ?, usuarioUsuario = ?, usuarioPass = ?, usuarioRol = ? WHERE usuarioId = ?';
+        const query = 'UPDATE usuario SET usuarioNombre = ?, usuarioApellido = ?, usuarioMail = ?, usuarioUsuario = ?, usuarioPass = ?, usuarioRol = ?, usuarioColor = ? WHERE usuarioId = ?';
         let params = [
             usuario.nombre,
             usuario.apellido,
@@ -76,6 +79,7 @@ export const updateUsuario = async (usuario) => {
             usuario.usuario,
             usuario.password,
             usuario.rol,
+            usuario.color,
             usuario.id
         ];
 
