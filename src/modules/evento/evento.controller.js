@@ -140,7 +140,7 @@ export const comentarEvento = async (req, res) => {
 export const getComentariosEvento = async (req, res) => {
     const comentarios = await model.getComentariosEvento(req.params.evento);
 
-    if (comentarios.length > 0){
+    if (comentarios != null){
         res.json(comentarios);
     }else{
         res.status(404).send('error');

@@ -526,13 +526,12 @@ export const comentarEvento = async (comentario) => {
 export const getComentariosEvento = async (eventoId) => {
 
     try{
-
-
         const query = " SELECT ea.eAdId, ea.eAdComentario, ea.eAdFecha, ae.audiEUsuario, u.usuarioUsuario  \
                         FROM eventoadicion AS ea    \
                         INNER JOIN audievento AS ae ON ae.audiEAdi = ea.eAdId     \
                         INNER JOIN usuario AS u ON u.usuarioId = ae.audiEUsuario    \
-                        WHERE ea.eAdTipo = 'COMENTARIO'     \
+                        WHERE   ea.eAdTipo = 'COMENTARIO' AND     \
+                                ae.audiEEvento = ?  \
                         ORDER BY ea.eAdFecha DESC";
         let params = [
             eventoId
