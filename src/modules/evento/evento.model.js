@@ -519,6 +519,52 @@ export const comentarEvento = async (comentario) => {
 }
 
 /** 
+ ** Comenta el evento
+ *
+ *i @param comentario: comentario realizado al evento, con usuario
+*/
+export const comentarEventoArchivo = async (archivo) => {
+   
+    try{
+
+        console.log(__dirname);
+        console.log(archivo);
+        
+        let uploadPath;
+
+        // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+        
+        // uploadPath = __dirname + '/somewhere/on/your/server/' + sampleFile.name;
+
+        // Use the mv() method to place the file somewhere on your server
+        // sampleFile.mv(uploadPath, function(err) {
+        //     if (err)
+        //     return res.status(500).send(err);
+
+        //     res.send('File uploaded!');
+        // });
+
+        // const query = "CALL comentar_evento(?,?,?)";
+        // let params = [
+        //     comentario.eventoId,
+        //     comentario.comentario,
+        //     comentario.usuario
+        // ]
+
+        // const [rows] = await pool.query(query, params);
+
+        // // const eventoId = rows[0][0].eventoId;
+
+        return 1;
+
+    }catch (err){
+        console.error(err);
+        return 0;
+    }
+
+}
+
+/** 
  ** Ver los comentarios de un evento
  *
  *i @param eventoId: evento a cual consultar
