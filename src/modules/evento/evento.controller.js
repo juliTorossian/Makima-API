@@ -163,15 +163,16 @@ export const comentarEventoArchivo = async (req, res) => {
     // }else{
     //     res.status(404).send('error');
     // }
+    const file = req.file
 
-    if (!req.files || Object.keys(req.files).length === 0) {
+    console.log(file)
+
+    if (!req.file || Object.keys(req.file).length === 0) {
         return res.status(400).send('No files were uploaded.');
     }
 
-    console.log(req.files);
-    console.log(req.files.archivo);
 
-    const ok = await model.comentarEventoArchivo(req.files.archivo);
+    const ok = await model.comentarEventoArchivo(file);
 
     if (ok > 0){
         res.send("ok");

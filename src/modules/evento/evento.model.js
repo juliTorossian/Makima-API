@@ -14,6 +14,10 @@
 //TOOKVER VIDA DEL EVENTO
 
 import { pool } from '../../db.js';
+import * as path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 
 /** 
@@ -493,6 +497,8 @@ export const comentarEvento = async (comentario) => {
         "eventoId": id,            //* id del evento
         "comentario": "??",        //* comentario al evento
         "usuario": "usuarioId",    //* usuario que realizo el comentario
+        "tieneFile": false,        //* el comentario tiene algun adjunto
+        "file": "base64"           //* base64 del archivo adjunto
     }
     **/
 
@@ -528,7 +534,12 @@ export const comentarEventoArchivo = async (archivo) => {
     try{
 
         console.log(__dirname);
-        console.log(archivo);
+        let defaultPath = path.normalize(`${__dirname}\\..\\..\\temp\\`)
+
+        let pathCompleto = defaultPath + archivo.originalname;
+
+        console.log(pathCompleto);
+        // console.log(archivo);
         
         let uploadPath;
 
