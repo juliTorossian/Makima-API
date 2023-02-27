@@ -14,6 +14,8 @@
 //TOOKVER VIDA DEL EVENTO
 
 import { pool } from '../../db.js';
+
+import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
@@ -634,18 +636,52 @@ export const comentarEventoArchivo = async (archivo) => {
 export const getComentariosEvento = async (eventoId) => {
 
     try{
-        const query = " SELECT ea.eAdId, ea.eAdComentario, ea.eAdAdjFile, ea.eAdPathFile, ea.eAdFecha, ae.audiEUsuario, u.usuarioUsuario  \
+        let query  = "";
+        let params = "";
+
+        query = " SELECT ea.eAdId, ea.eAdComentario, ea.eAdAdjFile, ea.eAdFecha, ae.audiEUsuario, u.usuarioUsuario, '' AS fileBase, '' AS fileName  \
                         FROM eventoadicion AS ea    \
                         INNER JOIN audievento AS ae ON ae.audiEAdi = ea.eAdId     \
                         INNER JOIN usuario AS u ON u.usuarioId = ae.audiEUsuario    \
                         WHERE   ea.eAdTipo = 'COMENTARIO' AND     \
                                 ae.audiEEvento = ?  \
                         ORDER BY ea.eAdFecha DESC";
-        let params = [
+        params = [
             eventoId
         ];
 
-        const [rows] = await pool.query(query, params);
+        let [rows] = await pool.query(query, params);
+        
+        for (let i = 0; i < rows.length; i++){
+
+            let query = " SELECT ea.eAdPathFile AS pathFile  \
+                        FROM eventoadicion AS ea    \
+                        WHERE   ea.eAdId = ?";
+
+            let params = [
+                rows[i].eAdId
+            ];
+
+            const [pathFile] = await pool.query(query, params);
+
+            if (pathFile[0].pathFile != null){
+                console.log(pathFile[0].pathFile);
+                
+                try{
+                    const fileBase = fs.readFileSync(pathFile[0].pathFile, {encoding: 'base64'});
+                    console.log("creo base64");
+
+                    const fileName = nombreArchivo(pathFile[0].pathFile);
+                    const content = datosArchivo(pathFile[0].pathFile);
+
+                    rows[i].fileBase = `data:${content};base64,${fileBase}`;
+                    rows[i].fileName = fileName;    
+                }catch(e){
+                    console.log("No existe el archivo");
+                    // console.error(e)
+                }
+            }
+        }
 
         return rows;
 
@@ -653,6 +689,29 @@ export const getComentariosEvento = async (eventoId) => {
         console.error(err);
         return 0;
     }
+
+}
+
+function nombreArchivo(filePath){
+    let fileName = path.basename(filePath);
+    fileName = fileName.split('-')[1];
+    return fileName;
+}
+function datosArchivo(filePath){
+
+    let content = "";
+    let extencion = path.extname(filePath);
+    extencion = extencion.slice(1);
+
+    if (extencion == 'png'){
+        content = "image/png";
+    }else if (extencion == 'jpg'){
+        content = "image/jpg";
+    }else if (extencion == 'pdf'){
+        content = "aplication/pdf";
+    }
+
+    return content;
 
 }
 
