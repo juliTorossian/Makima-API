@@ -127,8 +127,23 @@ export const estimarEvento = async (req, res) => {
     }
 }
 
+// export const comentarEvento = async (req, res) => {
+//     const ok = await model.comentarEvento(req.body);
+
+//     if (ok > 0){
+//         res.send("ok");
+//     }else{
+//         res.status(404).send('error');
+//     }
+// }
+
 export const comentarEvento = async (req, res) => {
-    const ok = await model.comentarEvento(req.body);
+
+    const comentario = JSON.parse(req.body.comentario);
+
+    const archivo = req.file;
+
+    const ok = await model.comentarEvento(comentario, archivo);
 
     if (ok > 0){
         res.send("ok");
@@ -136,6 +151,8 @@ export const comentarEvento = async (req, res) => {
         res.status(404).send('error');
     }
 }
+
+
 export const comentarEventoArchivo = async (req, res) => {
     // let sampleFile;
     // let uploadPath;
@@ -163,6 +180,12 @@ export const comentarEventoArchivo = async (req, res) => {
     // }else{
     //     res.status(404).send('error');
     // }
+
+    console.log(req);
+    console.log(req.body);
+    console.log(req.body[0]);
+    console.log(req.body.comentario);
+
     const file = req.file
 
     console.log(file)

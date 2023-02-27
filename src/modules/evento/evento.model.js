@@ -489,7 +489,7 @@ export const estimarEvento = async (eventoId, estimacion) => {
  *
  *i @param comentario: comentario realizado al evento, con usuario
 */
-export const comentarEvento = async (comentario) => {
+export const comentarEvento = async (comentario, archivo) => {
      
     /** 
     * i Objeto que tiene que llegar por parametro
@@ -498,17 +498,28 @@ export const comentarEvento = async (comentario) => {
         "comentario": "??",        //* comentario al evento
         "usuario": "usuarioId",    //* usuario que realizo el comentario
         "tieneFile": false,        //* el comentario tiene algun adjunto
-        "file": "base64"           //* base64 del archivo adjunto
+        "file": "rutaDelArchivo"   //* ruta donde se almacena el archivo
     }
     **/
 
     try{
 
-        const query = "CALL comentar_evento(?,?,?)";
+        console.log(archivo);
+
+        let pathFile = null;
+        const tiene = !((archivo == undefined) || (archivo == null));
+        
+        if (tiene){
+            pathFile = archivo.path;
+        }
+
+        const query = "CALL comentar_evento(?,?,?,?,?)";
         let params = [
             comentario.eventoId,
             comentario.comentario,
-            comentario.usuario
+            comentario.usuario,
+            tiene,
+            pathFile
         ]
 
         const [rows] = await pool.query(query, params);
@@ -523,6 +534,46 @@ export const comentarEvento = async (comentario) => {
     }
 
 }
+
+/** 
+ ** Comenta el evento
+ *
+ *i @param comentario: comentario realizado al evento, con usuario
+*/
+// export const comentarEvento = async (comentario) => {
+     
+//     /** 
+//     * i Objeto que tiene que llegar por parametro
+//     {
+//         "eventoId": id,            //* id del evento
+//         "comentario": "??",        //* comentario al evento
+//         "usuario": "usuarioId",    //* usuario que realizo el comentario
+//         "tieneFile": false,        //* el comentario tiene algun adjunto
+//         "file": "base64"           //* base64 del archivo adjunto
+//     }
+//     **/
+
+//     try{
+
+//         const query = "CALL comentar_evento(?,?,?)";
+//         let params = [
+//             comentario.eventoId,
+//             comentario.comentario,
+//             comentario.usuario
+//         ]
+
+//         const [rows] = await pool.query(query, params);
+
+//         // const eventoId = rows[0][0].eventoId;
+
+//         return 1;
+
+//     }catch (err){
+//         console.error(err);
+//         return 0;
+//     }
+
+// }
 
 /** 
  ** Comenta el evento
@@ -583,7 +634,7 @@ export const comentarEventoArchivo = async (archivo) => {
 export const getComentariosEvento = async (eventoId) => {
 
     try{
-        const query = " SELECT ea.eAdId, ea.eAdComentario, ea.eAdFecha, ae.audiEUsuario, u.usuarioUsuario  \
+        const query = " SELECT ea.eAdId, ea.eAdComentario, ea.eAdAdjFile, ea.eAdPathFile, ea.eAdFecha, ae.audiEUsuario, u.usuarioUsuario  \
                         FROM eventoadicion AS ea    \
                         INNER JOIN audievento AS ae ON ae.audiEAdi = ea.eAdId     \
                         INNER JOIN usuario AS u ON u.usuarioId = ae.audiEUsuario    \

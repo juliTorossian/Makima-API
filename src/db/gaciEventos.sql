@@ -46,7 +46,7 @@ CREATE TABLE `audievento` (
 
 LOCK TABLES `audievento` WRITE;
 /*!40000 ALTER TABLE `audievento` DISABLE KEYS */;
-INSERT INTO `audievento` VALUES ('28958eef9ed880431142959f','1840555980b13add9ee5d49f',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:46:55',NULL,'CREO'),('2a8fdeba8b85cfca9dee3066','4b63a8bbd9005c79ddef546a',2,'264b0ce34fa762a3dba657fe','2023-02-09 17:49:03',NULL,'AVANZO'),('30d81e6c58c024c76ee17986','68778349c24c4b7b4ea84db1',4,'264b0ce34fa762a3dba657fe','2023-02-17 20:02:58','587bea847599e989eedd7562','COMENTARIO'),('3cd556dd0cbde7ae6f477f23','68778349c24c4b7b4ea84db1',4,'264b0ce34fa762a3dba657fe','2023-02-17 20:30:53','ac89288884bbed512ebbd14e','COMENTARIO'),('493f49767025b95f8c040626','69abf03efd8b500f50fe948b',2,'2f0727442b3125f656ec12de','2023-02-10 22:25:37',NULL,'AVANZO'),('4b29eb8ac5284ebc51a0764e','68778349c24c4b7b4ea84db1',2,'264b0ce34fa762a3dba657fe','2023-02-09 17:49:29',NULL,'AVANZO'),('4d333bef188fa712b8a3e25c','69abf03efd8b500f50fe948b',4,'2f0727442b3125f656ec12de','2023-02-16 12:34:48',NULL,'AVANZO'),('54050098dc1ec00866cfacae','da086a75dea411e7aab6bdee',1,'264b0ce34fa762a3dba657fe','2023-02-17 01:32:58',NULL,'CREO'),('5ab436c6fa3c460ee846d09f','69abf03efd8b500f50fe948b',3,'2f0727442b3125f656ec12de','2023-02-16 12:32:52',NULL,'AVANZO'),('607afc85f827c967bbfda4c2','c1d42fd550cc5aa2b14521ea',3,'264b0ce34fa762a3dba657fe','2023-02-08 16:44:12',NULL,'AVANZO'),('6db94403efa92f54e0478b69','c1d42fd550cc5aa2b14521ea',1,'2f0727442b3125f656ec12de','2023-02-08 13:21:03',NULL,'CREO'),('70157c42a35694dfa1f6ad89','12a91c947f7b377227c52354',2,'264b0ce34fa762a3dba657fe','2023-02-09 17:49:31',NULL,'AVANZO'),('74c19734df0a8c3cb8ce031e','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-17 22:46:43','ccb8d68f46c2b94924ac7d0d','COMENTARIO'),('7e793c55e7a4db41a10842d8','52723a0f7a66f396fbde3bbe',1,'264b0ce34fa762a3dba657fe','2023-02-08 13:03:42',NULL,'CREO'),('85a932f44e10500ad8d193c0','c1d42fd550cc5aa2b14521ea',2,'2f0727442b3125f656ec12de','2023-02-08 16:42:25',NULL,'AVANZO'),('85fcf9b3e3cf44e6855ef154','d11fda2252bcf016101a5bf1',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:46:12',NULL,'CREO'),('8752a1be0c73e1dd4a5cc151','12a91c947f7b377227c52354',1,'264b0ce34fa762a3dba657fe','2023-02-08 21:12:00',NULL,'CREO'),('8a46d7cfcbc1db4a9b61f704','69abf03efd8b500f50fe948b',5,'264b0ce34fa762a3dba657fe','2023-02-16 23:41:21',NULL,'AVANZO'),('8d7b9a9ba59a12081f4c4b73','da086a75dea411e7aab6bdee',2,'2f0727442b3125f656ec12de','2023-02-17 13:13:45',NULL,'AVANZO'),('a69163ad5114d9a093b6660a','68778349c24c4b7b4ea84db1',3,'264b0ce34fa762a3dba657fe','2023-02-09 17:49:36',NULL,'AVANZO'),('ab76f6dfd02a3ab5756a268f','d5d3cc4b908393afc74ee6e6',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:46:44',NULL,'CREO'),('b7cc20f93363b7913cf4e492','68778349c24c4b7b4ea84db1',4,'60dba550879c88cfdd2d4906','2023-02-16 23:08:07',NULL,'AVANZO'),('c9cd9058de304df04d304bd8','d5d3cc4b908393afc74ee6e6',2,'b092296c495f89e0ef2ebdfa','2023-02-16 23:08:14',NULL,'AVANZO'),('da605ff1293fc24e59c11641','69abf03efd8b500f50fe948b',2,'2f0727442b3125f656ec12de','2023-02-15 23:53:55','cde25d494a04e110bcbf0d07','COMENTARIO'),('e3a4984e82d7e189440ec379','69abf03efd8b500f50fe948b',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:47:14',NULL,'CREO'),('e5eb1dd9bdf981e14c6f604d','68778349c24c4b7b4ea84db1',4,'264b0ce34fa762a3dba657fe','2023-02-17 20:18:29','997d56fa0fa130cca49e6e6b','COMENTARIO'),('eea228d15c6d32132efe0183','68778349c24c4b7b4ea84db1',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:46:26',NULL,'CREO'),('f3901e6436eee6e8c7b209df','63ca9be191f963f31d560788',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:47:26',NULL,'CREO'),('f49156906c2285920929aed5','69abf03efd8b500f50fe948b',2,'2f0727442b3125f656ec12de','2023-02-15 23:53:39','a3dd9ce74d05528a2ebcd0d3','COMENTARIO'),('f5b2c54f17e84141de5912b8','c1d42fd550cc5aa2b14521ea',4,'264b0ce34fa762a3dba657fe','2023-02-08 16:45:23',NULL,'AVANZO'),('fc335b763ed6a9fd568535b3','e5570b20a7697952c2cb4981',1,'264b0ce34fa762a3dba657fe','2023-02-08 22:40:50',NULL,'CREO'),('fe3a739dc8a3094da68d4c98','4b63a8bbd9005c79ddef546a',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:47:04',NULL,'CREO');
+INSERT INTO `audievento` VALUES ('0a4bf99b36a5c18b97e4e124','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-25 20:43:14','4ec32e006b8b3dd450a18f3c','COMENTARIO'),('28958eef9ed880431142959f','1840555980b13add9ee5d49f',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:46:55',NULL,'CREO'),('2a8fdeba8b85cfca9dee3066','4b63a8bbd9005c79ddef546a',2,'264b0ce34fa762a3dba657fe','2023-02-09 17:49:03',NULL,'AVANZO'),('30d81e6c58c024c76ee17986','68778349c24c4b7b4ea84db1',4,'264b0ce34fa762a3dba657fe','2023-02-17 20:02:58','587bea847599e989eedd7562','COMENTARIO'),('3cd556dd0cbde7ae6f477f23','68778349c24c4b7b4ea84db1',4,'264b0ce34fa762a3dba657fe','2023-02-17 20:30:53','ac89288884bbed512ebbd14e','COMENTARIO'),('493f49767025b95f8c040626','69abf03efd8b500f50fe948b',2,'2f0727442b3125f656ec12de','2023-02-10 22:25:37',NULL,'AVANZO'),('4b29eb8ac5284ebc51a0764e','68778349c24c4b7b4ea84db1',2,'264b0ce34fa762a3dba657fe','2023-02-09 17:49:29',NULL,'AVANZO'),('4c1b6b6d759ca7de7df76456','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-24 13:26:38','a59e65344f33100d225ae9d0','COMENTARIO'),('4d333bef188fa712b8a3e25c','69abf03efd8b500f50fe948b',4,'2f0727442b3125f656ec12de','2023-02-16 12:34:48',NULL,'AVANZO'),('54050098dc1ec00866cfacae','da086a75dea411e7aab6bdee',1,'264b0ce34fa762a3dba657fe','2023-02-17 01:32:58',NULL,'CREO'),('57d0d9d5edb84efd531ca9ad','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-24 13:29:51','1cdfb24dd28b13d74d7ebd3c','COMENTARIO'),('5ab436c6fa3c460ee846d09f','69abf03efd8b500f50fe948b',3,'2f0727442b3125f656ec12de','2023-02-16 12:32:52',NULL,'AVANZO'),('607afc85f827c967bbfda4c2','c1d42fd550cc5aa2b14521ea',3,'264b0ce34fa762a3dba657fe','2023-02-08 16:44:12',NULL,'AVANZO'),('6456330bfdd34b8e02e719c6','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-24 13:27:26','e2ecb890b098215344c2a05d','COMENTARIO'),('6db94403efa92f54e0478b69','c1d42fd550cc5aa2b14521ea',1,'2f0727442b3125f656ec12de','2023-02-08 13:21:03',NULL,'CREO'),('70157c42a35694dfa1f6ad89','12a91c947f7b377227c52354',2,'264b0ce34fa762a3dba657fe','2023-02-09 17:49:31',NULL,'AVANZO'),('74c19734df0a8c3cb8ce031e','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-17 22:46:43','ccb8d68f46c2b94924ac7d0d','COMENTARIO'),('7e793c55e7a4db41a10842d8','52723a0f7a66f396fbde3bbe',1,'264b0ce34fa762a3dba657fe','2023-02-08 13:03:42',NULL,'CREO'),('85a932f44e10500ad8d193c0','c1d42fd550cc5aa2b14521ea',2,'2f0727442b3125f656ec12de','2023-02-08 16:42:25',NULL,'AVANZO'),('85fcf9b3e3cf44e6855ef154','d11fda2252bcf016101a5bf1',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:46:12',NULL,'CREO'),('8752a1be0c73e1dd4a5cc151','12a91c947f7b377227c52354',1,'264b0ce34fa762a3dba657fe','2023-02-08 21:12:00',NULL,'CREO'),('8a46d7cfcbc1db4a9b61f704','69abf03efd8b500f50fe948b',5,'264b0ce34fa762a3dba657fe','2023-02-16 23:41:21',NULL,'AVANZO'),('8d7b9a9ba59a12081f4c4b73','da086a75dea411e7aab6bdee',2,'2f0727442b3125f656ec12de','2023-02-17 13:13:45',NULL,'AVANZO'),('92f8d4e37512ae48b846bb45','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-25 12:57:04','c76b4543aebcaf32273e1048','COMENTARIO'),('a69163ad5114d9a093b6660a','68778349c24c4b7b4ea84db1',3,'264b0ce34fa762a3dba657fe','2023-02-09 17:49:36',NULL,'AVANZO'),('ab76f6dfd02a3ab5756a268f','d5d3cc4b908393afc74ee6e6',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:46:44',NULL,'CREO'),('adc6a106571e32f6e7c21875','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-25 12:55:12','201460d91ba78543c294916a','COMENTARIO'),('b582aeb91b360620b2688ad2','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-24 13:24:36','3fc426cb85d80c16c407c35d','COMENTARIO'),('b7cc20f93363b7913cf4e492','68778349c24c4b7b4ea84db1',4,'60dba550879c88cfdd2d4906','2023-02-16 23:08:07',NULL,'AVANZO'),('c9cd9058de304df04d304bd8','d5d3cc4b908393afc74ee6e6',2,'b092296c495f89e0ef2ebdfa','2023-02-16 23:08:14',NULL,'AVANZO'),('da605ff1293fc24e59c11641','69abf03efd8b500f50fe948b',2,'2f0727442b3125f656ec12de','2023-02-15 23:53:55','cde25d494a04e110bcbf0d07','COMENTARIO'),('e3a4984e82d7e189440ec379','69abf03efd8b500f50fe948b',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:47:14',NULL,'CREO'),('e5eb1dd9bdf981e14c6f604d','68778349c24c4b7b4ea84db1',4,'264b0ce34fa762a3dba657fe','2023-02-17 20:18:29','997d56fa0fa130cca49e6e6b','COMENTARIO'),('eea228d15c6d32132efe0183','68778349c24c4b7b4ea84db1',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:46:26',NULL,'CREO'),('f3901e6436eee6e8c7b209df','63ca9be191f963f31d560788',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:47:26',NULL,'CREO'),('f49156906c2285920929aed5','69abf03efd8b500f50fe948b',2,'2f0727442b3125f656ec12de','2023-02-15 23:53:39','a3dd9ce74d05528a2ebcd0d3','COMENTARIO'),('f4a2e3283f6d431dfdf28db8','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-25 22:09:08','42a8f81fcaefedf2805bb026','COMENTARIO'),('f5b2c54f17e84141de5912b8','c1d42fd550cc5aa2b14521ea',4,'264b0ce34fa762a3dba657fe','2023-02-08 16:45:23',NULL,'AVANZO'),('fc335b763ed6a9fd568535b3','e5570b20a7697952c2cb4981',1,'264b0ce34fa762a3dba657fe','2023-02-08 22:40:50',NULL,'CREO'),('fe3a739dc8a3094da68d4c98','4b63a8bbd9005c79ddef546a',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:47:04',NULL,'CREO');
 /*!40000 ALTER TABLE `audievento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -196,7 +196,7 @@ CREATE TABLE `eventoadicion` (
 
 LOCK TABLES `eventoadicion` WRITE;
 /*!40000 ALTER TABLE `eventoadicion` DISABLE KEYS */;
-INSERT INTO `eventoadicion` VALUES ('587bea847599e989eedd7562','68778349c24c4b7b4ea84db1','COMENTARIO','<p>Este comentario esta hecho desde el editor</p>',0,NULL,'2023-02-17 20:02:58'),('997d56fa0fa130cca49e6e6b','68778349c24c4b7b4ea84db1','COMENTARIO','<p>Este es un comentario probando distintas cosas</p><pre><code class=\"language-plaintext\">Como el bloque de codigo</code></pre><figure class=\"table\"><table><tbody><tr><td>Como</td><td>una</td></tr><tr><td>tabla</td><td>!</td></tr></tbody></table></figure><p><code>Codigo en linea</code></p><p><mark class=\"marker-yellow\">Algun </mark><mark class=\"pen-red\">resaltado</mark></p><ul class=\"todo-list\"><li><label class=\"todo-list__label\"><input type=\"checkbox\" disabled=\"disabled\"><span class=\"todo-list__label__description\">y la lista de tareas</span></label></li><li><label class=\"todo-list__label\"><input type=\"checkbox\" disabled=\"disabled\"><span class=\"todo-list__label__description\">como esta</span></label></li></ul>',0,NULL,'2023-02-17 20:18:29'),('a3dd9ce74d05528a2ebcd0d3','69abf03efd8b500f50fe948b','COMENTARIO','Primer comentario',0,NULL,'2023-02-15 23:53:39'),('ac89288884bbed512ebbd14e','68778349c24c4b7b4ea84db1','COMENTARIO','<ul class=\"todo-list\"><li><label class=\"todo-list__label\"><input type=\"checkbox\" disabled=\"disabled\"><span class=\"todo-list__label__description\">y la lista de tareas</span></label></li><li><label class=\"todo-list__label\"><input type=\"checkbox\" disabled=\"disabled\" checked=\"checked\"><span class=\"todo-list__label__description\">como esta</span></label></li></ul>',0,NULL,'2023-02-17 20:30:53'),('ccb8d68f46c2b94924ac7d0d','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>Primer comentario del TEC</p>',0,NULL,'2023-02-17 22:46:43'),('cde25d494a04e110bcbf0d07','69abf03efd8b500f50fe948b','COMENTARIO','Segundo comentario',0,NULL,'2023-02-15 23:53:55');
+INSERT INTO `eventoadicion` VALUES ('1cdfb24dd28b13d74d7ebd3c','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>dada</p>',0,NULL,'2023-02-24 13:29:51'),('201460d91ba78543c294916a','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>das</p>',0,NULL,'2023-02-25 12:55:12'),('3fc426cb85d80c16c407c35d','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>dsad</p>',0,NULL,'2023-02-24 13:24:36'),('42a8f81fcaefedf2805bb026','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>dadsadasdad</p>',1,'E:\\Proyectos\\Gaci\\Makima-Api\\src\\temp\\1677373748208-Final.png','2023-02-25 22:09:08'),('4a376e1afae9ddfb97060695',NULL,'COMENTARIO',NULL,0,NULL,'2023-02-24 13:22:49'),('4ec32e006b8b3dd450a18f3c','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>dasdasdas</p>',1,'..\\..\\temp\\1677368594283-Final.png','2023-02-25 20:43:14'),('587bea847599e989eedd7562','68778349c24c4b7b4ea84db1','COMENTARIO','<p>Este comentario esta hecho desde el editor</p>',0,NULL,'2023-02-17 20:02:58'),('7a41465ed7c7094e251b2549',NULL,'COMENTARIO',NULL,0,NULL,'2023-02-24 13:21:45'),('997d56fa0fa130cca49e6e6b','68778349c24c4b7b4ea84db1','COMENTARIO','<p>Este es un comentario probando distintas cosas</p><pre><code class=\"language-plaintext\">Como el bloque de codigo</code></pre><figure class=\"table\"><table><tbody><tr><td>Como</td><td>una</td></tr><tr><td>tabla</td><td>!</td></tr></tbody></table></figure><p><code>Codigo en linea</code></p><p><mark class=\"marker-yellow\">Algun </mark><mark class=\"pen-red\">resaltado</mark></p><ul class=\"todo-list\"><li><label class=\"todo-list__label\"><input type=\"checkbox\" disabled=\"disabled\"><span class=\"todo-list__label__description\">y la lista de tareas</span></label></li><li><label class=\"todo-list__label\"><input type=\"checkbox\" disabled=\"disabled\"><span class=\"todo-list__label__description\">como esta</span></label></li></ul>',0,NULL,'2023-02-17 20:18:29'),('a3dd9ce74d05528a2ebcd0d3','69abf03efd8b500f50fe948b','COMENTARIO','Primer comentario',0,NULL,'2023-02-15 23:53:39'),('a59e65344f33100d225ae9d0','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>dads</p>',0,NULL,'2023-02-24 13:26:38'),('ac89288884bbed512ebbd14e','68778349c24c4b7b4ea84db1','COMENTARIO','<ul class=\"todo-list\"><li><label class=\"todo-list__label\"><input type=\"checkbox\" disabled=\"disabled\"><span class=\"todo-list__label__description\">y la lista de tareas</span></label></li><li><label class=\"todo-list__label\"><input type=\"checkbox\" disabled=\"disabled\" checked=\"checked\"><span class=\"todo-list__label__description\">como esta</span></label></li></ul>',0,NULL,'2023-02-17 20:30:53'),('c76b4543aebcaf32273e1048','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>eqaeadada</p>',1,'E:\\Proyectos\\Gaci\\Makima-Api\\src\\temp\\DiaCasosUso-Final.png','2023-02-25 12:57:04'),('ccb8d68f46c2b94924ac7d0d','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>Primer comentario del TEC</p>',0,NULL,'2023-02-17 22:46:43'),('cde25d494a04e110bcbf0d07','69abf03efd8b500f50fe948b','COMENTARIO','Segundo comentario',0,NULL,'2023-02-15 23:53:55'),('e2ecb890b098215344c2a05d','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>dasd</p>',0,NULL,'2023-02-24 13:27:26');
 /*!40000 ALTER TABLE `eventoadicion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -474,7 +474,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `getCantEventosxCliente`(id char(24)) RETURNS int
+CREATE DEFINER=`sa`@`localhost` FUNCTION `getCantEventosxCliente`(id char(24)) RETURNS int
 BEGIN
     DECLARE cantidad INT;
 	SET cantidad = (	SELECT count(eventoId)
@@ -498,7 +498,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `getCantEventosxProducto`(id char(24)) RETURNS int
+CREATE DEFINER=`sa`@`localhost` FUNCTION `getCantEventosxProducto`(id char(24)) RETURNS int
 BEGIN
     DECLARE cantidad INT;
 	SET cantidad = (	SELECT count(eventoId)
@@ -522,7 +522,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `getCantEventosxTipoEvento`(tipo CHAR(3)) RETURNS int
+CREATE DEFINER=`sa`@`localhost` FUNCTION `getCantEventosxTipoEvento`(tipo CHAR(3)) RETURNS int
 BEGIN
     DECLARE cantidad INT;
 	SET cantidad = (	SELECT count(eventoId)
@@ -547,7 +547,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `getCantEventosxUsuario`(id CHAR(24)) RETURNS int
+CREATE DEFINER=`sa`@`localhost` FUNCTION `getCantEventosxUsuario`(id CHAR(24)) RETURNS int
 BEGIN
     DECLARE cantidad INT;
 	SET cantidad = (	SELECT count(ae.audiEId) 
@@ -574,7 +574,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `getEtapaAnt_evento`(tipo CHAR(3), etapa int) RETURNS int
+CREATE DEFINER=`sa`@`localhost` FUNCTION `getEtapaAnt_evento`(tipo CHAR(3), etapa int) RETURNS int
 BEGIN
     DECLARE antEtapa INT;
 	SET antEtapa = (	SELECT et.etEtapa AS etapa
@@ -601,7 +601,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `getEtapaSig_evento`(tipo CHAR(3), etapa int) RETURNS int
+CREATE DEFINER=`sa`@`localhost` FUNCTION `getEtapaSig_evento`(tipo CHAR(3), etapa int) RETURNS int
 BEGIN
     DECLARE proxEtapa INT;
 	SET proxEtapa = (	SELECT et.etEtapa AS etapa
@@ -628,7 +628,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `getNewId`() RETURNS char(24) CHARSET utf8mb4
+CREATE DEFINER=`sa`@`localhost` FUNCTION `getNewId`() RETURNS char(24) CHARSET utf8mb4
 BEGIN
     DECLARE id CHAR(24);
 	SET id = (SELECT SUBSTR(MD5(RAND()),1,24) AS RandomString);
@@ -649,7 +649,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `getNombreTarea_eventos`(tipo CHAR(3), etapa int) RETURNS varchar(45) CHARSET utf8mb4
+CREATE DEFINER=`sa`@`localhost` FUNCTION `getNombreTarea_eventos`(tipo CHAR(3), etapa int) RETURNS varchar(45) CHARSET utf8mb4
 BEGIN
     DECLARE nombre VARCHAR(45);
 	SET nombre = (	SELECT t.tareaNombre
@@ -675,7 +675,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `getUltimoNumero_eventos`(tipo CHAR(3)) RETURNS int
+CREATE DEFINER=`sa`@`localhost` FUNCTION `getUltimoNumero_eventos`(tipo CHAR(3)) RETURNS int
 BEGIN
     DECLARE ultimoNumero INT;
 	SET ultimoNumero = (SELECT eventoNumero FROM evento WHERE eventoTipo = tipo ORDER BY eventoNumero DESC LIMIT 1);
@@ -696,7 +696,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `circular_evento`(id char(24), etapa int, usuario char(24))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `circular_evento`(id char(24), etapa int, usuario char(24))
 BEGIN
 
 	SET @etapaActual = (SELECT audiEEtapa FROM audievento WHERE audiEEvento = id ORDER BY audiEFecha DESC LIMIT 1);
@@ -727,7 +727,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`%` PROCEDURE `comentar_evento`(eventoId char(24), comentario TEXT, usuario char(24))
+CREATE DEFINER=`sa`@`%` PROCEDURE `comentar_evento`(eventoId char(24), comentario TEXT, usuario char(24), tieneFile boolean, pathFile varchar(255))
 BEGIN
 	
     SELECT eventoId AS EVENTO;
@@ -738,8 +738,8 @@ BEGIN
     
     SELECT @id  , eventoId , "COMENTARIO", comentario, @etapaActual;
     
-	INSERT INTO eventoadicion(eAdId, eAdEvento, eAdTipo     , eAdComentario, eAdAdjFile, eAdFecha)
-    VALUES 					 (@id  , eventoId , "COMENTARIO", comentario   , false, now());
+	INSERT INTO eventoadicion(eAdId, eAdEvento, eAdTipo     , eAdComentario, eAdAdjFile, eAdPathFile, eAdFecha)
+    VALUES 					 (@id  , eventoId , "COMENTARIO", comentario   , tieneFile, pathFile, now());
     
     CALL insert_audiEvento(eventoId, @etapaActual, usuario, @id, "COMENTARIO");
     
@@ -760,7 +760,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_cliente`(id char(24))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `delete_cliente`(id char(24))
 BEGIN
 
 	DECLARE cantidadEventos INT;
@@ -793,7 +793,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_eventos`(eventoCodigo char(24))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `delete_eventos`(eventoCodigo char(24))
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
@@ -824,7 +824,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_producto`(id char(24))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `delete_producto`(id char(24))
 BEGIN
 
 	DECLARE cantidadEventos INT;
@@ -857,7 +857,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_tipoEvento`(id CHAR(3))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `delete_tipoEvento`(id CHAR(3))
 BEGIN
 
 	DECLARE cantidadEventos INT;
@@ -890,7 +890,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_usuario`(id char(24))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `delete_usuario`(id char(24))
 BEGIN
 
 	DECLARE cantidadEventos INT;
@@ -923,7 +923,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_audiEvento`(evento char(24), etapa int, usuario char(24), adicional char(24), accion char(10))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `insert_audiEvento`(evento char(24), etapa int, usuario char(24), adicional char(24), accion char(10))
 BEGIN
     SET @id = (SELECT getNewId());
     
@@ -947,7 +947,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_eventos`(tipo char(3), titulo varchar(200), cliente char(24), producto char(24), usuario char(24))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `insert_eventos`(tipo char(3), titulo varchar(200), cliente char(24), producto char(24), usuario char(24))
 BEGIN
 	SET @numero = (SELECT getUltimoNumero_eventos(tipo)) + 1;
     
@@ -982,7 +982,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `select_eventos`(paginacion boolean, pagina int, cantidad int)
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `select_eventos`(paginacion boolean, pagina int, cantidad int)
 BEGIN
 	
     -- SET @page = 1;
@@ -1044,7 +1044,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `select_eventos_rol`(paginacion boolean, pagina int, cantidad int, rol VARCHAR(5))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `select_eventos_rol`(paginacion boolean, pagina int, cantidad int, rol VARCHAR(5))
 BEGIN
 	
     -- SET @page = 1;
@@ -1105,7 +1105,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `select_eventos_usuario`(paginacion boolean, pagina int, cantidad int, usuario char(24))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `select_eventos_usuario`(paginacion boolean, pagina int, cantidad int, usuario char(24))
 BEGIN
 	
     -- SET @page = 1;
@@ -1168,7 +1168,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `update_eventos`(eventoCodigo char(24), titulo varchar(200), cliente char(24), producto char(24))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `update_eventos`(eventoCodigo char(24), titulo varchar(200), cliente char(24), producto char(24))
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
@@ -1201,4 +1201,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-02-22 12:45:40
+-- Dump completed on 2023-02-26 23:12:38
