@@ -506,22 +506,28 @@ export const comentarEvento = async (comentario, archivo) => {
 
     try{
 
-        console.log(archivo);
+        // console.log(archivo);
 
         let pathFile = null;
+        let nameFile = null;
+        let mimeFile = null;
         const tiene = !((archivo == undefined) || (archivo == null));
         
         if (tiene){
             pathFile = archivo.path;
+            nameFile = archivo.originalname;
+            mimeFile = archivo.mimetype;
         }
 
-        const query = "CALL comentar_evento(?,?,?,?,?)";
+        const query = "CALL comentar_evento(?,?,?,?,?,?,?)";
         let params = [
             comentario.eventoId,
             comentario.comentario,
             comentario.usuario,
             tiene,
-            pathFile
+            pathFile,
+            nameFile,
+            mimeFile
         ]
 
         const [rows] = await pool.query(query, params);
@@ -654,7 +660,7 @@ export const getComentariosEvento = async (eventoId) => {
         
         for (let i = 0; i < rows.length; i++){
 
-            let query = " SELECT ea.eAdPathFile AS pathFile  \
+            let query = " SELECT ea.eAdPathFile AS pathFile, ea.eAdNombreFile AS nameFile, ea.eAdMimeFile AS mimeFile  \
                         FROM eventoadicion AS ea    \
                         WHERE   ea.eAdId = ?";
 
@@ -662,22 +668,20 @@ export const getComentariosEvento = async (eventoId) => {
                 rows[i].eAdId
             ];
 
-            const [pathFile] = await pool.query(query, params);
+            let response = await pool.query(query, params);
+            response = response[0][0];
 
-            if (pathFile[0].pathFile != null){
-                console.log(pathFile[0].pathFile);
+            if (response.pathFile != null){
+                // console.log(pathFile[0].pathFile);
                 
                 try{
-                    const fileBase = fs.readFileSync(pathFile[0].pathFile, {encoding: 'base64'});
-                    console.log("creo base64");
+                    const fileBase = fs.readFileSync(response.pathFile, {encoding: 'base64'});
+                    // console.log("creo base64");
 
-                    const fileName = nombreArchivo(pathFile[0].pathFile);
-                    const content = datosArchivo(pathFile[0].pathFile);
-
-                    rows[i].fileBase = `data:${content};base64,${fileBase}`;
-                    rows[i].fileName = fileName;    
+                    rows[i].fileBase = `data:${response.mimeFile};base64,${fileBase}`;
+                    rows[i].fileName = response.nameFile;    
                 }catch(e){
-                    console.log("No existe el archivo");
+                    // console.log("No existe el archivo");
                     // console.error(e)
                 }
             }
@@ -694,7 +698,7 @@ export const getComentariosEvento = async (eventoId) => {
 
 function nombreArchivo(filePath){
     let fileName = path.basename(filePath);
-    fileName = fileName.split('-')[1];
+    fileName = fileName.split('&')[1];
     return fileName;
 }
 function datosArchivo(filePath){
@@ -708,7 +712,7 @@ function datosArchivo(filePath){
     }else if (extencion == 'jpg'){
         content = "image/jpg";
     }else if (extencion == 'pdf'){
-        content = "aplication/pdf";
+        content = "application/pdf";
     }
 
     return content;

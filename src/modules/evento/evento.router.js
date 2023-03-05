@@ -14,7 +14,9 @@ const upload = multer({
         destination: path.normalize(`${__dirname}\\..\\..\\temp\\`),
         limits: { fileSize: 10 * 1024 * 1024 }, // Maximo 10Mb
         filename: ( req, file, cb ) => {
-            cb( null, `${Date.now()}-${file.originalname}`)
+            console.log(file);
+            console.log(file.type);
+            cb( null, `${Date.now()}&${file.originalname}`);
         }
     })
 })

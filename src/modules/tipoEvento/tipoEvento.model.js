@@ -64,14 +64,16 @@ export const insertTipoEvento = async (nTipoEvento) => {
     {
         "id": "CUS",                        //* tipo de evento
         "descripcion": "CUSTOM",            //* descripcion del tipo
+        "propio": true                      //* evento propio
     }
     **/
 
     try{
-        const query = 'INSERT INTO tipoEvento(tipoEventoId, tipoEventoDesc, tipoEventoActivo) VALUES (?, ?, true)';
+        const query = 'INSERT INTO tipoEvento(tipoEventoId, tipoEventoDesc, tipoEventoPropio, tipoEventoActivo) VALUES (?, ?, ?, true)';
         let params = [
             nTipoEvento.id,
-            nTipoEvento.descripcion
+            nTipoEvento.descripcion,
+            nTipoEvento.propio
         ];
 
         const [rows] = await pool.query(query, params);
@@ -97,14 +99,16 @@ export const updateTipoEvento = async (tipoEventoM) => {
     {
         "id": "CUS",                        //* tipo de evento
         "descripcion": "CUSTOM",            //* descripcion del tipo
+        "propio": true                      //* evento propio
     }
     **/
 
     try{
 
-        const query = "UPDATE tipoevento SET tipoEventoDesc = ? WHERE tipoEventoId = ?";
+        const query = "UPDATE tipoevento SET tipoEventoDesc = ?, tipoEventoPropio = ? WHERE tipoEventoId = ?";
         let params = [
-            tipoEventoM.descripcion,
+            tipoEventoM.descripcion,,
+            tipoEventoM.propio,
             tipoEventoM.id
         ];
         const [rows] = await pool.query(query, params);
@@ -156,11 +160,13 @@ export const asignarTareas = async (tareas) => {
             "tareas": [
                 {
                 "id": 1,                    //* id de la tarea
-                "orden": 1                  //* orden de la tarea
+                "orden": 1,                  //* orden de la tarea
+                "rollback": 1               //* etapa de rollback
                 },
                 {
                 "id": 3,                    //* id de la tarea
-                "orden": 2                  //* orden de la tarea
+                "orden": 2,                  //* orden de la tarea
+                "rollback": 1               //* etapa de rollback
                 }
             ]
         }
@@ -169,9 +175,9 @@ export const asignarTareas = async (tareas) => {
    
     try{
         let params = [];
-        const query = "INSERT INTO evento_tarea(etEvento, etTarea, etEtapa) VALUES ?";
+        const query = "INSERT INTO evento_tarea(etEvento, etTarea, etEtapa, etEtapaRollback) VALUES ?";
         tareas.tareas.forEach(tarea => {
-            let aux = [tareas.tipoEvento, tarea.id, tarea.orden]
+            let aux = [tareas.tipoEvento, tarea.id, tarea.orden, tarea.rollback]
             params.push(aux)
         });
 
