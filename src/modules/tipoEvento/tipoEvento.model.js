@@ -73,7 +73,7 @@ export const insertTipoEvento = async (nTipoEvento) => {
         let params = [
             nTipoEvento.id,
             nTipoEvento.descripcion,
-            nTipoEvento.propio
+            (nTipoEvento.propio) ? true : false
         ];
 
         const [rows] = await pool.query(query, params);

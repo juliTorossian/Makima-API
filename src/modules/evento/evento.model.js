@@ -236,6 +236,7 @@ export const getEventoDetalle = async (eventoId) => {
         const query = "SELECT 	e.eventoId,     \
                                 e.eventoTipo,   \
                                 e.eventoNumero, \
+                                (SELECT tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) AS eventoPropio, \
                                 (SELECT etTarea FROM evento_tarea AS et WHERE et.etEvento = e.eventoTipo AND et.etEtapa = (e.eventoEtapa + 1)) AS sigTarea, \
                                 (SELECT etTarea FROM evento_tarea AS et WHERE et.etEvento = e.eventoTipo AND et.etEtapa = (e.eventoEtapa - 1)) AS antTarea  \
                         FROM evento AS e    \
@@ -768,11 +769,13 @@ export const getTareasPorTipo = async () => {
         const query = "SELECT 	count(e.eventoId) AS cantidadEventos,   \
                                 e.eventoTipo,   \
                                 (SELECT t.tareaNombre   \
-                                FROM tarea AS t     \
+                                FROM tarea AS t \
                                 INNER JOIN evento_tarea AS et ON et.etTarea = t.tareaId \
                                 WHERE et.etEvento = e.eventoTipo AND et.etEtapa = e.eventoEtapa) AS tarea   \
                         FROM evento as e    \
-                        WHERE e.eventoCerrado = false   \
+                        LEFT JOIN tipoevento AS tp ON tp.tipoEventoId = e.eventoTipo    \
+                        WHERE 	e.eventoCerrado = false AND \
+                                tp.tipoEventoPropio = 0 \
                         GROUP BY e.eventoEtapa, e.eventoTipo    \
                         ORDER BY e.eventoTipo, e.eventoEtapa";
         let params = []
