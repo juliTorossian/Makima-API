@@ -6,7 +6,7 @@ import { pool } from '../../db.js';
  *
  *i @param cant: cantidad a consultar
 */
-export const getUltimosMovimientos = async (cantidad) => {
+export const getUltimosMovimientos = async (cantidad, rol) => {
 
     try{
         let params = [];
@@ -25,13 +25,15 @@ export const getUltimosMovimientos = async (cantidad) => {
                         LEFT JOIN eventoadicion AS ea ON ea.eAdId = ae.audiEAdi \
                         INNER JOIN evento AS e ON e.eventoId = ae.audiEEvento   \
                         WHERE ae.audiEAccion != "ELIMINO"   \
-                        ORDER BY ae.audiEFecha DESC \
                         ';
+        if (rol != undefined){
+            query += "AND (SELECT usuarioRol FROM usuario WHERE usuarioId = ae.audiEUsuario) = ?";
+            params.push(rol);
+        }
+        query += "ORDER BY ae.audiEFecha DESC ";
         if (cantidad > 0){
             query += 'LIMIT ?';
-            params = [
-                parseInt(cantidad)
-            ];
+            params.push(parseInt(cantidad));
         }
         const [rows] = await pool.query(query, params);
 

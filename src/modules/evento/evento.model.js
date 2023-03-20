@@ -237,7 +237,8 @@ export const getEvento = async (eventoId) => {
             "id": "12a91c947f7b377227c52354",
             "numero": 1002,
             "tipo": "CUS",
-            "rol": ""
+            "rol": "",
+            "estimacion": 60,
         },
         "circuito": 
         {
@@ -847,11 +848,12 @@ export const getVidaEvento = async (eventoId) => {
  *
 */
 
-export const getTareasPorTipo = async () => {
+export const getTareasPorTipo = async (rol) => {
 
     try{
 
-        const query = "SELECT 	count(e.eventoId) AS cantidadEventos,   \
+        let params = []
+        let query = "SELECT 	count(e.eventoId) AS cantidadEventos,   \
                                 e.eventoTipo,   \
                                 (SELECT t.tareaNombre   \
                                 FROM tarea AS t \
@@ -861,9 +863,15 @@ export const getTareasPorTipo = async () => {
                         LEFT JOIN tipoevento AS tp ON tp.tipoEventoId = e.eventoTipo    \
                         WHERE 	e.eventoCerrado = false AND \
                                 tp.tipoEventoPropio = 0 \
-                        GROUP BY e.eventoEtapa, e.eventoTipo    \
-                        ORDER BY e.eventoTipo, e.eventoEtapa";
-        let params = []
+                        ";
+
+        if (rol != undefined){
+            query += "AND (SELECT t.tareaRol FROM tarea AS t INNER JOIN evento_tarea AS et ON et.etTarea = t.tareaId WHERE et.etEvento = e.eventoTipo AND et.etEtapa = e.eventoEtapa) = ?";
+            params.push(rol)
+        }
+
+        query += "GROUP BY e.eventoEtapa, e.eventoTipo    \
+                  ORDER BY e.eventoTipo, e.eventoEtapa";
 
         const [rows] = await pool.query(query, params);
 

@@ -184,7 +184,8 @@ export const getComentariosEvento = async (req, res) => {
     }
 }
 export const getTareasPorTipo = async (req, res) => {
-    const tareasTipo = await model.getTareasPorTipo();
+    const rol = req.query.rol;
+    const tareasTipo = await model.getTareasPorTipo(rol);
     
     if (!(tareasTipo == null)){
         res.json(tareasTipo);
