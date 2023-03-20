@@ -24,6 +24,7 @@ export const getUltimosMovimientos = async (cantidad) => {
                         FROM audievento AS ae   \
                         LEFT JOIN eventoadicion AS ea ON ea.eAdId = ae.audiEAdi \
                         INNER JOIN evento AS e ON e.eventoId = ae.audiEEvento   \
+                        WHERE ae.audiEAccion != "ELIMINO"   \
                         ORDER BY ae.audiEFecha DESC \
                         ';
         if (cantidad > 0){

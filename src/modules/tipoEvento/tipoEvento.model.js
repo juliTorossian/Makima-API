@@ -64,15 +64,17 @@ export const insertTipoEvento = async (nTipoEvento) => {
     {
         "id": "CUS",                        //* tipo de evento
         "descripcion": "CUSTOM",            //* descripcion del tipo
+        "color": "#000000",                 //* color en hexa
         "propio": true                      //* evento propio
     }
     **/
 
     try{
-        const query = 'INSERT INTO tipoEvento(tipoEventoId, tipoEventoDesc, tipoEventoPropio, tipoEventoActivo) VALUES (?, ?, ?, true)';
+        const query = 'INSERT INTO tipoEvento(tipoEventoId, tipoEventoDesc, tipoEventoColor, tipoEventoPropio, tipoEventoActivo) VALUES (?, ?, ?, ?, true)';
         let params = [
             nTipoEvento.id,
             nTipoEvento.descripcion,
+            nTipoEvento.color,
             (nTipoEvento.propio) ? true : false
         ];
 
@@ -99,16 +101,18 @@ export const updateTipoEvento = async (tipoEventoM) => {
     {
         "id": "CUS",                        //* tipo de evento
         "descripcion": "CUSTOM",            //* descripcion del tipo
+        "color": "#000000",                 //* color en hexa
         "propio": true                      //* evento propio
     }
     **/
 
     try{
 
-        const query = "UPDATE tipoevento SET tipoEventoDesc = ?, tipoEventoPropio = ? WHERE tipoEventoId = ?";
+        const query = "UPDATE tipoevento SET tipoEventoDesc = ?, tipoEventoPropio = ?, tipoEventoColor = ? WHERE tipoEventoId = ?";
         let params = [
-            tipoEventoM.descripcion,,
+            tipoEventoM.descripcion,
             tipoEventoM.propio,
+            tipoEventoM.color,
             tipoEventoM.id
         ];
         const [rows] = await pool.query(query, params);
@@ -174,6 +178,11 @@ export const asignarTareas = async (tareas) => {
     **/
    
     try{
+
+        // console.log(tareas);
+        // console.log("");
+        // console.log(tareas.tareas);
+
         let params = [];
         const query = "INSERT INTO evento_tarea(etEvento, etTarea, etEtapa, etEtapaRollback) VALUES ?";
         tareas.tareas.forEach(tarea => {
@@ -203,6 +212,32 @@ export const asignarTareas = async (tareas) => {
     }
 
 }
+
+/** 
+ ** Busca todos los tipos de eventos para el dashboard
+ *
+*/
+export const getTipoEventosDashboard = async () => {
+
+    try{
+        let query = 'SELECT *,  \
+                            (SELECT getCantEventosxTipoEvento(tipoEventoId)) AS cantidad \
+                     FROM tipoevento \
+                     WHERE  tipoEventoActivo = true AND \
+                            tipoEventoPropio = 0 AND   \
+                            (SELECT getCantEventosxTipoEvento(tipoEventoId)) > 0\
+                     ';
+        let params = [];
+
+        const [rows] = await pool.query(query, params);
+
+        return rows;
+    
+    }catch (err){
+        console.error(err);
+        return 0;
+    }
+};
 
 
 //*     MISSELANEOUS

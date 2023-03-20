@@ -1,7 +1,17 @@
 import * as model from "./tipoEvento.model.js";
 
 export const getTipoEventos = async (req, res) => {
-    const tipoEventos = await model.getTipoEventos(req.query.page);
+
+    let tipoEventos = null;
+
+    // console.log(req.query.dashboard);
+
+    if (req.query.dashboard){
+        tipoEventos = await model.getTipoEventosDashboard();
+    }else{
+        tipoEventos = await model.getTipoEventos();
+    }
+
 
     if (!(tipoEventos == null)){
         res.json(tipoEventos);
