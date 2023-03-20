@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: gacieventos
 -- ------------------------------------------------------
--- Server version	8.0.29
+-- Server version	8.0.32
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -46,7 +46,7 @@ CREATE TABLE `audievento` (
 
 LOCK TABLES `audievento` WRITE;
 /*!40000 ALTER TABLE `audievento` DISABLE KEYS */;
-INSERT INTO `audievento` VALUES ('0a4bf99b36a5c18b97e4e124','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-25 20:43:14','4ec32e006b8b3dd450a18f3c','COMENTARIO'),('28958eef9ed880431142959f','1840555980b13add9ee5d49f',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:46:55',NULL,'CREO'),('2a8fdeba8b85cfca9dee3066','4b63a8bbd9005c79ddef546a',2,'264b0ce34fa762a3dba657fe','2023-02-09 17:49:03',NULL,'AVANZO'),('30d81e6c58c024c76ee17986','68778349c24c4b7b4ea84db1',4,'264b0ce34fa762a3dba657fe','2023-02-17 20:02:58','587bea847599e989eedd7562','COMENTARIO'),('3cd556dd0cbde7ae6f477f23','68778349c24c4b7b4ea84db1',4,'264b0ce34fa762a3dba657fe','2023-02-17 20:30:53','ac89288884bbed512ebbd14e','COMENTARIO'),('493f49767025b95f8c040626','69abf03efd8b500f50fe948b',2,'2f0727442b3125f656ec12de','2023-02-10 22:25:37',NULL,'AVANZO'),('4b29eb8ac5284ebc51a0764e','68778349c24c4b7b4ea84db1',2,'264b0ce34fa762a3dba657fe','2023-02-09 17:49:29',NULL,'AVANZO'),('4c1b6b6d759ca7de7df76456','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-24 13:26:38','a59e65344f33100d225ae9d0','COMENTARIO'),('4d333bef188fa712b8a3e25c','69abf03efd8b500f50fe948b',4,'2f0727442b3125f656ec12de','2023-02-16 12:34:48',NULL,'AVANZO'),('54050098dc1ec00866cfacae','da086a75dea411e7aab6bdee',1,'264b0ce34fa762a3dba657fe','2023-02-17 01:32:58',NULL,'CREO'),('57d0d9d5edb84efd531ca9ad','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-24 13:29:51','1cdfb24dd28b13d74d7ebd3c','COMENTARIO'),('5ab436c6fa3c460ee846d09f','69abf03efd8b500f50fe948b',3,'2f0727442b3125f656ec12de','2023-02-16 12:32:52',NULL,'AVANZO'),('607afc85f827c967bbfda4c2','c1d42fd550cc5aa2b14521ea',3,'264b0ce34fa762a3dba657fe','2023-02-08 16:44:12',NULL,'AVANZO'),('6456330bfdd34b8e02e719c6','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-24 13:27:26','e2ecb890b098215344c2a05d','COMENTARIO'),('6db94403efa92f54e0478b69','c1d42fd550cc5aa2b14521ea',1,'2f0727442b3125f656ec12de','2023-02-08 13:21:03',NULL,'CREO'),('6f5f59ddbd35c3281318dc88','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-27 20:37:21','a995052eadef36594cdb3b79','COMENTARIO'),('70157c42a35694dfa1f6ad89','12a91c947f7b377227c52354',2,'264b0ce34fa762a3dba657fe','2023-02-09 17:49:31',NULL,'AVANZO'),('74c19734df0a8c3cb8ce031e','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-17 22:46:43','ccb8d68f46c2b94924ac7d0d','COMENTARIO'),('7e793c55e7a4db41a10842d8','52723a0f7a66f396fbde3bbe',1,'264b0ce34fa762a3dba657fe','2023-02-08 13:03:42',NULL,'CREO'),('85a932f44e10500ad8d193c0','c1d42fd550cc5aa2b14521ea',2,'2f0727442b3125f656ec12de','2023-02-08 16:42:25',NULL,'AVANZO'),('85fcf9b3e3cf44e6855ef154','d11fda2252bcf016101a5bf1',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:46:12',NULL,'CREO'),('8752a1be0c73e1dd4a5cc151','12a91c947f7b377227c52354',1,'264b0ce34fa762a3dba657fe','2023-02-08 21:12:00',NULL,'CREO'),('8a46d7cfcbc1db4a9b61f704','69abf03efd8b500f50fe948b',5,'264b0ce34fa762a3dba657fe','2023-02-16 23:41:21',NULL,'AVANZO'),('8d7b9a9ba59a12081f4c4b73','da086a75dea411e7aab6bdee',2,'2f0727442b3125f656ec12de','2023-02-17 13:13:45',NULL,'AVANZO'),('92f8d4e37512ae48b846bb45','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-25 12:57:04','c76b4543aebcaf32273e1048','COMENTARIO'),('a69163ad5114d9a093b6660a','68778349c24c4b7b4ea84db1',3,'264b0ce34fa762a3dba657fe','2023-02-09 17:49:36',NULL,'AVANZO'),('ab76f6dfd02a3ab5756a268f','d5d3cc4b908393afc74ee6e6',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:46:44',NULL,'CREO'),('adc6a106571e32f6e7c21875','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-25 12:55:12','201460d91ba78543c294916a','COMENTARIO'),('b582aeb91b360620b2688ad2','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-24 13:24:36','3fc426cb85d80c16c407c35d','COMENTARIO'),('b7cc20f93363b7913cf4e492','68778349c24c4b7b4ea84db1',4,'60dba550879c88cfdd2d4906','2023-02-16 23:08:07',NULL,'AVANZO'),('bebedc5f800226d183d13316','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-03-03 23:50:23','89b97b402af9e5dcec286afa','COMENTARIO'),('c330e849efa5dc51f22c4b73','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-03-04 01:19:37','773578dfd8668a96bea02769','COMENTARIO'),('c9cd9058de304df04d304bd8','d5d3cc4b908393afc74ee6e6',2,'b092296c495f89e0ef2ebdfa','2023-02-16 23:08:14',NULL,'AVANZO'),('da605ff1293fc24e59c11641','69abf03efd8b500f50fe948b',2,'2f0727442b3125f656ec12de','2023-02-15 23:53:55','cde25d494a04e110bcbf0d07','COMENTARIO'),('e3a4984e82d7e189440ec379','69abf03efd8b500f50fe948b',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:47:14',NULL,'CREO'),('e5eb1dd9bdf981e14c6f604d','68778349c24c4b7b4ea84db1',4,'264b0ce34fa762a3dba657fe','2023-02-17 20:18:29','997d56fa0fa130cca49e6e6b','COMENTARIO'),('eea228d15c6d32132efe0183','68778349c24c4b7b4ea84db1',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:46:26',NULL,'CREO'),('f3901e6436eee6e8c7b209df','63ca9be191f963f31d560788',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:47:26',NULL,'CREO'),('f49156906c2285920929aed5','69abf03efd8b500f50fe948b',2,'2f0727442b3125f656ec12de','2023-02-15 23:53:39','a3dd9ce74d05528a2ebcd0d3','COMENTARIO'),('f4a2e3283f6d431dfdf28db8','d5d3cc4b908393afc74ee6e6',2,'264b0ce34fa762a3dba657fe','2023-02-25 22:09:08','42a8f81fcaefedf2805bb026','COMENTARIO'),('f5b2c54f17e84141de5912b8','c1d42fd550cc5aa2b14521ea',4,'264b0ce34fa762a3dba657fe','2023-02-08 16:45:23',NULL,'AVANZO'),('fc335b763ed6a9fd568535b3','e5570b20a7697952c2cb4981',1,'264b0ce34fa762a3dba657fe','2023-02-08 22:40:50',NULL,'CREO'),('fe3a739dc8a3094da68d4c98','4b63a8bbd9005c79ddef546a',1,'264b0ce34fa762a3dba657fe','2023-02-09 17:47:04',NULL,'CREO');
+INSERT INTO `audievento` VALUES ('0c80bfa0b8c0546eeab4af6d','3f6dc9d64d14339cf46bf6dd',4,'2f0727442b3125f656ec12de','2023-03-18 03:07:36',NULL,'AVANZO'),('16b270ae7bc414415d1759da','3f6dc9d64d14339cf46bf6dd',7,'60dba550879c88cfdd2d4906','2023-03-18 03:12:51',NULL,'AVANZO'),('25cbab27fd9ff4de141d537f','3f6dc9d64d14339cf46bf6dd',11,'264b0ce34fa762a3dba657fe','2023-03-18 21:11:54','801c3bc2b97c793a25c6083b','COMENTARIO'),('283be12c3844c2db3102a000','2e04f25c0bbef8e5f71d1f37',7,'2f0727442b3125f656ec12de','2023-03-18 13:28:15',NULL,'RETROCESO'),('34022ee63825e6a390bd215e','2cbea655b23085e57da2268c',1,'264b0ce34fa762a3dba657fe','2023-03-18 03:04:15',NULL,'CREO'),('38687bf8ebac0664bd67a9ba','3f6dc9d64d14339cf46bf6dd',9,'2f0727442b3125f656ec12de','2023-03-18 03:13:13',NULL,'AVANZO'),('3d12b50ae36d60ca8628206c','3f6dc9d64d14339cf46bf6dd',6,'60dba550879c88cfdd2d4906','2023-03-18 03:08:02',NULL,'AVANZO'),('42ab57f932580d1841730897','2e04f25c0bbef8e5f71d1f37',4,'60dba550879c88cfdd2d4906','2023-03-18 12:49:14',NULL,'AVANZO'),('450980211da0ba414407e645','3f6dc9d64d14339cf46bf6dd',9,'2f0727442b3125f656ec12de','2023-03-18 03:08:58',NULL,'AVANZO'),('6050c97fba07516cc1a769f6','2e04f25c0bbef8e5f71d1f37',7,'b092296c495f89e0ef2ebdfa','2023-03-18 14:03:46',NULL,'REASIGNO'),('65dc2cae2d5f36354210ff5d','3f6dc9d64d14339cf46bf6dd',3,'60dba550879c88cfdd2d4906','2023-03-18 03:06:52',NULL,'AVANZO'),('68f057f29ea6257a0693356f','2cd4fbe3788945eaf7d876a9',1,'264b0ce34fa762a3dba657fe','2023-03-18 03:05:23',NULL,'CREO'),('6b082be990de5fddad90fe66','2e04f25c0bbef8e5f71d1f37',1,'264b0ce34fa762a3dba657fe','2023-03-18 03:04:45',NULL,'CREO'),('859e7d0a4e19bc21fd9b6ba0','2e04f25c0bbef8e5f71d1f37',3,'60dba550879c88cfdd2d4906','2023-03-18 03:14:29',NULL,'AVANZO'),('8b97247e597950dfc8e4750f','56b6f12423b59473d463b106',1,'264b0ce34fa762a3dba657fe','2023-03-18 13:53:36',NULL,'CREO'),('93f184ff682c85bdfabe7e75','3f6dc9d64d14339cf46bf6dd',8,'2f0727442b3125f656ec12de','2023-03-18 03:08:39',NULL,'AVANZO'),('9cffc63657d0c3903511755d','2e04f25c0bbef8e5f71d1f37',6,'264b0ce34fa762a3dba657fe','2023-03-18 13:25:19',NULL,'AVANZO'),('9d0d8c897d1074f7973bfd8e','3f6dc9d64d14339cf46bf6dd',5,'2f0727442b3125f656ec12de','2023-03-18 03:07:52',NULL,'AVANZO'),('9dc7956a15fb68c65ed135da','3f6dc9d64d14339cf46bf6dd',11,'264b0ce34fa762a3dba657fe','2023-03-18 15:56:26',NULL,'CERRO'),('a184293df70cd412369bae0e','2e04f25c0bbef8e5f71d1f37',5,'2f0727442b3125f656ec12de','2023-03-18 13:22:54',NULL,'AVANZO'),('a7b93888a9fd2dd65ec8ac68','2cbea655b23085e57da2268c',2,'264b0ce34fa762a3dba657fe','2023-03-18 13:20:38',NULL,'AVANZO'),('a7eb79f48419843a56d65fec','2e04f25c0bbef8e5f71d1f37',7,'264b0ce34fa762a3dba657fe','2023-03-18 16:27:08','c2a6c54581b89e38e90147c4','COMENTARIO'),('ae84a976a9f5702dfd5ba9d6','3f6dc9d64d14339cf46bf6dd',6,'60dba550879c88cfdd2d4906','2023-03-18 03:12:34',NULL,'AVANZO'),('b4678b0ac4623c7e9e552714','3f6dc9d64d14339cf46bf6dd',5,'2f0727442b3125f656ec12de','2023-03-18 03:09:23',NULL,'RETROCESO'),('b7e3e9cd44714e5ec42a4ef5','2cbea655b23085e57da2268c',3,'60dba550879c88cfdd2d4906','2023-03-18 22:57:05','aa4dc67ead58d17e45d93dc7','COMENTARIO'),('bbc12d3a7f7c4e68101e7573','2e04f25c0bbef8e5f71d1f37',7,'2f0727442b3125f656ec12de','2023-03-18 13:27:13',NULL,'AVANZO'),('c12c51e45a65c4a9ab3bada1','2e04f25c0bbef8e5f71d1f37',2,'264b0ce34fa762a3dba657fe','2023-03-18 03:14:19',NULL,'AVANZO'),('c1c3d3b1fef611b09e970729','a88c71781fa704d9a988cdc5',1,'264b0ce34fa762a3dba657fe','2023-03-18 03:05:04',NULL,'CREO'),('c340a27d4a8a7353800c1652','2cbea655b23085e57da2268c',3,'60dba550879c88cfdd2d4906','2023-03-18 13:21:16',NULL,'AVANZO'),('c7c35f66119b1d660616fb30','3f6dc9d64d14339cf46bf6dd',1,'264b0ce34fa762a3dba657fe','2023-03-18 03:06:22',NULL,'CREO'),('cca656f100d5e4232da6077e','2e04f25c0bbef8e5f71d1f37',8,'60dba550879c88cfdd2d4906','2023-03-18 13:28:03',NULL,'AVANZO'),('d9e2fdc076d0b7477bf3998d','3f6dc9d64d14339cf46bf6dd',7,'60dba550879c88cfdd2d4906','2023-03-18 03:08:34',NULL,'AVANZO'),('dcc8eeb7be690c13ee834f22','3f6dc9d64d14339cf46bf6dd',8,'2f0727442b3125f656ec12de','2023-03-18 03:12:58',NULL,'AVANZO'),('e2f7bae82574a1a8070e12e3','2cbea655b23085e57da2268c',3,'60dba550879c88cfdd2d4906','2023-03-18 22:56:38','5a97e9454d4f4431efbcb498','COMENTARIO'),('f1b2caa7202836fe61326098','2e04f25c0bbef8e5f71d1f37',3,'60dba550879c88cfdd2d4906','2023-03-18 12:49:26',NULL,'RETROCESO'),('f5ed2494fe8daa1076884440','2e04f25c0bbef8e5f71d1f37',4,'60dba550879c88cfdd2d4906','2023-03-18 13:22:49',NULL,'AVANZO'),('f67dcf1f9014410f43c1a2dd','3f6dc9d64d14339cf46bf6dd',11,'264b0ce34fa762a3dba657fe','2023-03-18 03:13:35',NULL,'AVANZO'),('fd20e4b0f3d2014c4c9fac60','3f6dc9d64d14339cf46bf6dd',10,'60dba550879c88cfdd2d4906','2023-03-18 03:13:17',NULL,'AVANZO'),('fe3ee4a703681d16bcb453eb','3f6dc9d64d14339cf46bf6dd',10,'60dba550879c88cfdd2d4906','2023-03-18 03:09:04',NULL,'AVANZO'),('ffcd23959fe32a62b26d55e8','3f6dc9d64d14339cf46bf6dd',2,'264b0ce34fa762a3dba657fe','2023-03-18 03:06:37',NULL,'AVANZO');
 /*!40000 ALTER TABLE `audievento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -73,7 +73,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES ('93690cd79f38c1b8566afdda','FAVF','Favaloro Fundacion',1),('af66bd7b4c0bd2e1148fffbe','FAVU','Favaloro Universidad',1),('f281bbfb095705cb80e54c79','GACI','Diltacross',1),('f82320961678b5fecd0c127e','CMP','Comercial CMP',1);
+INSERT INTO `cliente` VALUES ('1585833c648dfe42b2e7b878','CFAV','Clinica favaloro',1),('3524f5ee10660f76b18409a3','GACI','Diltacross',1),('65bebd58838348fe056bf6c7','UFAV','Universidad Favaloro',1),('a83388c5255aa9a65e031eb0','CMP','Comercial CMP',1);
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,7 +97,7 @@ CREATE TABLE `entorno` (
 
 LOCK TABLES `entorno` WRITE;
 /*!40000 ALTER TABLE `entorno` DISABLE KEYS */;
-INSERT INTO `entorno` VALUES ('WEB','Navegador Web');
+INSERT INTO `entorno` VALUES ('WEB','Aplicacion Web'),('WIN','Windows');
 /*!40000 ALTER TABLE `entorno` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,7 +138,7 @@ CREATE TABLE `evento` (
 
 LOCK TABLES `evento` WRITE;
 /*!40000 ALTER TABLE `evento` DISABLE KEYS */;
-INSERT INTO `evento` VALUES ('12a91c947f7b377227c52354','CUS',1002,'Evento desde la web',0,2,'f281bbfb095705cb80e54c79','73dccb02d1d3524d977d18a1','264b0ce34fa762a3dba657fe','2023-02-08 21:12:00',NULL),('1840555980b13add9ee5d49f','CUS',1003,'sdads',0,1,'af66bd7b4c0bd2e1148fffbe','73dccb02d1d3524d977d18a1','264b0ce34fa762a3dba657fe','2023-02-09 17:46:55',NULL),('4b63a8bbd9005c79ddef546a','TEC',1001,'dad',0,2,'f281bbfb095705cb80e54c79','73dccb02d1d3524d977d18a1','264b0ce34fa762a3dba657fe','2023-02-09 17:47:04',NULL),('52723a0f7a66f396fbde3bbe','CUS',1000,'Gestion WEB',1,1,'f281bbfb095705cb80e54c79','73dccb02d1d3524d977d18a1','264b0ce34fa762a3dba657fe','2023-02-08 13:03:42',NULL),('63ca9be191f963f31d560788','ORG',1001,'desa',0,1,'f281bbfb095705cb80e54c79','73dccb02d1d3524d977d18a1','264b0ce34fa762a3dba657fe','2023-02-09 17:47:26',NULL),('68778349c24c4b7b4ea84db1','CAS',1000,'Algun CAS',0,4,'f281bbfb095705cb80e54c79','73dccb02d1d3524d977d18a1','264b0ce34fa762a3dba657fe','2023-02-09 17:46:26',NULL),('69abf03efd8b500f50fe948b','CAS',1001,'asdasdasdasdfs',0,5,'f281bbfb095705cb80e54c79','73dccb02d1d3524d977d18a1','264b0ce34fa762a3dba657fe','2023-02-09 17:47:14',NULL),('c1d42fd550cc5aa2b14521ea','CUS',1001,'Evento desde usuario de desarrollo',0,2,'f281bbfb095705cb80e54c79','73dccb02d1d3524d977d18a1','2f0727442b3125f656ec12de','2023-02-08 13:21:03',NULL),('d11fda2252bcf016101a5bf1','I+D',1000,'Alguna investigacion',0,1,'f281bbfb095705cb80e54c79','73dccb02d1d3524d977d18a1','264b0ce34fa762a3dba657fe','2023-02-09 17:46:12',NULL),('d5d3cc4b908393afc74ee6e6','TEC',1000,'TEXC1',0,2,'f281bbfb095705cb80e54c79','73dccb02d1d3524d977d18a1','264b0ce34fa762a3dba657fe','2023-02-09 17:46:44',NULL),('da086a75dea411e7aab6bdee','CUS',1004,'probando el dashboard',0,2,'f281bbfb095705cb80e54c79','421b6dd71960c2f08fdfb72e','264b0ce34fa762a3dba657fe','2023-02-17 01:32:58',NULL),('e5570b20a7697952c2cb4981','ORG',1000,'hola',0,1,'f281bbfb095705cb80e54c79','73dccb02d1d3524d977d18a1','264b0ce34fa762a3dba657fe','2023-02-08 22:40:50',NULL);
+INSERT INTO `evento` VALUES ('2cbea655b23085e57da2268c','CUS',1000,'Agregar Filtro de empresas',0,3,'a83388c5255aa9a65e031eb0','22e73c69fc84d1051a211ba0','264b0ce34fa762a3dba657fe','2023-03-18 03:04:15',NULL),('2cd4fbe3788945eaf7d876a9','ORG',1000,'Viajes a clientes',0,1,'3524f5ee10660f76b18409a3','22e73c69fc84d1051a211ba0','264b0ce34fa762a3dba657fe','2023-03-18 03:05:23',NULL),('2e04f25c0bbef8e5f71d1f37','CUS',1001,'Agregar Ordenes de Compras',0,7,'1585833c648dfe42b2e7b878','22e73c69fc84d1051a211ba0','264b0ce34fa762a3dba657fe','2023-03-18 03:04:45',NULL),('3f6dc9d64d14339cf46bf6dd','CAS',1000,'Corregir bug en el home',1,11,'1585833c648dfe42b2e7b878','22e73c69fc84d1051a211ba0','264b0ce34fa762a3dba657fe','2023-03-18 03:06:22',NULL),('56b6f12423b59473d463b106','ORG',1001,'testeo 1',0,1,NULL,NULL,'264b0ce34fa762a3dba657fe','2023-03-18 13:53:36',NULL),('a88c71781fa704d9a988cdc5','MEJ',1000,'Migracion a web modulo Stock',0,1,'3524f5ee10660f76b18409a3','c24ea676a19ad4214aab7fdc','264b0ce34fa762a3dba657fe','2023-03-18 03:05:04',NULL);
 /*!40000 ALTER TABLE `evento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -168,7 +168,7 @@ CREATE TABLE `evento_tarea` (
 
 LOCK TABLES `evento_tarea` WRITE;
 /*!40000 ALTER TABLE `evento_tarea` DISABLE KEYS */;
-INSERT INTO `evento_tarea` VALUES ('CAS','014c94b3aabcd9350bf2a09e',2,NULL),('CAS','2b497beb4e01f572989ac9d7',5,NULL),('CAS','3b9f5878cfd07a4afabbc163',4,NULL),('CAS','a7e444e107b75d1678b7b225',1,NULL),('CAS','c096637e7b2b54cd51dcd104',3,NULL),('CUS','2b497beb4e01f572989ac9d7',3,NULL),('CUS','3b9f5878cfd07a4afabbc163',4,NULL),('CUS','a7e444e107b75d1678b7b225',1,NULL),('CUS','c096637e7b2b54cd51dcd104',2,NULL),('I+D','a7e444e107b75d1678b7b225',1,NULL),('I+D','c096637e7b2b54cd51dcd104',2,NULL),('ORG','45b9bb57fe5c6e37fe38ea04',1,NULL),('TEC','014c94b3aabcd9350bf2a09e',3,NULL),('TEC','3b9f5878cfd07a4afabbc163',4,NULL),('TEC','a7e444e107b75d1678b7b225',1,NULL),('TEC','c096637e7b2b54cd51dcd104',2,NULL),('Tst','014c94b3aabcd9350bf2a09e',3,2),('Tst','2b497beb4e01f572989ac9d7',4,2),('Tst','3b9f5878cfd07a4afabbc163',5,NULL),('Tst','a7e444e107b75d1678b7b225',1,NULL),('Tst','c096637e7b2b54cd51dcd104',2,NULL);
+INSERT INTO `evento_tarea` VALUES ('CAS','0a2cd2e6258e8ba3f1fbacec',3,2),('CAS','25d7027c41a75ab963ebe537',10,5),('CAS','3ee49de94e1dc7398ebad197',6,5),('CAS','46c57154204a6dcf024c5f85',2,NULL),('CAS','4ac8c7bd4d647e75e28eda93',5,NULL),('CAS','56e8801a608c8975fe1e122c',4,NULL),('CAS','7ce7a3c0607fb22a8d77fec4',11,NULL),('CAS','c11d3979df46a61d4e519ef8',1,NULL),('CAS','c1a5e7940180c994bdbb606f',8,NULL),('CAS','e16ac576f37dc484386c4b99',7,NULL),('CAS','f1b888780129e9b8e5471881',9,NULL),('CUS','0a2cd2e6258e8ba3f1fbacec',4,3),('CUS','25d7027c41a75ab963ebe537',12,7),('CUS','3ee49de94e1dc7398ebad197',8,7),('CUS','40240518a035242eb0d8e65a',3,NULL),('CUS','46c57154204a6dcf024c5f85',2,NULL),('CUS','4ac8c7bd4d647e75e28eda93',7,NULL),('CUS','56e8801a608c8975fe1e122c',5,NULL),('CUS','7ce7a3c0607fb22a8d77fec4',13,NULL),('CUS','c11d3979df46a61d4e519ef8',1,NULL),('CUS','c1a5e7940180c994bdbb606f',10,NULL),('CUS','e16ac576f37dc484386c4b99',9,NULL),('CUS','ef73df7e140144880f32aa7a',6,NULL),('CUS','f1b888780129e9b8e5471881',11,NULL),('MEJ','0a2cd2e6258e8ba3f1fbacec',4,3),('MEJ','25d7027c41a75ab963ebe537',11,6),('MEJ','3ee49de94e1dc7398ebad197',7,6),('MEJ','40240518a035242eb0d8e65a',3,NULL),('MEJ','46c57154204a6dcf024c5f85',2,NULL),('MEJ','4ac8c7bd4d647e75e28eda93',6,NULL),('MEJ','56e8801a608c8975fe1e122c',5,NULL),('MEJ','7ce7a3c0607fb22a8d77fec4',12,NULL),('MEJ','c11d3979df46a61d4e519ef8',1,NULL),('MEJ','c1a5e7940180c994bdbb606f',9,NULL),('MEJ','e16ac576f37dc484386c4b99',8,NULL),('MEJ','f1b888780129e9b8e5471881',10,NULL);
 /*!40000 ALTER TABLE `evento_tarea` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -199,7 +199,7 @@ CREATE TABLE `eventoadicion` (
 
 LOCK TABLES `eventoadicion` WRITE;
 /*!40000 ALTER TABLE `eventoadicion` DISABLE KEYS */;
-INSERT INTO `eventoadicion` VALUES ('1cdfb24dd28b13d74d7ebd3c','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>dada</p>',0,NULL,'2023-02-24 13:29:51',NULL,NULL),('201460d91ba78543c294916a','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>das</p>',0,NULL,'2023-02-25 12:55:12',NULL,NULL),('3fc426cb85d80c16c407c35d','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>dsad</p>',0,NULL,'2023-02-24 13:24:36',NULL,NULL),('42a8f81fcaefedf2805bb026','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>dadsadasdad</p>',1,'E:\\Proyectos\\Gaci\\Makima-Api\\src\\temp\\1677373748208&Final.png','2023-02-25 22:09:08','image/png','Final.png'),('4a376e1afae9ddfb97060695',NULL,'COMENTARIO',NULL,0,NULL,'2023-02-24 13:22:49',NULL,NULL),('4ec32e006b8b3dd450a18f3c','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>dasdasdas</p>',0,'..\\..\\temp\\1677368594283&Final.png','2023-02-25 20:43:14','image/png','Final.png'),('587bea847599e989eedd7562','68778349c24c4b7b4ea84db1','COMENTARIO','<p>Este comentario esta hecho desde el editor</p>',0,NULL,'2023-02-17 20:02:58',NULL,NULL),('773578dfd8668a96bea02769','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>POWER POINT</p>',1,'E:\\Proyectos\\Gaci\\Makima-Api\\src\\temp\\1677903577174&TrainingIntensivo (2).pptx','2023-03-04 01:19:37','application/vnd.openxmlformats-officedocument.presentationml.presentation','TrainingIntensivo (2).pptx'),('7a41465ed7c7094e251b2549',NULL,'COMENTARIO',NULL,0,NULL,'2023-02-24 13:21:45',NULL,NULL),('89b97b402af9e5dcec286afa','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>pdf</p>',1,'E:\\Proyectos\\Gaci\\Makima-Api\\src\\temp\\1677898223638&Autorizacion_de_retiro_Correo_Argentino.pdf','2023-03-03 23:50:23','application/pdf','Autorizacion_de_retiro_Correo_Argentino.pdf'),('997d56fa0fa130cca49e6e6b','68778349c24c4b7b4ea84db1','COMENTARIO','<p>Este es un comentario probando distintas cosas</p><pre><code class=\"language-plaintext\">Como el bloque de codigo</code></pre><figure class=\"table\"><table><tbody><tr><td>Como</td><td>una</td></tr><tr><td>tabla</td><td>!</td></tr></tbody></table></figure><p><code>Codigo en linea</code></p><p><mark class=\"marker-yellow\">Algun </mark><mark class=\"pen-red\">resaltado</mark></p><ul class=\"todo-list\"><li><label class=\"todo-list__label\"><input type=\"checkbox\" disabled=\"disabled\"><span class=\"todo-list__label__description\">y la lista de tareas</span></label></li><li><label class=\"todo-list__label\"><input type=\"checkbox\" disabled=\"disabled\"><span class=\"todo-list__label__description\">como esta</span></label></li></ul>',0,NULL,'2023-02-17 20:18:29',NULL,NULL),('a3dd9ce74d05528a2ebcd0d3','69abf03efd8b500f50fe948b','COMENTARIO','Primer comentario',0,NULL,'2023-02-15 23:53:39',NULL,NULL),('a59e65344f33100d225ae9d0','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>dads</p>',0,NULL,'2023-02-24 13:26:38',NULL,NULL),('a995052eadef36594cdb3b79','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>Testeo de archivo pdf</p>',1,'E:\\Proyectos\\Gaci\\Makima-Api\\src\\temp\\1677541041086&TP Final - Programacion Avanzada - Torossian Julian.pdf','2023-02-27 20:37:21','application/pdf','TP Final - Programacion Avanzada - Torossian Julian.pdf'),('ac89288884bbed512ebbd14e','68778349c24c4b7b4ea84db1','COMENTARIO','<ul class=\"todo-list\"><li><label class=\"todo-list__label\"><input type=\"checkbox\" disabled=\"disabled\"><span class=\"todo-list__label__description\">y la lista de tareas</span></label></li><li><label class=\"todo-list__label\"><input type=\"checkbox\" disabled=\"disabled\" checked=\"checked\"><span class=\"todo-list__label__description\">como esta</span></label></li></ul>',0,NULL,'2023-02-17 20:30:53',NULL,NULL),('c76b4543aebcaf32273e1048','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>eqaeadada</p>',0,'E:\\Proyectos\\Gaci\\Makima-Api\\src\\temp\\DiaCasosUso&Final.png','2023-02-25 12:57:04','image/png','Final.png'),('ccb8d68f46c2b94924ac7d0d','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>Primer comentario del TEC</p>',0,NULL,'2023-02-17 22:46:43',NULL,NULL),('cde25d494a04e110bcbf0d07','69abf03efd8b500f50fe948b','COMENTARIO','Segundo comentario',0,NULL,'2023-02-15 23:53:55',NULL,NULL),('e2ecb890b098215344c2a05d','d5d3cc4b908393afc74ee6e6','COMENTARIO','<p>dasd</p>',0,NULL,'2023-02-24 13:27:26',NULL,NULL);
+INSERT INTO `eventoadicion` VALUES ('5a97e9454d4f4431efbcb498','2cbea655b23085e57da2268c','COMENTARIO','<p>Archivo css para tener de referencia</p>',1,'E:\\Proyectos\\Gaci\\Makima-Api\\src\\temp\\1679190998734&theme.css','2023-03-18 22:56:38','text/css','theme.css'),('801c3bc2b97c793a25c6083b','3f6dc9d64d14339cf46bf6dd','COMENTARIO','<p>Este evento fue cerrado pero igual hago un comentario</p>',0,NULL,'2023-03-18 21:11:54',NULL,NULL),('aa4dc67ead58d17e45d93dc7','2cbea655b23085e57da2268c','COMENTARIO','<p>Certificado de wwp</p>',1,'E:\\Proyectos\\Gaci\\Makima-Api\\src\\temp\\1679191025281&Certificado-WWP15.pdf','2023-03-18 22:57:05','application/pdf','Certificado-WWP15.pdf'),('c2a6c54581b89e38e90147c4','2e04f25c0bbef8e5f71d1f37','COMENTARIO','<p>Comentario para ver si sigue funcionando esto</p>',0,NULL,'2023-03-18 16:27:08',NULL,NULL);
 /*!40000 ALTER TABLE `eventoadicion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -288,7 +288,7 @@ CREATE TABLE `modulo` (
 
 LOCK TABLES `modulo` WRITE;
 /*!40000 ALTER TABLE `modulo` DISABLE KEYS */;
-INSERT INTO `modulo` VALUES ('MSQL','MySQL',NULL),('STK','Stock',NULL),('STKT','Stock Textil','STK'),('VEN','Ventas',NULL);
+INSERT INTO `modulo` VALUES ('MSQL','MySQL',NULL),('SQLs','SQL Server',NULL),('STK','Stock',NULL),('VEN','Ventas',NULL);
 /*!40000 ALTER TABLE `modulo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -347,7 +347,7 @@ CREATE TABLE `producto` (
 
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
-INSERT INTO `producto` VALUES ('421b6dd71960c2f08fdfb72e','Stock textil','STKT','MSQL','WEB',1),('73dccb02d1d3524d977d18a1','Gestion Web','VEN','MSQL','WEB',1);
+INSERT INTO `producto` VALUES ('22e73c69fc84d1051a211ba0','Gestion Web','VEN','SQLs','WEB',1),('c24ea676a19ad4214aab7fdc','Stock','STK','SQLs','WEB',1);
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -400,7 +400,7 @@ CREATE TABLE `tarea` (
 
 LOCK TABLES `tarea` WRITE;
 /*!40000 ALTER TABLE `tarea` DISABLE KEYS */;
-INSERT INTO `tarea` VALUES ('014c94b3aabcd9350bf2a09e','Testeo','CONS'),('2b497beb4e01f572989ac9d7','Testeo General','CONS'),('3b9f5878cfd07a4afabbc163','Liberacion','CONS'),('45b9bb57fe5c6e37fe38ea04','Propio','ADMIN'),('a7e444e107b75d1678b7b225','Ingreso','ADMIN'),('c096637e7b2b54cd51dcd104','Desarrollo','DESA');
+INSERT INTO `tarea` VALUES ('0a2cd2e6258e8ba3f1fbacec','Aprobar','CONS'),('25d7027c41a75ab963ebe537','Testeo General','CONS'),('3ee49de94e1dc7398ebad197','Testear','CONS'),('40240518a035242eb0d8e65a','Analizar','CONS'),('46c57154204a6dcf024c5f85','Autorizar','ADMIN'),('4ac8c7bd4d647e75e28eda93','Desarrollar','DESA'),('56e8801a608c8975fe1e122c','Estimar','DESA'),('7ce7a3c0607fb22a8d77fec4','Liberacion','ADMIN'),('c11d3979df46a61d4e519ef8','Ingreso','ADMIN'),('c1a5e7940180c994bdbb606f','Distribuir','DESA'),('e16ac576f37dc484386c4b99','Documentar','CONS'),('ef73df7e140144880f32aa7a','Presupuestar','ADMIN'),('f1b888780129e9b8e5471881','Consolidar','DESA');
 /*!40000 ALTER TABLE `tarea` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -427,7 +427,7 @@ CREATE TABLE `tipoevento` (
 
 LOCK TABLES `tipoevento` WRITE;
 /*!40000 ALTER TABLE `tipoevento` DISABLE KEYS */;
-INSERT INTO `tipoevento` VALUES ('CAS','Arreglos para el cliente',1,'#0CE0FA',NULL),('CUS','Custom',1,'#ACFE30',NULL),('I+D','Investigacion y desarrollo',1,'#C188DD',NULL),('ORG','Organizacion',1,'#320E12',1),('TEC','Tecnico',1,'#C37280',1),('TES','Customizaciones para el cliente',1,NULL,1),('Tst','Testeo',1,NULL,NULL);
+INSERT INTO `tipoevento` VALUES ('CAS','Arreglos',1,'#fb8b9f',0),('CUS','Customziacion',1,'#2624cc',0),('I+D','Investigacion',1,'#bd0900',1),('MEJ','Mejora',1,'#c9e76e',0),('ORG','Eventos de la organizacion',1,'#3fb194',1);
 /*!40000 ALTER TABLE `tipoevento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -580,17 +580,15 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`sa`@`localhost` FUNCTION `getEtapaAnt_evento`(tipo CHAR(3), etapa int) RETURNS int
 BEGIN
     DECLARE antEtapa INT;
-	SET antEtapa = (	SELECT et.etEtapa AS etapa
-						FROM evento_tarea AS et
-						WHERE et.etEvento = tipo
-						AND   et.etEtapa < etapa
-						ORDER BY et.etEtapa DESC
-						LIMIT 1 
+	SET antEtapa = (	SELECT etEtapaRollback
+						FROM evento_tarea
+						WHERE 	etEvento = tipo AND
+								etEtapa = etapa
                     );
 	RETURN antEtapa;
 END ;;
@@ -799,15 +797,10 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`localhost` PROCEDURE `delete_eventos`(eventoCodigo char(24))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `delete_eventos`(eventoCodigo char(24), usuario char(24), accion char(10))
 BEGIN
-	DECLARE EXIT HANDLER FOR SQLEXCEPTION
-	BEGIN
-		ROLLBACK;
-        SELECT "ERROR AL ELIMINAR REGISTRO";
-	END;
     
     UPDATE evento
     SET
@@ -815,6 +808,11 @@ BEGIN
 	WHERE
 		eventoId = eventoCodigo
 	;
+    
+    IF usuario != "" THEN
+		SET @etapaActual = (SELECT audiEEtapa FROM audievento WHERE audiEEvento = eventoCodigo ORDER BY audiEFecha DESC LIMIT 1);
+		CALL insert_audiEvento(eventoCodigo, @etapaActual, usuario, null, accion);
+    END IF;
     
 END ;;
 DELIMITER ;
@@ -1111,7 +1109,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`sa`@`localhost` PROCEDURE `select_eventos_usuario`(paginacion boolean, pagina int, cantidad int, usuario char(24))
 BEGIN
@@ -1136,8 +1134,8 @@ BEGIN
 							LIMIT ",
 							(pagina - 1) * cantidad,
 							",",
-							cantidad
-							);
+							cantidad,
+							"GROUP BY e.eventoId");
 	ELSE
 		SET @query = CONCAT("SELECT e.eventoId,
 							e.eventoTipo,
@@ -1152,7 +1150,8 @@ BEGIN
 					INNER JOIN evento AS e ON e.eventoId = auE.audiEEvento
 					WHERE 	auE.audiEEtapa = e.eventoEtapa
                     AND     e.eventoCerrado = false
-					AND 	auE.audiEUsuario = '", usuario,"'"
+					AND 	auE.audiEUsuario = '", usuario,"'
+                    GROUP BY e.eventoId"
                     );
     END IF;
     
@@ -1209,4 +1208,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-06 10:20:07
+-- Dump completed on 2023-03-20  0:33:58
