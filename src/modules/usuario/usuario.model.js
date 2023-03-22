@@ -190,6 +190,37 @@ export const getUsuario = async (usuarioId) => {
 }
 
 /** 
+ ** Ver un usuario
+ *
+ *i @param usuarioId: id del usuario a eliminar
+*/
+/*
+{
+    "usuarioId": "264b0ce34fa762a3dba657fe",
+
+}
+*/
+export const getUsuarioDetalle = async (usuarioId) => {
+
+    try{
+        const query = ' SELECT *    \
+                        FROM usuario AS u    \
+                        WHERE usuarioId = ?';
+        let params = [
+            usuarioId
+        ];
+
+        const [rows] = await pool.query(query, params);
+        return rows;
+
+    }catch (err){
+        console.error(err);
+        return 0;
+    }
+
+}
+
+/** 
  ** Ver usuarios de un rol
  *
  *i @param rol: rol de busqueda

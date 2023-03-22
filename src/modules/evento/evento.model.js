@@ -195,6 +195,7 @@ export const getEvento = async (eventoId) => {
                             e.eventoTipo,                                                                                                   \
                             e.eventoNumero,                                                                                                 \
                             e.eventoTitulo,                                                                                                 \
+                            e.eventoPrioridad,                                                                                                 \
                             ta.tareaNombre,                                                                                                 \
                             (SELECT clienteId FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'clienteId',                    \
                             (SELECT clienteNombre FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'cliente',                    \
@@ -237,8 +238,14 @@ export const getEvento = async (eventoId) => {
             "id": "12a91c947f7b377227c52354",
             "numero": 1002,
             "tipo": "CUS",
-            "rol": "",
             "estimacion": 60,
+            "usuarioActual":
+            {
+                "id": "2b497beb4e01f572989ac9d7",
+                "usuario": "usuario",
+                "rol": "rol"
+            },
+            "cerrado": false
         },
         "circuito": 
         {
@@ -260,7 +267,8 @@ export const getEvento = async (eventoId) => {
                 "etapa": 1,
                 "tarea": "2b497beb4e01f572989ac9d7",
                 "rol": ""
-            }
+            },
+            "totalEtapas": 11
         }
     }
 */
@@ -268,17 +276,20 @@ export const getEvento = async (eventoId) => {
 export const getEventoDetalle = async (eventoId) => {
 
     try{
-        const query = "SELECT 	e.eventoId,     \
-                                e.eventoTipo,   \
-                                e.eventoNumero, \
-                                (SELECT tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) AS eventoPropio, \
-                                e.eventoEtapa,  \
-                                (SELECT etTarea FROM evento_tarea AS et WHERE et.etEvento = e.eventoTipo AND et.etEtapa = e.eventoEtapa) AS tareaActual, \
-                                (SELECT getEtapaSig_evento(e.eventoTipo, e.eventoEtapa)) AS sigEtapa,    \
-                                (SELECT etTarea FROM evento_tarea AS et WHERE et.etEvento = e.eventoTipo AND et.etEtapa = (SELECT getEtapaSig_evento(e.eventoTipo, e.eventoEtapa))) AS sigTarea, \
-                                (SELECT getEtapaAnt_evento(e.eventoTipo, e.eventoEtapa)) AS antEtapa,    \
-                                (SELECT etTarea FROM evento_tarea AS et WHERE et.etEvento = e.eventoTipo AND et.etEtapa = (SELECT getEtapaAnt_evento(e.eventoTipo, e.eventoEtapa))) AS antTarea  \
-                        FROM evento AS e        \
+        const query = "SELECT 	e.*,    \
+                                u.usuarioId,    \
+                                u.usuarioUsuario,   \
+                                u.usuarioRol,   \
+                                u.usuarioColor,    \
+                                (SELECT tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) AS eventoPropio,   \
+                                (SELECT etTarea FROM evento_tarea AS et WHERE et.etEvento = e.eventoTipo AND et.etEtapa = e.eventoEtapa) AS tareaActual,    \
+                                (SELECT getEtapaSig_evento(e.eventoTipo, e.eventoEtapa)) AS sigEtapa,   \
+                                (SELECT etTarea FROM evento_tarea AS et WHERE et.etEvento = e.eventoTipo AND et.etEtapa = (SELECT getEtapaSig_evento(e.eventoTipo, e.eventoEtapa))) AS sigTarea,    \
+                                (SELECT getEtapaAnt_evento(e.eventoTipo, e.eventoEtapa)) AS antEtapa,   \
+                                (SELECT etTarea FROM evento_tarea AS et WHERE et.etEvento = e.eventoTipo AND et.etEtapa = (SELECT getEtapaAnt_evento(e.eventoTipo, e.eventoEtapa))) AS antTarea,    \
+                                (SELECT COUNT(*) FROM evento_tarea WHERE etEvento = e.eventoTipo) AS totalEtapas    \
+                        FROM evento AS e    \
+                        INNER JOIN usuario AS u ON u.usuarioId = getUsuarioActivoEvento(e.eventoId) \
                         WHERE e.eventoId = ?    \
                     "
         const params = [
@@ -292,7 +303,16 @@ export const getEventoDetalle = async (eventoId) => {
                                         "id": rows[0].eventoId,
                                         "tipo": rows[0].eventoTipo,
                                         "numero": rows[0].eventoNumero,
-                                        "propio": rows[0].eventoPropio
+                                        "propio": rows[0].eventoPropio,
+                                        "estimacion": rows[0].eventoEstimacion,
+                                        "usuarioActual":
+                                        {
+                                            "id": rows[0].usuarioId,
+                                            "usuario": rows[0].usuarioUsuario,
+                                            "rol": rows[0].usuarioRol,
+                                            "color": rows[0].usuarioColor
+                                        },
+                                        "cerrado": rows[0].eventoCerrado
                                     },
                                     "circuito":{
                                         "act":{
@@ -302,15 +322,14 @@ export const getEventoDetalle = async (eventoId) => {
                                         "sig":{
                                             "tiene": (rows[0].sigEtapa > 0),
                                             "etapa": rows[0].sigEtapa,
-                                            "tarea": rows[0].sigTarea,
-                                            // "rol": rows[0].sigRol
+                                            "tarea": rows[0].sigTarea
                                         },
                                         "ant":{
                                             "tiene": (rows[0].antEtapa > 0),
                                             "etapa": rows[0].antEtapa,
-                                            "tarea": rows[0].antTarea,
-                                            // "rol": rows[0].antRol
-                                        }
+                                            "tarea": rows[0].antTarea
+                                        },
+                                        "totalEtapas": rows[0].totalEtapas
                                     }
                                 }
 
@@ -348,13 +367,14 @@ export const insertEvento = async (nEvento) => {
 
     try{
 
-        const query = "CALL insert_eventos(?,?,?,?,?)";
+        const query = "CALL insert_eventos(?,?,?,?,?,?)";
         let params = [
             nEvento.tipo,
             nEvento.titulo,
             (nEvento.cliente == "") ? null : nEvento.cliente,
             (nEvento.producto == "") ? null : nEvento.producto,
-            nEvento.usuAlta
+            nEvento.usuAlta,
+            nEvento.prioridad
         ]
 
         const [rows] = await pool.query(query, params);
@@ -394,12 +414,13 @@ export const updateEvento = async (eventoM) => {
 
         // console.log(eventoM);
 
-        const query = "CALL update_eventos(?,?,?,?)";
+        const query = "CALL update_eventos(?,?,?,?,?)";
         let params = [
             eventoM.id,
             eventoM.titulo,
             eventoM.cliente,
-            eventoM.producto
+            eventoM.producto,
+            eventoM.prioridad
         ]
         // console.log(params);
 
