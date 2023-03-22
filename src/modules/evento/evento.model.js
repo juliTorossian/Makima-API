@@ -298,6 +298,8 @@ export const getEventoDetalle = async (eventoId) => {
 
         const [rows] = await pool.query(query, params);
 
+        console.log(rows);
+
         const eventoDetalle =   {
                                     "evento": {
                                         "id": rows[0].eventoId,
