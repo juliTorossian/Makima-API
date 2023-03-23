@@ -190,28 +190,48 @@ export const getUsuario = async (usuarioId) => {
 }
 
 /** 
- ** Ver un usuario
+ ** Ver un usuario detalle
  *
  *i @param usuarioId: id del usuario a eliminar
 */
 /*
 {
-    "usuarioId": "264b0ce34fa762a3dba657fe",
-
+    "id": "264b0ce34fa762a3dba657fe",
+    "nombre": "julian",
+    "apellido": "torossian",
+    "usuario": "JTAdmin",
+    "mail": "jtorossian@gaci.com.ar",
+    "rol": "ADMIN",
+    "rolDecripcion": "Administrador",
 }
 */
 export const getUsuarioDetalle = async (usuarioId) => {
 
     try{
-        const query = ' SELECT *    \
-                        FROM usuario AS u    \
+        const query = ' SELECT  u.usuarioId,    \
+                                u.usuarioNombre,    \
+                                u.usuarioApellido,  \
+                                u.usuarioUsuario,   \
+                                u.usuarioMail,  \
+                                u.usuarioColor,    \
+                                u.usuarioRol,   \
+                                (SELECT rolDescripcion FROM rol WHERE rolId = u.usuarioRol) AS rolDescripcion   \
+                        FROM usuario AS u   \
                         WHERE usuarioId = ?';
         let params = [
             usuarioId
         ];
 
         const [rows] = await pool.query(query, params);
-        return rows;
+
+        // console.log(rows[0]);
+
+        // let detalle = {
+        //     "id": rows[0].usuarioId,
+
+        // }
+
+        return rows[0];
 
     }catch (err){
         console.error(err);

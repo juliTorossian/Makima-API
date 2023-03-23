@@ -90,3 +90,18 @@ export const getUsuariosRol = async (req, res) => {
         res.status(404).send('error');
     }
 }
+
+export const getUsuarioDetalle = async (req, res) => {
+
+    console.log(req.params.usuarioId);
+
+    const usuario = await model.getUsuarioDetalle(req.params.usuarioId);
+
+    // console.log(usuario);
+
+    if (!(usuario == null)){
+        res.json(usuario);
+    }else{
+        res.status(404).send('error');
+    }
+}
