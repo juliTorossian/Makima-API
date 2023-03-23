@@ -296,44 +296,49 @@ export const getEventoDetalle = async (eventoId) => {
             eventoId
         ];
 
+        console.log(params);
+
         const [rows] = await pool.query(query, params);
 
-        console.log(rows);
 
-        const eventoDetalle =   {
-                                    "evento": {
-                                        "id": rows[0].eventoId,
-                                        "tipo": rows[0].eventoTipo,
-                                        "numero": rows[0].eventoNumero,
-                                        "propio": rows[0].eventoPropio,
-                                        "estimacion": rows[0].eventoEstimacion,
-                                        "usuarioActual":
-                                        {
-                                            "id": rows[0].usuarioId,
-                                            "usuario": rows[0].usuarioUsuario,
-                                            "rol": rows[0].usuarioRol,
-                                            "color": rows[0].usuarioColor
-                                        },
-                                        "cerrado": rows[0].eventoCerrado
+
+        let eventoDetalle = null;
+        if (rows.length > 0){
+            eventoDetalle = {
+                                "evento": {
+                                    "id": rows[0].eventoId,
+                                    "tipo": rows[0].eventoTipo,
+                                    "numero": rows[0].eventoNumero,
+                                    "propio": rows[0].eventoPropio,
+                                    "estimacion": rows[0].eventoEstimacion,
+                                    "usuarioActual":
+                                    {
+                                        "id": rows[0].usuarioId,
+                                        "usuario": rows[0].usuarioUsuario,
+                                        "rol": rows[0].usuarioRol,
+                                        "color": rows[0].usuarioColor
                                     },
-                                    "circuito":{
-                                        "act":{
-                                            "etapa": rows[0].eventoEtapa,
-                                            "tarea": rows[0].tareaActual
-                                        },
-                                        "sig":{
-                                            "tiene": (rows[0].sigEtapa > 0),
-                                            "etapa": rows[0].sigEtapa,
-                                            "tarea": rows[0].sigTarea
-                                        },
-                                        "ant":{
-                                            "tiene": (rows[0].antEtapa > 0),
-                                            "etapa": rows[0].antEtapa,
-                                            "tarea": rows[0].antTarea
-                                        },
-                                        "totalEtapas": rows[0].totalEtapas
-                                    }
+                                    "cerrado": rows[0].eventoCerrado
+                                },
+                                "circuito":{
+                                    "act":{
+                                        "etapa": rows[0].eventoEtapa,
+                                        "tarea": rows[0].tareaActual
+                                    },
+                                    "sig":{
+                                        "tiene": (rows[0].sigEtapa > 0),
+                                        "etapa": rows[0].sigEtapa,
+                                        "tarea": rows[0].sigTarea
+                                    },
+                                    "ant":{
+                                        "tiene": (rows[0].antEtapa > 0),
+                                        "etapa": rows[0].antEtapa,
+                                        "tarea": rows[0].antTarea
+                                    },
+                                    "totalEtapas": rows[0].totalEtapas
                                 }
+                            }
+        }
 
         return eventoDetalle;
     }catch (err){
