@@ -71,20 +71,57 @@ export const updateUsuario = async (usuario) => {
     **/
 
     try{
-        const query = 'UPDATE usuario SET usuarioNombre = ?, usuarioApellido = ?, usuarioMail = ?, usuarioUsuario = ?, usuarioPass = ?, usuarioRol = ?, usuarioColor = ? WHERE usuarioId = ?';
+        let query = 'UPDATE usuario SET ';
         let params = [
-            usuario.nombre,
-            usuario.apellido,
-            usuario.mail,
-            usuario.usuario,
-            usuario.password,
-            usuario.rol,
-            usuario.color,
-            usuario.id
         ];
 
+        let atts = [];
+
+        if (usuario.nombre){
+            atts.push("usuarioNombre = ?");
+            params.push(usuario.nombre);
+        }
+        if (usuario.apellido){
+            atts.push("usuarioApellido = ?");
+            params.push(usuario.apellido);
+        }
+        if (usuario.mail){
+            atts.push("usuarioMail = ?");
+            params.push(usuario.mail);
+        }
+        if (usuario.usuario){
+            atts.push("usuarioUsuario = ?");
+            params.push(usuario.usuario);
+        }
+        if (usuario.password){
+            atts.push("usuarioPass = ?");
+            params.push(usuario.password);
+        }
+        if (usuario.rol){
+            atts.push("usuarioRol = ?");
+            params.push(usuario.rol);
+        }
+        if (usuario.color){
+            atts.push("usuarioColor = ?");
+            params.push(usuario.color);
+        }
+        params.push(usuario.id);
+
+        for (let i = 0; i < atts.length; i++) {
+            let att = atts[i];
+            if (i < atts.length - 1){
+                att += ',';
+            }
+            query += att;
+        }
+
+        query += " WHERE usuarioId = ?";
+
+        console.log(query);
+
         const [rows] = await pool.query(query, params);
-        return rows.affectedRows;
+        console.log(rows);
+        return 1;
 
     }catch (err){
         console.error(err);
@@ -255,6 +292,45 @@ export const getUsuariosRol = async (rol) => {
 
         const [rows] = await pool.query(query, params);
         return rows;
+
+    }catch (err){
+        console.error(err);
+        return 0;
+    }
+
+}
+
+
+/*
+ ! 
+ ! ESTADISTICAS
+ ! 
+*/ 
+
+/** 
+ ** Ver las estaditicas de
+ *
+ *i @param rol: rol de busqueda
+*/
+export const getEventosUsuarioEstadisticas = async (usuario) => {
+
+    try{
+
+
+
+        const query =  'CALL getEventosAsignadosUsuario(?)'; 
+
+        let params = [
+            usuario
+        ];
+
+        console.log(query);
+
+        const [rows] = await pool.query(query, params);
+
+        console.log(rows[0]);
+
+        return rows[0];
 
     }catch (err){
         console.error(err);

@@ -93,14 +93,20 @@ export const getUsuariosRol = async (req, res) => {
 
 export const getUsuarioDetalle = async (req, res) => {
 
-    console.log(req.params.usuarioId);
-
     const usuario = await model.getUsuarioDetalle(req.params.usuarioId);
-
-    // console.log(usuario);
 
     if (!(usuario == null)){
         res.json(usuario);
+    }else{
+        res.status(404).send('error');
+    }
+}
+
+export const getEventosUsuarioEstadisticas = async (req, res) => {
+    const eventos = await model.getEventosUsuarioEstadisticas(req.params.usuarioId);
+
+    if (!(eventos == null)){
+        res.json(eventos);
     }else{
         res.status(404).send('error');
     }

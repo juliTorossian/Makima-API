@@ -15,4 +15,6 @@ usuarioRouter.get('/gestion/iniciarSesion', controller.iniciarSesion);
 
 usuarioRouter.get('/rol/:rol', controller.getUsuariosRol);
 
+usuarioRouter.get('/estadisticas/:usuarioId', controller.getEventosUsuarioEstadisticas);
+
 export default usuarioRouter;
