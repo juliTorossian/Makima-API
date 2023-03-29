@@ -10,4 +10,6 @@ horaRouter.post(  '/'          , controller.insertHora);
 horaRouter.put(   '/'          , controller.updateHora);
 horaRouter.delete('/:horaId'   , controller.deleteHora);
 
+horaRouter.get(   '/usuario/:usuarioId'   , controller.getHorasUsuario);
+
 export default horaRouter;

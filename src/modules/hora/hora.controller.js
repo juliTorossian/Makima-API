@@ -55,3 +55,14 @@ export const getHora = async (req, res) => {
         res.status(404).send('error');
     }
 }
+
+export const getHorasUsuario = async (req, res) => {
+    console.log(req.params.usuarioId);
+    const horas = await model.getHorasUsuario(req.params.usuarioId);
+
+    if (!(horas == null)){
+        res.json(horas);
+    }else{
+        res.status(404).send('error');
+    }
+}
