@@ -13,7 +13,7 @@
 //TOOK VER COMENTARIOS DE UN EVENTO
 //TOOKVER VIDA DEL EVENTO
 
-import { pool } from '../../db.js';
+import { pool } from '../../../db.js';
 
 import * as fs from 'fs';
 import * as path from 'path';
