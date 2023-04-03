@@ -1,16 +1,16 @@
 import express from 'express';
 
-import eventoRouter     from '../modules/evento/v1/evento.router.js';
-import usuarioRouter    from '../modules/usuario/usuario.router.js';
-import clienteRouter    from '../modules/cliente/cliente.router.js';
-import productoRouter   from '../modules/producto/producto.router.js';
-import tipoEventoRouter from '../modules/tipoEvento/tipoEvento.router.js';
-import tareaRouter      from '../modules/tarea/tarea.router.js';
-import moduloRouter     from '../modules/modulo/modulo.router.js';
-import entornoRouter    from '../modules/entorno/entorno.router.js';
-import rolRouter        from '../modules/rol/rol.router.js';
-import dashboardRouter  from '../modules/dashboard/dashboard.router.js';
-import horaRouter       from '../modules/hora/hora.router.js';
+import eventoRouter     from '../modules/v1/evento/evento.router.js';
+import usuarioRouter    from '../modules/v1/usuario/usuario.router.js';
+import clienteRouter    from '../modules/v1/cliente/cliente.router.js';
+import productoRouter   from '../modules/v1/producto/producto.router.js';
+import tipoEventoRouter from '../modules/v1/tipoEvento/tipoEvento.router.js';
+import tareaRouter      from '../modules/v1/tarea/tarea.router.js';
+import moduloRouter     from '../modules/v1/modulo/modulo.router.js';
+import entornoRouter    from '../modules/v1/entorno/entorno.router.js';
+import rolRouter        from '../modules/v1/rol/rol.router.js';
+import dashboardRouter  from '../modules/v1/dashboard/dashboard.router.js';
+import horaRouter       from '../modules/v1/hora/hora.router.js';
 
 const routerV1 = express.Router();
 

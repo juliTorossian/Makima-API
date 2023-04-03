@@ -6,7 +6,7 @@
 // TOOK REACTIVAR CLIENTE
 
 
-import { pool } from '../../db.js';
+import { pool } from '../../../db.js';
 
 /** 
  ** Busca todos los clientes en la base de datos

@@ -1,8 +1,8 @@
 import express from 'express';
 
-import eventoRouter     from '../modules/evento/v2/evento.router.js';
-// import usuarioRouter    from '../modules/usuario/usuario.router.js';
-// import clienteRouter    from '../modules/cliente/cliente.router.js';
+import eventoRouter     from '../modules/v2/evento/evento.router.js';
+import usuarioRouter    from '../modules/v2/usuario/usuario.router.js';
+import clienteRouter    from '../modules/v2/cliente/cliente.router.js';
 // import productoRouter   from '../modules/producto/producto.router.js';
 // import tipoEventoRouter from '../modules/tipoEvento/tipoEvento.router.js';
 // import tareaRouter      from '../modules/tarea/tarea.router.js';
@@ -12,19 +12,19 @@ import eventoRouter     from '../modules/evento/v2/evento.router.js';
 // import dashboardRouter  from '../modules/dashboard/dashboard.router.js';
 // import horaRouter       from '../modules/hora/hora.router.js';
 
-const routerV1 = express.Router();
+const routerV2 = express.Router();
 
-routerV1.use('/evento'    , eventoRouter);
-// routerV1.use('/usuario'   , usuarioRouter);
-// routerV1.use('/cliente'   , clienteRouter);
-// routerV1.use('/producto'  , productoRouter);
-// routerV1.use('/tipoEvento', tipoEventoRouter);
-// routerV1.use('/tarea'     , tareaRouter);
-// routerV1.use('/modulo'    , moduloRouter);
-// routerV1.use('/entorno'   , entornoRouter);
-// routerV1.use('/rol'       , rolRouter);
-// routerV1.use('/hora'      , horaRouter);
-// routerV1.use('/dashboard' , dashboardRouter);
+routerV2.use('/evento'    , eventoRouter);
+routerV2.use('/usuario'   , usuarioRouter);
+routerV2.use('/cliente'   , clienteRouter);
+// routerV2.use('/producto'  , productoRouter);
+// routerV2.use('/tipoEvento', tipoEventoRouter);
+// routerV2.use('/tarea'     , tareaRouter);
+// routerV2.use('/modulo'    , moduloRouter);
+// routerV2.use('/entorno'   , entornoRouter);
+// routerV2.use('/rol'       , rolRouter);
+// routerV2.use('/hora'      , horaRouter);
+// routerV2.use('/dashboard' , dashboardRouter);
 
 
-export default routerV1;
+export default routerV2;

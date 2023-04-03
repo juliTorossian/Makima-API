@@ -8,7 +8,7 @@
 // TOOK PODER MODIFICAR ESE ORDEN
 
 
-import { pool } from '../../db.js';
+import { pool } from '../../../db.js';
 
 
 /** 

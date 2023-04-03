@@ -56,17 +56,59 @@ export const getEventos = async (page) => {
 
         const [rows] = await pool.query(query, params);
 
-        // console.log(rows);
-
-        const results = {
+        
+        let results = {
             "info": {
                 "total": total[0].total,
                 "totalPages": (paginacion ? totalPages : 1 ),
                 "next": (page >= totalPages ? null : (page + 1)),
                 "prev": (page <= 1 ? null : (page - 1))
             },
-            "results":rows[0]
+            "results": [] //rows[0]
         };
+        
+        // console.log(rows[0]);
+
+        for (let i = 0; i < rows[0].length; i++) {
+            const row = rows[0][i];
+
+            const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
+            const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
+
+            results.results.push({
+                "id": row.eventoId,
+                "tipo": row.eventoTipo,
+                "numero": row.eventoNumero,
+                "titulo": row.eventoTitulo,
+                "tareaNombre": row.tareaNombre,
+                "cliente": row.cliente,
+                "producto": row.producto,
+                "cerrado": row.eventoCerrado,
+                "propio": row.eventoPropio,
+                "prioridad": row.eventoPrioridad,
+                "usuarioActual": {
+                    "id": usuarioActual[0].usuarioId,
+                    "usuario": usuarioActual[0].usuarioUsuario,
+                    "rol": usuarioActual[0].usuarioRol,
+                    "color": usuarioActual[0].usuarioColor
+                },
+                "usuarioAlta": {
+                    "id": usuarioAlta[0].usuarioId,
+                    "usuario": usuarioAlta[0].usuarioUsuario,
+                    "rol": usuarioAlta[0].usuarioRol,
+                    "color": usuarioAlta[0].usuarioColor
+                },
+                "eventoDetalle": await getEventoDetalle(row.eventoId)
+            })
+        }
+
+        // rows[0].map( (row) => {
+            
+        // })
+
+        // console.log(results);
+        
+
 
         return results;
     
@@ -111,15 +153,49 @@ export const getEventosUsuario = async (page, usuario) => {
 
         const [rows] = await pool.query(query, params);
 
-        const results = {
+        let results = {
             "info": {
                 "total": total[0].total,
                 "totalPages": (paginacion ? totalPages : 1 ),
                 "next": (page >= totalPages ? null : (page + 1)),
                 "prev": (page <= 1 ? null : (page - 1))
             },
-            "results":rows[0]
+            "results": [] //rows[0]
         };
+
+        for (let i = 0; i < rows[0].length; i++) {
+            const row = rows[0][i];
+
+            const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
+            const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
+
+            results.results.push({
+                "id": row.eventoId,
+                "tipo": row.eventoTipo,
+                "numero": row.eventoNumero,
+                "titulo": row.eventoTitulo,
+                "tareaNombre": row.tareaNombre,
+                "cliente": row.cliente,
+                "producto": row.producto,
+                "cerrado": row.eventoCerrado,
+                "propio": row.eventoPropio,
+                "prioridad": row.eventoPrioridad,
+                "usuarioActual": {
+                    "id": usuarioActual[0].usuarioId,
+                    "usuario": usuarioActual[0].usuarioUsuario,
+                    "rol": usuarioActual[0].usuarioRol,
+                    "color": usuarioActual[0].usuarioColor
+                },
+                "usuarioAlta": {
+                    "id": usuarioAlta[0].usuarioId,
+                    "usuario": usuarioAlta[0].usuarioUsuario,
+                    "rol": usuarioAlta[0].usuarioRol,
+                    "color": usuarioAlta[0].usuarioColor
+                },
+                "eventoDetalle": await getEventoDetalle(row.eventoId)
+            })
+        }
+        
 
         return results;
     
@@ -172,8 +248,41 @@ export const getEventosRol = async (page, rol) => {
                 "next": (page >= totalPages ? null : (page + 1)),
                 "prev": (page <= 1 ? null : (page - 1))
             },
-            "results":rows[0]
+            "results": [] //rows[0]
         };
+
+        for (let i = 0; i < rows[0].length; i++) {
+            const row = rows[0][i];
+
+            const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
+            const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
+
+            results.results.push({
+                "id": row.eventoId,
+                "tipo": row.eventoTipo,
+                "numero": row.eventoNumero,
+                "titulo": row.eventoTitulo,
+                "tareaNombre": row.tareaNombre,
+                "cliente": row.cliente,
+                "producto": row.producto,
+                "cerrado": row.eventoCerrado,
+                "propio": row.eventoPropio,
+                "prioridad": row.eventoPrioridad,
+                "usuarioActual": {
+                    "id": usuarioActual[0].usuarioId,
+                    "usuario": usuarioActual[0].usuarioUsuario,
+                    "rol": usuarioActual[0].usuarioRol,
+                    "color": usuarioActual[0].usuarioColor
+                },
+                "usuarioAlta": {
+                    "id": usuarioAlta[0].usuarioId,
+                    "usuario": usuarioAlta[0].usuarioUsuario,
+                    "rol": usuarioAlta[0].usuarioRol,
+                    "color": usuarioAlta[0].usuarioColor
+                },
+                "eventoDetalle": await getEventoDetalle(row.eventoId)
+            })
+        }
 
         return results;
     
@@ -296,7 +405,7 @@ export const getEventoDetalle = async (eventoId) => {
             eventoId
         ];
 
-        console.log(params);
+        // console.log(params);
 
         const [rows] = await pool.query(query, params);
 
@@ -305,38 +414,60 @@ export const getEventoDetalle = async (eventoId) => {
         let eventoDetalle = null;
         if (rows.length > 0){
             eventoDetalle = {
-                                "evento": {
-                                    "id": rows[0].eventoId,
-                                    "tipo": rows[0].eventoTipo,
-                                    "numero": rows[0].eventoNumero,
-                                    "propio": rows[0].eventoPropio,
-                                    "estimacion": rows[0].eventoEstimacion,
-                                    "usuarioActual":
-                                    {
-                                        "id": rows[0].usuarioId,
-                                        "usuario": rows[0].usuarioUsuario,
-                                        "rol": rows[0].usuarioRol,
-                                        "color": rows[0].usuarioColor
-                                    },
-                                    "cerrado": rows[0].eventoCerrado
-                                },
-                                "circuito":{
-                                    "act":{
+                                "eventoCircuito": {
+                                    "act": {
+                                        "tiene": null,    
                                         "etapa": rows[0].eventoEtapa,
                                         "tarea": rows[0].tareaActual
                                     },
-                                    "sig":{
+                                    "sig": {
                                         "tiene": (rows[0].sigEtapa > 0),
                                         "etapa": rows[0].sigEtapa,
                                         "tarea": rows[0].sigTarea
                                     },
-                                    "ant":{
+                                    "ant": {
                                         "tiene": (rows[0].antEtapa > 0),
                                         "etapa": rows[0].antEtapa,
                                         "tarea": rows[0].antTarea
                                     },
                                     "totalEtapas": rows[0].totalEtapas
+                                },
+                                "eventoHoras": {
+                                    "estimacion": (rows[0].eventoEstimacion > 0) ? rows[0].eventoEstimacion : 0 ,
+                                    "total": 0
                                 }
+                                // "evento": {
+                                //     "id": rows[0].eventoId,
+                                //     "tipo": rows[0].eventoTipo,
+                                //     "numero": rows[0].eventoNumero,
+                                //     "propio": rows[0].eventoPropio,
+                                //     "estimacion": rows[0].eventoEstimacion,
+                                //     "usuarioActual":
+                                //     {
+                                //         "id": rows[0].usuarioId,
+                                //         "usuario": rows[0].usuarioUsuario,
+                                //         "rol": rows[0].usuarioRol,
+                                //         "color": rows[0].usuarioColor
+                                //     },
+                                //     "cerrado": rows[0].eventoCerrado
+                                // },
+                                // "circuito":{
+                                //     "act":{
+                                //         "etapa": rows[0].eventoEtapa,
+                                //         "tarea": rows[0].tareaActual
+                                //     },
+                                //     "sig":{
+                                //         "tiene": (rows[0].sigEtapa > 0),
+                                //         "etapa": rows[0].sigEtapa,
+                                //         "tarea": rows[0].sigTarea
+                                //     },
+                                //     "ant":{
+                                //         "tiene": (rows[0].antEtapa > 0),
+                                //         "etapa": rows[0].antEtapa,
+                                //         "tarea": rows[0].antTarea
+                                //     },
+                                //     "totalEtapas": rows[0].totalEtapas
+                                // }
                             }
         }
 

@@ -4,7 +4,7 @@
 // TODO ELIMINAR UNA TAREA
 // TODO VER TAREAS NO ASIGNADAS A UN TIPO EVENTO
 
-import { pool } from '../../db.js';
+import { pool } from '../../../db.js';
 
 
 /** 

@@ -4,7 +4,7 @@
 // TOOK MODIFICAR ENTORNO
 // TOOK ELIMINAR ENTORNO
 
-import { pool } from '../../db.js';
+import { pool } from '../../../db.js';
 
 /** 
  ** Busca TOOKs los entornos

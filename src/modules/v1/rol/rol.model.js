@@ -5,7 +5,7 @@
 // TOOK ELIMINAR ROL
 
 
-import { pool } from '../../db.js';
+import { pool } from '../../../db.js';
 
 /** 
  ** Busca todos los roles en la base de datos

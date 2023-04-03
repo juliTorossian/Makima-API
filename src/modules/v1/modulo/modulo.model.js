@@ -6,7 +6,7 @@
 // TOOK VER BUSQUEDA MODULO
 // TOOK VER MODULOS POR PADREs
 
-import { pool } from '../../db.js';
+import { pool } from '../../../db.js';
 
 /** 
  ** Busca todos los modulos

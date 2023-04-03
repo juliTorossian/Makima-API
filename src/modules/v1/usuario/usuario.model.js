@@ -7,7 +7,7 @@
 // TOOK VER LOS USUARIOS DE UN ROL
 // TOOK CAMBIAR CONTRASEÑA
 
-import { pool } from '../../db.js';
+import { pool } from '../../../db.js';
 
 /** 
  ** Crea un nuevo usuario

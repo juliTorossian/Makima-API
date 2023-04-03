@@ -248,6 +248,7 @@ CREATE TABLE `hora` (
   `horaFecha` date NOT NULL,
   `horaUsuario` char(24) NOT NULL,
   `horaEvento` char(24) NOT NULL,
+  `horaObs` char(255) DEFAULT NULL,
   PRIMARY KEY (`horaId`),
   KEY `hora_index_10` (`horaInicio`,`horaFinal`,`horaFecha`),
   KEY `hora_index_11` (`horaUsuario`),
@@ -263,6 +264,7 @@ CREATE TABLE `hora` (
 
 LOCK TABLES `hora` WRITE;
 /*!40000 ALTER TABLE `hora` DISABLE KEYS */;
+INSERT INTO `hora` VALUES ('ALgzif1YCvdkukDtCsr0sQVY','18:09','19:10','2023-04-02','264b0ce34fa762a3dba657fe','3f6dc9d64d14339cf46bf6dd','dsads'),('fPgd4m1XsNwtKyKD1kIUVeax','20:13','22:13','2023-04-02','264b0ce34fa762a3dba657fe','3f6dc9d64d14339cf46bf6dd','13'),('iPq4CqiMtMbaOIcqkLaJs4o9','19:12','20:12','2023-04-02','264b0ce34fa762a3dba657fe','3f6dc9d64d14339cf46bf6dd','12'),('OpiIn8lYY5kYRapOg3VFeSUv','22:13','23:59','2023-04-02','264b0ce34fa762a3dba657fe','3f6dc9d64d14339cf46bf6dd','14');
 /*!40000 ALTER TABLE `hora` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -449,6 +451,8 @@ CREATE TABLE `usuario` (
   `usuarioRol` char(5) NOT NULL,
   `usuarioActivo` tinyint(1) DEFAULT NULL,
   `usuarioColor` char(7) DEFAULT NULL,
+  `usuarioSesionToken` char(18) DEFAULT NULL,
+  `usuarioFchUltLogin` datetime DEFAULT NULL,
   PRIMARY KEY (`usuarioId`),
   KEY `usuario_index_3` (`usuarioUsuario`),
   KEY `usuario_index_4` (`usuarioRol`),
@@ -462,7 +466,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES ('264b0ce34fa762a3dba657fe','Julian','Torossian','julian.torossian@outlook.com','JTAdmin','123','ADMIN',1,'#3acee5'),('2f0727442b3125f656ec12de','Julian','Torossian','jtorossian@gaci.com.ar','JTDesa','123','DESA',1,'#180A97'),('60dba550879c88cfdd2d4906','Julian','Torossian','jtorossian@gaci.com.ar','JTCons','123','CONS',1,'#117CC1'),('b092296c495f89e0ef2ebdfa','juli','toro','julitoro2009@gaci.com.ar','JuliDesa','123','DESA',1,'#D677A1');
+INSERT INTO `usuario` VALUES ('264b0ce34fa762a3dba657fe','Julian','Torossian','julian.torossian@outlook.com','JTAdmin','123','ADMIN',1,'#3acee5','7jfsciycqdCI4oCZoN','2023-04-02 23:34:29'),('2f0727442b3125f656ec12de','Julian','Torossian','jtorossian@gaci.com.ar','JTDesa','123','DESA',1,'#180A97',NULL,NULL),('60dba550879c88cfdd2d4906','Julian','Torossian','jtorossian@gaci.com.ar','JTCons','123','CONS',1,'#117CC1',NULL,NULL),('b092296c495f89e0ef2ebdfa','juli','toro','julitoro2009@gaci.com.ar','JuliDesa','123','DESA',1,'#D677A1',NULL,NULL);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1075,7 +1079,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`sa`@`localhost` PROCEDURE `select_eventos`(paginacion boolean, pagina int, cantidad int)
 BEGIN
@@ -1083,39 +1087,33 @@ BEGIN
     -- SET @page = 1;
     -- SET @cant = 5;
     IF paginacion = true THEN
-        SET @query = CONCAT("SELECT e.eventoId,
-								e.eventoTipo,
-								e.eventoNumero,
-								e.eventoTitulo,
+        SET @query = CONCAT("SELECT e.*,
 								ta.tareaNombre,
 								(SELECT clienteNombre FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'cliente',
 								(SELECT productoNombre FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'producto',
 								(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'usuarioAlta',
-								(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = auE.audiEUsuario) as 'usuarioActivo' 
+								(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = auE.audiEUsuario) as 'usuarioActivo',
+                                (SELECT te.tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) AS 'eventoPropio'
 						FROM evento as e
 						INNER JOIN evento_tarea as tet ON tet.etEvento = e.eventoTipo
 						INNER JOIN tarea as ta ON ta.tareaId = tet.etTarea
 						WHERE	e.eventoEtapa = tet.etEtapa
-                        AND     e.eventoCerrado = false
                         LIMIT ",
                         (pagina - 1) * cantidad,
                         ",",
                         cantidad
                         );
 	ELSE
-		SET @query ="SELECT e.eventoId,
-								e.eventoTipo,
-								e.eventoNumero,
-								e.eventoTitulo,
+		SET @query ="SELECT e.*,
 								ta.tareaNombre,
 								(SELECT clienteNombre FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'cliente',
 								(SELECT productoNombre FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'producto',
-								(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'usuarioAlta' 
+								(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'usuarioAlta',
+                                (SELECT te.tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) AS 'eventoPropio'
 						FROM evento as e
 						INNER JOIN evento_tarea as tet ON tet.etEvento = e.eventoTipo
 						INNER JOIN tarea as ta ON ta.tareaId = tet.etTarea
 						WHERE	e.eventoEtapa = tet.etEtapa
-                        AND     e.eventoCerrado = false
                         ";
     END IF;
     
@@ -1137,7 +1135,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`sa`@`localhost` PROCEDURE `select_eventos_rol`(paginacion boolean, pagina int, cantidad int, rol VARCHAR(5))
 BEGIN
@@ -1145,14 +1143,12 @@ BEGIN
     -- SET @page = 1;
     -- SET @cant = 5;
     IF paginacion = true THEN
-        SET @query = CONCAT("SELECT  e.eventoId,
-									e.eventoTipo,
-									e.eventoNumero,
-									e.eventoTitulo,
+        SET @query = CONCAT("SELECT  e.*,
 									(SELECT getNombreTarea_eventos(e.eventoTipo, e.eventoEtapa)) as 'Tarea Nombre',
 									(SELECT clienteNombre FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'cliente',
 									(SELECT productoNombre FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'producto',
-									(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'Usuario Alta'
+									(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'Usuario Alta',
+                                (SELECT te.tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) AS 'eventoPropio'
 							FROM audiEvento AS auE
 							INNER JOIN evento AS e ON e.eventoId = auE.audiEEvento
 							INNER JOIN usuario as usu ON usu.usuarioId = auE.audiEUsuario
@@ -1164,14 +1160,12 @@ BEGIN
 							cantidad
 							);
 	ELSE
-		SET @query = CONCAT("SELECT  e.eventoId,
-									e.eventoTipo,
-									e.eventoNumero,
-									e.eventoTitulo,
+		SET @query = CONCAT("SELECT  e.*,
 									(SELECT getNombreTarea_eventos(e.eventoTipo, e.eventoEtapa)) as 'Tarea Nombre',
 									(SELECT clienteNombre FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'cliente',
 									(SELECT productoNombre FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'producto',
-									(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'Usuario Alta'
+									(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'Usuario Alta',
+                                (SELECT te.tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) AS 'eventoPropio'
 							FROM audiEvento AS auE
 							INNER JOIN evento AS e ON e.eventoId = auE.audiEEvento
 							INNER JOIN usuario as usu ON usu.usuarioId = auE.audiEUsuario
@@ -1198,7 +1192,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`sa`@`localhost` PROCEDURE `select_eventos_usuario`(paginacion boolean, pagina int, cantidad int, usuario char(24))
 BEGIN
@@ -1206,19 +1200,16 @@ BEGIN
     -- SET @page = 1;
     -- SET @cant = 5;
     IF paginacion = true THEN
-        SET @query = CONCAT("SELECT  e.eventoId,
-									 e.eventoTipo,
-									 e.eventoNumero,
-									 e.eventoTitulo,
+        SET @query = CONCAT("SELECT  e.*,
 									 (SELECT getNombreTarea_eventos(e.eventoTipo, e.eventoEtapa)) as 'Tarea Nombre',
 									 (SELECT clienteNombre FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'cliente',
 									 (SELECT productoNombre FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'producto',
 									 (SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'Usuario Alta',
-									 (SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = auE.audiEUsuario) as 'usuarioActivo'
+									 (SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = auE.audiEUsuario) as 'usuarioActivo',
+                                (SELECT te.tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) AS 'eventoPropio'
 							 FROM audiEvento AS auE
 							 INNER JOIN evento AS e ON e.eventoId = auE.audiEEvento
 							 WHERE 	auE.audiEEtapa = e.eventoEtapa
-							 AND    e.eventoCerrado = false
 							 AND 	auE.audiEUsuario = '", usuario, "'
 							 AND     (SELECT te.tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) != true
 							LIMIT ",
@@ -1227,19 +1218,16 @@ BEGIN
 							cantidad,
 							"GROUP BY e.eventoId");
 	ELSE
-		SET @query = CONCAT("SELECT e.eventoId,
-							e.eventoTipo,
-							e.eventoNumero,
-							e.eventoTitulo,
+		SET @query = CONCAT("SELECT e.*,
 							(SELECT getNombreTarea_eventos(e.eventoTipo, e.eventoEtapa)) as 'tareaNombre',
 							(SELECT clienteNombre FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'cliente',
 							(SELECT productoNombre FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'producto',
 							(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'usuarioAlta',
-							(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = auE.audiEUsuario) as 'usuarioActivo'
+							(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = auE.audiEUsuario) as 'usuarioActivo',
+                                (SELECT te.tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) AS 'eventoPropio'
 					FROM audiEvento AS auE
 					INNER JOIN evento AS e ON e.eventoId = auE.audiEEvento
 					WHERE 	auE.audiEEtapa = e.eventoEtapa
-                    AND     e.eventoCerrado = false
 					AND 	auE.audiEUsuario = '", usuario,"'
                     AND     (SELECT te.tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) != true
                     GROUP BY e.eventoId"
@@ -1300,4 +1288,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-27  0:01:47
+-- Dump completed on 2023-04-02 23:57:17

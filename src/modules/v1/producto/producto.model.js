@@ -6,7 +6,7 @@
 // TOOK REACTIVAR PRODUCTO
 
 
-import { pool } from '../../db.js';
+import { pool } from '../../../db.js';
 
 
 /** 

@@ -3,7 +3,7 @@
 // TODO MODIFICAR HORA
 // TODO ELIMINAR HORA
 
-import { pool } from '../../db.js';
+import { pool } from '../../../db.js';
 
 /** 
  ** Busca los registros de horas segun los filtros
