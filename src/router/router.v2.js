@@ -5,10 +5,10 @@ import usuarioRouter    from '../modules/v2/usuario/usuario.router.js';
 import clienteRouter    from '../modules/v2/cliente/cliente.router.js';
 import tareaRouter      from '../modules/v2/tarea/tarea.router.js';
 import tipoEventoRouter from '../modules/v2/tipoEvento/tipoEvento.router.js';
-// import entornoRouter    from '../modules/entorno/entorno.router.js';
-// import moduloRouter     from '../modules/modulo/modulo.router.js';
-// import productoRouter   from '../modules/producto/producto.router.js';
-// import rolRouter        from '../modules/rol/rol.router.js';
+// import entornoRouter    from '../modules/v2/entorno/entorno.router.js';
+// import moduloRouter     from '../modules/v2/modulo/modulo.router.js';
+// import productoRouter   from '../modules/v2/producto/producto.router.js';
+// import rolRouter        from '../modules/v2/rol/rol.router.js';
 // import dashboardRouter  from '../modules/dashboard/dashboard.router.js';
 // import horaRouter       from '../modules/hora/hora.router.js';
 
