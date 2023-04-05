@@ -5,7 +5,7 @@ export const insertEntorno = async (req, res) => {
     let ok = await model.insertEntorno(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -17,7 +17,7 @@ export const updateEntorno = async (req, res) => {
     let ok = await model.updateEntorno(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -29,7 +29,7 @@ export const deleteEntorno = async (req, res) => {
     let ok = await model.deleteEntorno(req.params.entornoId);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }

@@ -205,12 +205,29 @@ export const existeUsuario = async (usuario, password) => {
 export const getUsuarios = async () => {
 
     try{
-        const query = 'SELECT * FROM usuario WHERE usuarioActivo = true';
+        const query = 'SELECT *, (SELECT rolDescripcion FROM rol WHERE rolId = usuarioRol) AS rolDescripcion FROM usuario';
         let params = [
         ];
 
         const [rows] = await pool.query(query, params);
-        return rows;
+
+        let response = [];
+        rows.map((row) => {
+            response.push({
+                "id": row.usuarioId,
+                "nombre": row.usuarioNombre,
+                "apellido": row.usuarioApellido,
+                "mail": row.usuarioMail,
+                "usuario": row.usuarioUsuario,
+                "rol": {
+                    "codigo": row.usuarioRol,
+                    "descripcion": row.rolDescripcion
+                },
+                "activo": row.usuarioActivo,
+                "color": row.usuarioColor
+            });
+        });
+        return response;
 
     }catch (err){
         console.error(err);
