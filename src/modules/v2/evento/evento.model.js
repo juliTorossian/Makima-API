@@ -81,7 +81,10 @@ export const getEventos = async (page) => {
                 "numero": row.eventoNumero,
                 "titulo": row.eventoTitulo,
                 "tareaNombre": row.tareaNombre,
-                "cliente": row.cliente,
+                "cliente": {
+                    "id": row.eventoCliente,
+                    "nombre": row.cliente
+                },
                 "producto": row.producto,
                 "cerrado": row.eventoCerrado,
                 "propio": row.eventoPropio,
@@ -175,7 +178,10 @@ export const getEventosUsuario = async (page, usuario) => {
                 "numero": row.eventoNumero,
                 "titulo": row.eventoTitulo,
                 "tareaNombre": row.tareaNombre,
-                "cliente": row.cliente,
+                "cliente": {
+                    "id": row.eventoCliente,
+                    "nombre": row.cliente
+                },
                 "producto": row.producto,
                 "cerrado": row.eventoCerrado,
                 "propio": row.eventoPropio,
@@ -263,7 +269,10 @@ export const getEventosRol = async (page, rol) => {
                 "numero": row.eventoNumero,
                 "titulo": row.eventoTitulo,
                 "tareaNombre": row.tareaNombre,
-                "cliente": row.cliente,
+                "cliente": {
+                    "id": row.eventoCliente,
+                    "nombre": row.cliente
+                },
                 "producto": row.producto,
                 "cerrado": row.eventoCerrado,
                 "propio": row.eventoPropio,
