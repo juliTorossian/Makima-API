@@ -862,7 +862,7 @@ export const comentarEvento = async (comentario, archivo) => {
 
     try{
 
-        // console.log(archivo);
+        console.log(archivo);
 
         let pathFile = null;
         let nameFile = null;
@@ -1172,9 +1172,53 @@ export const getTareasPorTipo = async (rol) => {
 
         const [rows] = await pool.query(query, params);
 
-        // console.log(rows);
+        const [tiposEvento] = await pool.query("SELECT * FROM tipoEvento");
+        // console.log(tiposEvento);
+        const [tareas] = await pool.query("SELECT * FROM tarea");
 
-        return rows;
+        let response = {
+            "data": [],
+            "tipos": [],
+            "tareas": []
+        };
+        
+        rows.map( (row) => {
+            response.data.push({
+                "cantidad": row.cantidadEventos,
+                "tipo": row.eventoTipo,
+                "tarea": row.tarea
+            });
+        });
+
+    //     "tipoEventoId": "CAS",
+    //   "tipoEventoDesc": null,
+    //   "tipoEventoActivo": 1,
+    //   "tipoEventoColor": "#fb8b9f",
+    //   "tipoEventoPropio": 0
+        tiposEvento.map( (tipo) => {
+            response.tipos.push({
+                "id": tipo.tipoEventoId,
+                "descripcion": tipo.tipoEventoDesc,
+                "activo": tipo.tipoEventoActivo,
+                "color": tipo.tipoEventoColor,
+                "propio": tipo.tipoEventoPropio
+            });
+        })
+
+
+    //     "tareaId": "0a2cd2e6258e8ba3f1fbacec",
+    //   "tareaNombre": "Aprobar",
+    //   "tareaRol": "CONS"
+
+        tareas.map( (tarea) => {
+            response.tareas.push({
+                "id": tarea.tareaId,
+                "nombre": tarea.tareaNombre,
+                "rol": tarea.tareaRol
+            });
+        })
+
+        return response;
 
     }catch (err) {
         console.error(err);

@@ -9,7 +9,7 @@ import entornoRouter    from '../modules/v2/entorno/entorno.router.js';
 import moduloRouter     from '../modules/v2/modulo/modulo.router.js';
 import productoRouter   from '../modules/v2/producto/producto.router.js';
 import rolRouter        from '../modules/v2/rol/rol.router.js';
-// import dashboardRouter  from '../modules/v2/dashboard/dashboard.router.js';
+import dashboardRouter  from '../modules/v2/dashboard/dashboard.router.js';
 // import horaRouter       from '../modules/v2/hora/hora.router.js';
 
 const routerV2 = express.Router();
@@ -23,8 +23,8 @@ routerV2.use('/entorno'   , entornoRouter);
 routerV2.use('/modulo'    , moduloRouter);
 routerV2.use('/producto'  , productoRouter);
 routerV2.use('/rol'       , rolRouter);
+routerV2.use('/dashboard' , dashboardRouter);
 // routerV2.use('/hora'      , horaRouter);
-// routerV2.use('/dashboard' , dashboardRouter);
 
 
 export default routerV2;

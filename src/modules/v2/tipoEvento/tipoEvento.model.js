@@ -32,16 +32,37 @@ export const getTipoEventos = async () => {
         }
         */
 
+        // console.log("rows")
+        // console.log(rows);
+
         let response = [];
-        rows.map( (row) => {
-            response.push({
+        // rows.map(  (row) => {
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+
+            // console.log("row")
+            // console.log(row);
+
+            const [tareas] = await pool.query("SELECT * FROM gacieventos.evento_tarea WHERE etEvento = ? ORDER BY etEtapa", [row.tipoEventoId]);
+
+            let responseAux = {
                 "id": row.tipoEventoId,
                 "descripcion": row.tipoEventoDesc,
                 "activo": row.tipoEventoActivo,
                 "color": row.tipoEventoColor,
-                "propio": row.tipoEventoPropio
-            });
-        });
+                "propio": row.tipoEventoPropio,
+                "tareas": []
+            };
+            tareas.map( (tarea) => {
+                responseAux.tareas.push({
+                    "etapa": tarea.etEtapa,
+                    "tarea": tarea.etTarea,
+                    "rollback": tarea.etEtapaRollback
+                })
+            })
+            console.log(responseAux);
+            response.push(responseAux);
+        };
         return response;
     
     }catch (err){
@@ -62,17 +83,26 @@ export const getTipoEvento = async (id) => {
         ];
 
         const [rows] = await pool.query(query, params);
+        
+        const [tareas] = await pool.query("SELECT * FROM evento_tarea WHERE etEvento = ?", [id]);
 
-        let response = [];
-        rows.map( (row) => {
-            response.push({
-                "id": row.tipoEventoId,
-                "descripcion": row.tipoEventoDesc,
-                "activo": row.tipoEventoActivo,
-                "color": row.tipoEventoColor,
-                "propio": row.tipoEventoPropio
-            });
-        });
+        let response = {
+            "id": rows[0].tipoEventoId,
+            "descripcion": rows[0].tipoEventoDesc,
+            "activo": rows[0].tipoEventoActivo,
+            "color": rows[0].tipoEventoColor,
+            "propio": rows[0].tipoEventoPropio,
+            "tareas": []
+        };
+
+        tareas.map( (tarea) => {
+            response.tareas.push({
+                "etapa": tarea.etEtapa,
+                "tarea": tarea.etTarea,
+                "rollback": tarea.etEtapaRollback
+            })
+        })
+
         return response;
     
     }catch (err){
@@ -94,7 +124,12 @@ export const insertTipoEvento = async (nTipoEvento) => {
         "id": "CUS",                        //* tipo de evento
         "descripcion": "CUSTOM",            //* descripcion del tipo
         "color": "#000000",                 //* color en hexa
-        "propio": true                      //* evento propio
+        "propio": true,                      //* evento propio
+        "tareas": {
+            "etapa": ,
+            "tarea": ,
+            "rollback"
+        }
     }
     **/
 
@@ -109,7 +144,32 @@ export const insertTipoEvento = async (nTipoEvento) => {
 
         const [rows] = await pool.query(query, params);
         // console.log(rows.affectedRows);
-        return rows.affectedRows;
+        if (rows.affectedRows){
+            // "tareas": [
+            //     {
+            //     "id": 1,                    //* id de la tarea
+            //     "orden": 1,                  //* orden de la tarea
+            //     "rollback": 1               //* etapa de rollback
+            //     }
+            // ]
+            let tareas = {
+                "tipoEvento": nTipoEvento.id,
+                "tareas": []
+            }
+
+            nTipoEvento.tareas.map( (tarea) => {
+                tareas.tareas.push({
+                    "id": tarea.tarea,
+                    "orden": tarea.etapa,
+                    "rollback": tarea.rollback
+                });
+            })
+
+            console.log(tareas);
+            asignarTareas(tareas);
+        }
+
+        return 1
 
     }catch (err){
         console.error(err);
@@ -145,7 +205,25 @@ export const updateTipoEvento = async (tipoEventoM) => {
             tipoEventoM.id
         ];
         const [rows] = await pool.query(query, params);
-        return rows.affectedRows;
+        if (rows.affectedRows){
+            let tareas = {
+                "tipoEvento": tipoEventoM.id,
+                "tareas": []
+            }
+
+            tipoEventoM.tareas.map( (tarea) => {
+                tareas.tareas.push({
+                    "id": tarea.tarea,
+                    "orden": tarea.etapa,
+                    "rollback": tarea.rollback
+                });
+            })
+
+            console.log(tareas);
+            asignarTareas(tareas);
+        }
+
+        return 1
 
     }catch (err){
         console.error(err);

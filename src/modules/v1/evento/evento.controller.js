@@ -141,6 +141,8 @@ export const estimarEvento = async (req, res) => {
 
 export const comentarEvento = async (req, res) => {
 
+    console.log(req)
+
     const comentario = JSON.parse(req.body.comentario);
     const archivo = req.file;
     const ok = await model.comentarEvento(comentario, archivo);

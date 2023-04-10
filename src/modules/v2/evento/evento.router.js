@@ -11,10 +11,12 @@ import multer from 'multer';
 
 const upload = multer({
     storage: multer.diskStorage({
-        destination: path.normalize(`${__dirname}\\..\\..\\temp\\`),
-        limits: { fileSize: 10 * 1024 * 1024 }, // Maximo 10Mb
+        destination: path.normalize(`${__dirname}\\..\\..\\..\\temp\\`),
+        limits: { fileSize: 10 * 1024 * 1024 * 1024}, // Maximo 10Mb
         filename: ( req, file, cb ) => {
+            console.log("file");
             console.log(file);
+            console.log("type");
             console.log(file.type);
             cb( null, `${Date.now()}&${file.originalname}`);
         }
