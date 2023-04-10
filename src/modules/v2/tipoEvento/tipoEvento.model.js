@@ -36,7 +36,7 @@ export const getTipoEventos = async () => {
         rows.map( (row) => {
             response.push({
                 "id": row.tipoEventoId,
-                "descipcion": row.tipoEventoDesc,
+                "descripcion": row.tipoEventoDesc,
                 "activo": row.tipoEventoActivo,
                 "color": row.tipoEventoColor,
                 "propio": row.tipoEventoPropio
@@ -67,7 +67,7 @@ export const getTipoEvento = async (id) => {
         rows.map( (row) => {
             response.push({
                 "id": row.tipoEventoId,
-                "descipcion": row.tipoEventoDesc,
+                "descripcion": row.tipoEventoDesc,
                 "activo": row.tipoEventoActivo,
                 "color": row.tipoEventoColor,
                 "propio": row.tipoEventoPropio

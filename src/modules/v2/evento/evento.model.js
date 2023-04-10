@@ -13,6 +13,7 @@
 //TOOK VER COMENTARIOS DE UN EVENTO
 //TOOKVER VIDA DEL EVENTO
 
+import { log } from 'console';
 import { pool } from '../../../db.js';
 
 import * as fs from 'fs';
@@ -74,6 +75,8 @@ export const getEventos = async (page) => {
 
             const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
             const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
+            log(usuarioActual);
+            const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
 
             results.results.push({
                 "id": row.eventoId,
@@ -85,7 +88,14 @@ export const getEventos = async (page) => {
                     "id": row.eventoCliente,
                     "nombre": row.cliente
                 },
-                "producto": row.producto,
+                "producto": {
+                    "id": producto[0].productoId,
+                    "nombre": producto[0].productoNombre,
+                    "modulo": producto[0].productoModulo,
+                    "submodulo": producto[0].productoSubModulo,
+                    "entorno": producto[0].productoEntorno,
+                    "activo": producto[0].productoActivo
+                },
                 "cerrado": row.eventoCerrado,
                 "propio": row.eventoPropio,
                 "prioridad": row.eventoPrioridad,
@@ -101,7 +111,7 @@ export const getEventos = async (page) => {
                     "rol": usuarioAlta[0].usuarioRol,
                     "color": usuarioAlta[0].usuarioColor
                 },
-                "eventoDetalle": await getEventoDetalle(row.eventoId)
+                "detalle": await getEventoDetalle(row.eventoId)
             })
         }
 
@@ -171,6 +181,7 @@ export const getEventosUsuario = async (page, usuario) => {
 
             const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
             const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
+            const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
 
             results.results.push({
                 "id": row.eventoId,
@@ -182,7 +193,14 @@ export const getEventosUsuario = async (page, usuario) => {
                     "id": row.eventoCliente,
                     "nombre": row.cliente
                 },
-                "producto": row.producto,
+                "producto": {
+                    "id": producto[0].productoId,
+                    "nombre": producto[0].productoNombre,
+                    "modulo": producto[0].productoModulo,
+                    "submodulo": producto[0].productoSubModulo,
+                    "entorno": producto[0].productoEntorno,
+                    "activo": producto[0].productoActivo
+                },
                 "cerrado": row.eventoCerrado,
                 "propio": row.eventoPropio,
                 "prioridad": row.eventoPrioridad,
@@ -198,7 +216,7 @@ export const getEventosUsuario = async (page, usuario) => {
                     "rol": usuarioAlta[0].usuarioRol,
                     "color": usuarioAlta[0].usuarioColor
                 },
-                "eventoDetalle": await getEventoDetalle(row.eventoId)
+                "detalle": await getEventoDetalle(row.eventoId)
             })
         }
         
@@ -262,6 +280,7 @@ export const getEventosRol = async (page, rol) => {
 
             const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
             const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
+            const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
 
             results.results.push({
                 "id": row.eventoId,
@@ -273,7 +292,14 @@ export const getEventosRol = async (page, rol) => {
                     "id": row.eventoCliente,
                     "nombre": row.cliente
                 },
-                "producto": row.producto,
+                "producto": {
+                    "id": producto[0].productoId,
+                    "nombre": producto[0].productoNombre,
+                    "modulo": producto[0].productoModulo,
+                    "submodulo": producto[0].productoSubModulo,
+                    "entorno": producto[0].productoEntorno,
+                    "activo": producto[0].productoActivo
+                },
                 "cerrado": row.eventoCerrado,
                 "propio": row.eventoPropio,
                 "prioridad": row.eventoPrioridad,
@@ -289,7 +315,7 @@ export const getEventosRol = async (page, rol) => {
                     "rol": usuarioAlta[0].usuarioRol,
                     "color": usuarioAlta[0].usuarioColor
                 },
-                "eventoDetalle": await getEventoDetalle(row.eventoId)
+                "detalle": await getEventoDetalle(row.eventoId)
             })
         }
 
@@ -309,28 +335,68 @@ export const getEventosRol = async (page, rol) => {
 export const getEvento = async (eventoId) => {
 
     try{
-        const query = "SELECT 	e.eventoId,                                                                                                     \
-                            e.eventoTipo,                                                                                                   \
-                            e.eventoNumero,                                                                                                 \
-                            e.eventoTitulo,                                                                                                 \
-                            e.eventoPrioridad,                                                                                                 \
-                            ta.tareaNombre,                                                                                                 \
-                            (SELECT clienteId FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'clienteId',                    \
-                            (SELECT clienteNombre FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'cliente',                    \
-                            (SELECT productoId FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'productoId',               \
-                            (SELECT productoNombre FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'producto',               \
-                            (SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'usuarioAlta'        \
-                    FROM evento as e                                                                                                        \
-                    INNER JOIN evento_tarea as tet ON tet.etEvento = e.eventoTipo                                                           \
-                    INNER JOIN tarea as ta ON ta.tareaId = tet.etTarea                                                                      \
-                    WHERE	e.eventoEtapa = tet.etEtapa                                                                                     \
-                    AND 	e.eventoId = ?                                                                                                 \
+        const query = "SELECT 	e.*,                                                                                                 \
+                                ta.tareaNombre,                                                                                                 \
+                                (SELECT clienteId FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'clienteId',                    \
+                                (SELECT clienteNombre FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'cliente',                    \
+                                (SELECT clienteSigla FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'clienteSigla',                    \
+                                (SELECT productoId FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'productoId',               \
+                                (SELECT productoNombre FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'producto',               \
+                                (SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'usuarioAlta'        \
+                        FROM evento as e                                                                                                        \
+                        INNER JOIN evento_tarea as tet ON tet.etEvento = e.eventoTipo                                                           \
+                        INNER JOIN tarea as ta ON ta.tareaId = tet.etTarea                                                                      \
+                        WHERE	e.eventoEtapa = tet.etEtapa                                                                                     \
+                        AND 	e.eventoId = ?                                                                                                 \
                     "
         const params = [eventoId]
 
         const [rows] = await pool.query(query, params);
 
-        return rows[0];
+        log(rows[0]);
+
+        const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ rows[0].eventoUsuarioAlta ]);
+        const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ rows[0].eventoId ]);
+        const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ rows[0].eventoProducto ]);
+
+        let results = {
+            "id": rows[0].eventoId,
+            "tipo": rows[0].eventoTipo,
+            "numero": rows[0].eventoNumero,
+            "titulo": rows[0].eventoTitulo,
+            "tareaNombre": rows[0].tareaNombre,
+            "cliente": {
+                "id": rows[0].eventoCliente,
+                "sigla": rows[0].clienteSigla,
+                "nombre": rows[0].cliente
+            },
+            "producto": {
+                "id": producto[0].productoId,
+                "nombre": producto[0].productoNombre,
+                "modulo": producto[0].productoModulo,
+                "submodulo": producto[0].productoSubModulo,
+                "entorno": producto[0].productoEntorno,
+                "activo": producto[0].productoActivo
+            },
+            "cerrado": rows[0].eventoCerrado,
+            "propio": rows[0].eventoPropio,
+            "prioridad": rows[0].eventoPrioridad,
+            "usuarioActual": {
+                "id": usuarioActual[0].usuarioId,
+                "usuario": usuarioActual[0].usuarioUsuario,
+                "rol": usuarioActual[0].usuarioRol,
+                "color": usuarioActual[0].usuarioColor
+            },
+            "usuarioAlta": {
+                "id": usuarioAlta[0].usuarioId,
+                "usuario": usuarioAlta[0].usuarioUsuario,
+                "rol": usuarioAlta[0].usuarioRol,
+                "color": usuarioAlta[0].usuarioColor
+            },
+            "detalle": await getEventoDetalle(rows[0].eventoId)
+        }
+
+        return results;
     }catch (err){
         console.error(err);
         return null;
@@ -422,22 +488,56 @@ export const getEventoDetalle = async (eventoId) => {
 
         let eventoDetalle = null;
         if (rows.length > 0){
+            let actTarea = null;
+            if (rows[0].tareaActual){
+                const [actTareaAux] = await pool.query("SELECT * FROM tarea WHERE tareaId = ?", rows[0].tareaActual);
+                if (actTareaAux){
+                    actTarea = {
+                        "id": actTareaAux[0].tareaId,
+                        "nombre": actTareaAux[0].tareaNombre,
+                        "rol": actTareaAux[0].tareaRol
+                    }
+                }
+            }
+            let sigTarea = null;
+            if (rows[0].sigTarea){
+                const [sigTareaAux] = await pool.query("SELECT * FROM tarea WHERE tareaId = ?", rows[0].sigTarea);
+                if (sigTareaAux){
+                    sigTarea = {
+                        "id": sigTareaAux[0].tareaId,
+                        "nombre": sigTareaAux[0].tareaNombre,
+                        "rol": sigTareaAux[0].tareaRol
+                    }
+                }
+            }
+            let antTarea = null;
+            if (rows[0].antTarea){
+                const [antTareaAux] = await pool.query("SELECT * FROM tarea WHERE tareaId = ?", rows[0].antTarea);
+                if (antTareaAux){
+                    antTarea = {
+                        "id": antTareaAux[0].tareaId,
+                        "nombre": antTareaAux[0].tareaNombre,
+                        "rol": antTareaAux[0].tareaRol
+                    }
+                }
+            }
+
             eventoDetalle = {
                                 "eventoCircuito": {
                                     "act": {
                                         "tiene": null,    
                                         "etapa": rows[0].eventoEtapa,
-                                        "tarea": rows[0].tareaActual
+                                        "tarea": actTarea
                                     },
                                     "sig": {
                                         "tiene": (rows[0].sigEtapa > 0),
                                         "etapa": rows[0].sigEtapa,
-                                        "tarea": rows[0].sigTarea
+                                        "tarea": sigTarea
                                     },
                                     "ant": {
                                         "tiene": (rows[0].antEtapa > 0),
                                         "etapa": rows[0].antEtapa,
-                                        "tarea": rows[0].antTarea
+                                        "tarea": antTarea
                                     },
                                     "totalEtapas": rows[0].totalEtapas
                                 },
@@ -513,6 +613,8 @@ export const insertEvento = async (nEvento) => {
     **/
 
     try{
+
+        log(nEvento);
 
         const query = "CALL insert_eventos(?,?,?,?,?,?)";
         let params = [
@@ -899,6 +1001,8 @@ export const getComentariosEvento = async (eventoId) => {
         let query  = "";
         let params = "";
 
+        let res = [];
+
         query = " SELECT ea.eAdId, ea.eAdComentario, ea.eAdAdjFile, ea.eAdFecha, ae.audiEUsuario, u.usuarioUsuario, '' AS fileBase, '' AS fileName  \
                         FROM eventoadicion AS ea    \
                         INNER JOIN audievento AS ae ON ae.audiEAdi = ea.eAdId     \
@@ -925,23 +1029,48 @@ export const getComentariosEvento = async (eventoId) => {
             let response = await pool.query(query, params);
             response = response[0][0];
 
+            let fileBase = "";
+            let fileName = "";
+
             if (response.pathFile != null){
                 // console.log(pathFile[0].pathFile);
                 
                 try{
-                    const fileBase = fs.readFileSync(response.pathFile, {encoding: 'base64'});
+                    const fileBaseAux = fs.readFileSync(response.pathFile, {encoding: 'base64'});
                     // console.log("creo base64");
 
-                    rows[i].fileBase = `data:${response.mimeFile};base64,${fileBase}`;
-                    rows[i].fileName = response.nameFile;    
+                    fileBase = `data:${response.mimeFile};base64,${fileBaseAux}`;
+                    fileName = response.nameFile;    
                 }catch(e){
                     // console.log("No existe el archivo");
                     // console.error(e)
                 }
             }
+
+            const [usuario] = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", rows[i].audiEUsuario);
+
+            res.push({
+                "id": rows[i].eAdId,
+                "comentario": rows[i].eAdComentario,
+                "fecha": rows[i].eAdFecha,
+                "usuario": {
+                    "id": usuario[0].usuarioId,
+                    "nombre": usuario[0].usuarioNombre,
+                    "apellido": usuario[0].usuarioApellido,
+                    "usuario": usuario[0].usuarioUsuario,
+                    "rol": usuario[0].usuarioRol,
+                },
+                "adjunto": {
+                    "tiene": rows[i].eAdAdjFile,
+                    "Base": fileBase,
+                    "nombre": fileName
+                }
+
+            })
+
         }
 
-        return rows;
+        return res;
 
     }catch (err){
         console.error(err);

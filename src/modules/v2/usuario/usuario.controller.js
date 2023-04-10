@@ -5,7 +5,7 @@ export const insertUsuario = async (req, res) => {
     const ok = await model.insertUsuario(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -17,7 +17,7 @@ export const updateUsuario = async (req, res) => {
     const ok = await model.updateUsuario(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -29,7 +29,7 @@ export const deleteUsuario = async (req, res) => {
     const ok = await model.deleteUsuario(req.params.usuarioId);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -41,7 +41,7 @@ export const reactivarUsuario = async (req, res) => {
     const ok = await model.reactivarUsuario(req.params.usuarioId);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }

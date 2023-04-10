@@ -25,7 +25,7 @@ export const getRoles = async () => {
         let response = [];
         rows.map( (row) => {
             response.push({
-                "codigo": row.rolId,
+                "id": row.rolId,
                 "descripcion": row.rolDescripcion,
                 "nivel": row.rolNivel
             });
@@ -53,7 +53,7 @@ export const getRol = async (rolId) => {
         const [rows] = await pool.query(query, params);
 
         let response = {
-            "codigo": rows[0].rolId,
+            "id": rows[0].rolId,
             "descripcion": rows[0].rolDescripcion,
             "nivel": rows[0].rolNivel
         };

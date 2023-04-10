@@ -5,7 +5,7 @@ export const insertProducto = async (req, res) => {
     let ok = await model.insertProducto(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -17,7 +17,7 @@ export const updateProducto = async (req, res) => {
     let ok = await model.updateProducto(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -29,7 +29,7 @@ export const deleteProducto = async (req, res) => {
     let ok = await model.deleteProducto(req.params.productoId);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -41,7 +41,7 @@ export const reactivarProducto = async (req, res) => {
     let ok = await model.reactivarProducto(req.params.productoId);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
