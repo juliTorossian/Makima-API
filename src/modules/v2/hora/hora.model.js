@@ -321,22 +321,36 @@ export const updateHora = async (hora) => {
         const [rows] = await pool.query(query, params);
         // console.log(rows);
 
+        const [del] = await pool.query("DELETE FROM hora WHERE horaRegistro = ?", [hora.id]);
+
+        // if (rows.affectedRows > 0){
+            const queryHora = "INSERT INTO hora(horaId, horaRegistro, horaEvento, horaInicio, horaFinal, horaTotal, horaObs) VALUES ?"
+            let paramsHora = [];
+            hora.horas.map( (h) => {
+                let aux = [cadenaAleatoria(24), hora.id, h.evento, h.inicio, h.final, h.total, h.observaciones]
+                paramsHora.push(aux)
+            })
+
+            const [rowsHora] = await pool.query(queryHora, [paramsHora]);
+            console.log(rowsHora);
+        // }
+
         // hora.horas.map( (h) => {
-        for (let i = 0; i < hora.horas.length; i++) {
-            const h = hora.horas[i];
+        // for (let i = 0; i < hora.horas.length; i++) {
+        //     const h = hora.horas[i];
             
-            const queryHora = "UPDATE hora SET horaEvento = ?, horaInicio = ?, horaFinal = ?, horaTotal = ?, horaObs = ? WHERE horaId = ?"
-            let paramsHora = [
-                h.evento, 
-                h.inicio, 
-                h.final, 
-                h.total, 
-                h.observaciones,
-                h.id 
-            ];
-            const [rowsHora] = await pool.query(queryHora, paramsHora);
-            // console.log(rowsHora);
-        }
+        //     const queryHora = "UPDATE hora SET horaEvento = ?, horaInicio = ?, horaFinal = ?, horaTotal = ?, horaObs = ? WHERE horaId = ?"
+        //     let paramsHora = [
+        //         h.evento, 
+        //         h.inicio, 
+        //         h.final, 
+        //         h.total, 
+        //         h.observaciones,
+        //         h.id 
+        //     ];
+        //     const [rowsHora] = await pool.query(queryHora, paramsHora);
+        //     // console.log(rowsHora);
+        // }
         return 1;
 
     }catch (err) {
@@ -374,12 +388,9 @@ export const deleteHora = async (registroId) => {
 
 
 const cadenaAleatoria = longitud => {
-    // Nota: no uses esta función para cosas criptográficamente seguras. 
     const banco = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let aleatoria = "";
     for (let i = 0; i < longitud; i++) {
-        // Lee más sobre la elección del índice aleatorio en:
-        // https://parzibyte.me/blog/2021/11/30/elemento-aleatorio-arreglo-javascript/
         aleatoria += banco.charAt(Math.floor(Math.random() * banco.length));
     }
     return aleatoria;

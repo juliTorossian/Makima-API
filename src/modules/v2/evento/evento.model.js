@@ -75,7 +75,7 @@ export const getEventos = async (page) => {
 
             const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
             const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
-            log(usuarioActual);
+            // log(usuarioActual);
             const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
 
             results.results.push({
@@ -99,6 +99,7 @@ export const getEventos = async (page) => {
                 "cerrado": row.eventoCerrado,
                 "propio": row.eventoPropio,
                 "prioridad": row.eventoPrioridad,
+                "fechaAlta": row.eventoFechaAlta,
                 "usuarioActual": {
                     "id": usuarioActual[0].usuarioId,
                     "usuario": usuarioActual[0].usuarioUsuario,
@@ -204,6 +205,7 @@ export const getEventosUsuario = async (page, usuario) => {
                 "cerrado": row.eventoCerrado,
                 "propio": row.eventoPropio,
                 "prioridad": row.eventoPrioridad,
+                "fechaAlta": row.eventoFechaAlta,
                 "usuarioActual": {
                     "id": usuarioActual[0].usuarioId,
                     "usuario": usuarioActual[0].usuarioUsuario,
@@ -303,6 +305,7 @@ export const getEventosRol = async (page, rol) => {
                 "cerrado": row.eventoCerrado,
                 "propio": row.eventoPropio,
                 "prioridad": row.eventoPrioridad,
+                "fechaAlta": row.eventoFechaAlta,
                 "usuarioActual": {
                     "id": usuarioActual[0].usuarioId,
                     "usuario": usuarioActual[0].usuarioUsuario,
@@ -741,6 +744,9 @@ export const avanzarEvento = async (eventoId, usuarioAsignado) => {
         let [ nEtapa ] = await pool.query("SELECT getEtapaSig_evento('" +datosEvento.tipo +"', " +datosEvento.etapa +") AS nuevaEtapa");
         nEtapa = nEtapa[0];
 
+        console.log("evento: " +eventoId);
+        console.log("usuario nuevo: " +usuarioAsignado);
+
         let query = 'CALL circular_evento(?, ?, ?)';
         let params = [eventoId, nEtapa.nuevaEtapa, usuarioAsignado];
 
@@ -769,8 +775,8 @@ export const retrocederEvento = async (eventoId, usuarioAsignado) => {
         let [ nEtapa ] = await pool.query("SELECT getEtapaAnt_evento('" +datosEvento.tipo +"', " +datosEvento.etapa +") AS nuevaEtapa");
         nEtapa = nEtapa[0];
 
-        // console.log(nEtapa);
-        // console.log(nEtapa.nuevaEtapa);
+        console.log("evento: " +eventoId);
+        console.log("usuario nuevo: " +usuarioAsignado);
 
         if (nEtapa.nuevaEtapa > 0){
             let query = 'CALL circular_evento(?, ?, ?)';
@@ -798,6 +804,9 @@ export const retrocederEvento = async (eventoId, usuarioAsignado) => {
 export const reasignarEvento = async (eventoId, usuarioAsignado) => {
     try{
         const datosEvento = await getDatosEvento(eventoId);
+
+        console.log("evento: " +eventoId);
+        console.log("usuario nuevo: " +usuarioAsignado);
 
         const query  = "CALL insert_audiEvento(?, ?, ?, ?, ?)"
         const params = [
@@ -1114,6 +1123,7 @@ export const getVidaEvento = async (eventoId) => {
 
         const query = ` SELECT 	(SELECT CONCAT(eventoTipo, "-", eventoNumero) FROM evento WHERE eventoId = ae.audiEEvento) AS evento,   \
                                 audiEEtapa,     \
+                                audiEUsuario,     \
                                 (SELECT t.tareaNombre FROM tarea AS t INNER JOIN evento_tarea AS et ON et.etTarea = t.tareaId WHERE et.etEvento = e.eventoTipo AND et.etEtapa = audiEEtapa) AS tarea,   \
                                 (SELECT usuarioUsuario FROM usuario WHERE usuarioId = ae.audiEUsuario) AS usuario,  \
                                 (SELECT usuarioColor FROM usuario WHERE usuarioId = ae.audiEUsuario) AS usuarioColor,  \
@@ -1132,7 +1142,23 @@ export const getVidaEvento = async (eventoId) => {
 
         const [rows] = await pool.query(query, params);
 
-        return rows;
+        let response = []
+        rows.map( (row) => {
+            let res = {
+                "etapa": row.audiEEtapa,
+                "tarea": row.tarea,
+                "usuario": {
+                    "id": row.audiEUsuario,
+                    "usuario": row.usuario,
+                    "color": row.color
+                },
+                "accion": row.audiEAccion,
+                "comentario": row.eAdComentario,
+                "fecha": row.audiEFecha
+            }
+            response.push(res);
+        });
+        return response;
 
     }catch (err){
         console.error(err);

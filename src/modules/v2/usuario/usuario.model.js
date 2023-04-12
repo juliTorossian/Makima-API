@@ -220,7 +220,7 @@ export const getUsuarios = async () => {
                 "mail": row.usuarioMail,
                 "usuario": row.usuarioUsuario,
                 "rol": {
-                    "codigo": row.usuarioRol,
+                    "id": row.usuarioRol,
                     "descripcion": row.rolDescripcion
                 },
                 "activo": row.usuarioActivo,
@@ -269,7 +269,7 @@ export const getUsuario = async (usuarioId) => {
                 "mail": rows[0].usuarioMail,
                 "usuario": rows[0].usuarioUsuario,
                 "rol": {
-                    "codigo": rows[0].usuarioRol,
+                    "id": rows[0].usuarioRol,
                     "descipcion": rows[0].rolDescripcion
                 },
                 "color": rows[0].usuarioColor,
@@ -319,7 +319,7 @@ export const getUsuarioToken = async (usuarioToken) => {
                 "mail": rows[0].usuarioMail,
                 "usuario": rows[0].usuarioUsuario,
                 "rol": {
-                    "codigo": rows[0].usuarioRol,
+                    "id": rows[0].usuarioRol,
                     "descipcion": rows[0].rolDescripcion
                 },
                 "color": rows[0].usuarioColor,
