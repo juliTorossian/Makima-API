@@ -19,6 +19,9 @@ import { pool } from '../../../db.js';
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
+import { getUsuario } from '../usuario/usuario.model.js';
+import { getComentarioTarea, getTareaAccionCompleta } from '../tarea/tarea.model.js';
+import { cadenaAleatoria } from '../../../helper/random.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -73,9 +76,13 @@ export const getEventos = async (page) => {
         for (let i = 0; i < rows[0].length; i++) {
             const row = rows[0][i];
 
-            const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-            const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
-            // log(usuarioActual);
+            // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
+            // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
+
+            const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
+            const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
+            const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
+            
             const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
 
             results.results.push({
@@ -100,18 +107,8 @@ export const getEventos = async (page) => {
                 "propio": row.eventoPropio,
                 "prioridad": row.eventoPrioridad,
                 "fechaAlta": row.eventoFechaAlta,
-                "usuarioActual": {
-                    "id": usuarioActual[0].usuarioId,
-                    "usuario": usuarioActual[0].usuarioUsuario,
-                    "rol": usuarioActual[0].usuarioRol,
-                    "color": usuarioActual[0].usuarioColor
-                },
-                "usuarioAlta": {
-                    "id": usuarioAlta[0].usuarioId,
-                    "usuario": usuarioAlta[0].usuarioUsuario,
-                    "rol": usuarioAlta[0].usuarioRol,
-                    "color": usuarioAlta[0].usuarioColor
-                },
+                "usuarioActual": usuarioActual,
+                "usuarioAlta": usuarioAlta,
                 "detalle": await getEventoDetalle(row.eventoId)
             })
         }
@@ -180,8 +177,13 @@ export const getEventosUsuario = async (page, usuario) => {
         for (let i = 0; i < rows[0].length; i++) {
             const row = rows[0][i];
 
-            const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-            const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
+            // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
+            // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
+
+            const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
+            const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
+            const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
+
             const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
 
             results.results.push({
@@ -206,18 +208,8 @@ export const getEventosUsuario = async (page, usuario) => {
                 "propio": row.eventoPropio,
                 "prioridad": row.eventoPrioridad,
                 "fechaAlta": row.eventoFechaAlta,
-                "usuarioActual": {
-                    "id": usuarioActual[0].usuarioId,
-                    "usuario": usuarioActual[0].usuarioUsuario,
-                    "rol": usuarioActual[0].usuarioRol,
-                    "color": usuarioActual[0].usuarioColor
-                },
-                "usuarioAlta": {
-                    "id": usuarioAlta[0].usuarioId,
-                    "usuario": usuarioAlta[0].usuarioUsuario,
-                    "rol": usuarioAlta[0].usuarioRol,
-                    "color": usuarioAlta[0].usuarioColor
-                },
+                "usuarioActual": usuarioActual,
+                "usuarioAlta": usuarioAlta,
                 "detalle": await getEventoDetalle(row.eventoId)
             })
         }
@@ -280,8 +272,13 @@ export const getEventosRol = async (page, rol) => {
         for (let i = 0; i < rows[0].length; i++) {
             const row = rows[0][i];
 
-            const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-            const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
+            // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
+            // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
+
+            const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
+            const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
+            const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
+            
             const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
 
             results.results.push({
@@ -306,18 +303,8 @@ export const getEventosRol = async (page, rol) => {
                 "propio": row.eventoPropio,
                 "prioridad": row.eventoPrioridad,
                 "fechaAlta": row.eventoFechaAlta,
-                "usuarioActual": {
-                    "id": usuarioActual[0].usuarioId,
-                    "usuario": usuarioActual[0].usuarioUsuario,
-                    "rol": usuarioActual[0].usuarioRol,
-                    "color": usuarioActual[0].usuarioColor
-                },
-                "usuarioAlta": {
-                    "id": usuarioAlta[0].usuarioId,
-                    "usuario": usuarioAlta[0].usuarioUsuario,
-                    "rol": usuarioAlta[0].usuarioRol,
-                    "color": usuarioAlta[0].usuarioColor
-                },
+                "usuarioActual": usuarioActual,
+                "usuarioAlta": usuarioAlta,
                 "detalle": await getEventoDetalle(row.eventoId)
             })
         }
@@ -347,9 +334,9 @@ export const getEvento = async (eventoId) => {
                                 (SELECT productoNombre FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'producto',               \
                                 (SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'usuarioAlta'        \
                         FROM evento as e                                                                                                        \
-                        INNER JOIN evento_tarea as tet ON tet.etEvento = e.eventoTipo                                                           \
-                        INNER JOIN tarea as ta ON ta.tareaId = tet.etTarea                                                                      \
-                        WHERE	e.eventoEtapa = tet.etEtapa                                                                                     \
+                        LEFT JOIN evento_tarea as tet ON tet.etEvento = e.eventoTipo                                                           \
+                        LEFT JOIN tarea as ta ON ta.tareaId = tet.etTarea                                                                      \
+                        WHERE	(e.eventoEtapa = tet.etEtapa OR ((SELECT te.tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) = true)) \
                         AND 	e.eventoId = ?                                                                                                 \
                     "
         const params = [eventoId]
@@ -358,9 +345,25 @@ export const getEvento = async (eventoId) => {
 
         log(rows[0]);
 
-        const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ rows[0].eventoUsuarioAlta ]);
-        const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ rows[0].eventoId ]);
-        const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ rows[0].eventoProducto ]);
+        // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
+        // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
+
+        const usuarioAlta = await getUsuario(rows[0].eventoUsuarioAlta);
+        const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ rows[0].eventoId ]);
+        const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
+
+        let producto = [];
+        if (rows[0].eventoProducto){
+            const [productoAux] = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ rows[0].eventoProducto ]);
+            producto = {
+                "id": productoAux[0].productoId,
+                "nombre": productoAux[0].productoNombre,
+                "modulo": productoAux[0].productoModulo,
+                "submodulo": productoAux[0].productoSubModulo,
+                "entorno": productoAux[0].productoEntorno,
+                "activo": productoAux[0].productoActivo
+            }
+        }
 
         let results = {
             "id": rows[0].eventoId,
@@ -373,29 +376,12 @@ export const getEvento = async (eventoId) => {
                 "sigla": rows[0].clienteSigla,
                 "nombre": rows[0].cliente
             },
-            "producto": {
-                "id": producto[0].productoId,
-                "nombre": producto[0].productoNombre,
-                "modulo": producto[0].productoModulo,
-                "submodulo": producto[0].productoSubModulo,
-                "entorno": producto[0].productoEntorno,
-                "activo": producto[0].productoActivo
-            },
+            "producto": producto,
             "cerrado": rows[0].eventoCerrado,
             "propio": rows[0].eventoPropio,
             "prioridad": rows[0].eventoPrioridad,
-            "usuarioActual": {
-                "id": usuarioActual[0].usuarioId,
-                "usuario": usuarioActual[0].usuarioUsuario,
-                "rol": usuarioActual[0].usuarioRol,
-                "color": usuarioActual[0].usuarioColor
-            },
-            "usuarioAlta": {
-                "id": usuarioAlta[0].usuarioId,
-                "usuario": usuarioAlta[0].usuarioUsuario,
-                "rol": usuarioAlta[0].usuarioRol,
-                "color": usuarioAlta[0].usuarioColor
-            },
+            "usuarioActual": usuarioActual,
+            "usuarioAlta": usuarioAlta,
             "detalle": await getEventoDetalle(rows[0].eventoId)
         }
 
@@ -464,10 +450,6 @@ export const getEventoDetalle = async (eventoId) => {
 
     try{
         const query = "SELECT 	e.*,    \
-                                u.usuarioId,    \
-                                u.usuarioUsuario,   \
-                                u.usuarioRol,   \
-                                u.usuarioColor,    \
                                 (SELECT tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) AS eventoPropio,   \
                                 (SELECT etTarea FROM evento_tarea AS et WHERE et.etEvento = e.eventoTipo AND et.etEtapa = e.eventoEtapa) AS tareaActual,    \
                                 (SELECT getEtapaSig_evento(e.eventoTipo, e.eventoEtapa)) AS sigEtapa,   \
@@ -495,10 +477,17 @@ export const getEventoDetalle = async (eventoId) => {
             if (rows[0].tareaActual){
                 const [actTareaAux] = await pool.query("SELECT * FROM tarea WHERE tareaId = ?", rows[0].tareaActual);
                 if (actTareaAux){
+                    // console.log("getComentarioTarea")
+                    // console.log(await getComentarioTarea(eventoId, actTareaAux[0].tareaClave, rows[0].eventoEtapa));
                     actTarea = {
                         "id": actTareaAux[0].tareaId,
                         "nombre": actTareaAux[0].tareaNombre,
-                        "rol": actTareaAux[0].tareaRol
+                        "rol": actTareaAux[0].tareaRol,
+                        "controla": actTareaAux[0].tareaControla,
+                        "clave": actTareaAux[0].tareaClave,
+                        "reqComentario": actTareaAux[0].tareaComentario,
+                        "completada": await getTareaAccionCompleta(eventoId, actTareaAux[0].tareaClave),
+                        "comentario": ((actTareaAux[0].tareaClave) || (actTareaAux[0].tareaComentario)) ? await getComentarioTarea(eventoId, actTareaAux[0].tareaClave, rows[0].eventoEtapa) : ""
                     }
                 }
             }
@@ -509,7 +498,10 @@ export const getEventoDetalle = async (eventoId) => {
                     sigTarea = {
                         "id": sigTareaAux[0].tareaId,
                         "nombre": sigTareaAux[0].tareaNombre,
-                        "rol": sigTareaAux[0].tareaRol
+                        "rol": sigTareaAux[0].tareaRol,
+                        "controla": sigTareaAux[0].tareaControla,
+                        "clave": sigTareaAux[0].tareaClave,
+                        "comentario": sigTareaAux[0].tareaComentario
                     }
                 }
             }
@@ -520,10 +512,15 @@ export const getEventoDetalle = async (eventoId) => {
                     antTarea = {
                         "id": antTareaAux[0].tareaId,
                         "nombre": antTareaAux[0].tareaNombre,
-                        "rol": antTareaAux[0].tareaRol
+                        "rol": antTareaAux[0].tareaRol,
+                        "controla": antTareaAux[0].tareaControla,
+                        "clave": antTareaAux[0].tareaClave,
+                        "comentario": antTareaAux[0].tareaComentario
                     }
                 }
             }
+            const [horas] = await pool.query("SELECT sum(horaTotal) AS total FROM registrohora INNER JOIN hora ON horaRegistro = regHoraId WHERE horaEvento = ? ORDER BY regHoraFecha, horaInicio", eventoId);
+            // console.log(horas);
 
             eventoDetalle = {
                                 "eventoCircuito": {
@@ -546,40 +543,8 @@ export const getEventoDetalle = async (eventoId) => {
                                 },
                                 "eventoHoras": {
                                     "estimacion": (rows[0].eventoEstimacion > 0) ? rows[0].eventoEstimacion : 0 ,
-                                    "total": 0
+                                    "total": (horas[0].total) ? horas[0].total : 0
                                 }
-                                // "evento": {
-                                //     "id": rows[0].eventoId,
-                                //     "tipo": rows[0].eventoTipo,
-                                //     "numero": rows[0].eventoNumero,
-                                //     "propio": rows[0].eventoPropio,
-                                //     "estimacion": rows[0].eventoEstimacion,
-                                //     "usuarioActual":
-                                //     {
-                                //         "id": rows[0].usuarioId,
-                                //         "usuario": rows[0].usuarioUsuario,
-                                //         "rol": rows[0].usuarioRol,
-                                //         "color": rows[0].usuarioColor
-                                //     },
-                                //     "cerrado": rows[0].eventoCerrado
-                                // },
-                                // "circuito":{
-                                //     "act":{
-                                //         "etapa": rows[0].eventoEtapa,
-                                //         "tarea": rows[0].tareaActual
-                                //     },
-                                //     "sig":{
-                                //         "tiene": (rows[0].sigEtapa > 0),
-                                //         "etapa": rows[0].sigEtapa,
-                                //         "tarea": rows[0].sigTarea
-                                //     },
-                                //     "ant":{
-                                //         "tiene": (rows[0].antEtapa > 0),
-                                //         "etapa": rows[0].antEtapa,
-                                //         "tarea": rows[0].antTarea
-                                //     },
-                                //     "totalEtapas": rows[0].totalEtapas
-                                // }
                             }
         }
 
@@ -617,7 +582,7 @@ export const insertEvento = async (nEvento) => {
 
     try{
 
-        log(nEvento);
+        // log(nEvento);
 
         const query = "CALL insert_eventos(?,?,?,?,?,?)";
         let params = [
@@ -744,15 +709,18 @@ export const avanzarEvento = async (eventoId, usuarioAsignado) => {
         let [ nEtapa ] = await pool.query("SELECT getEtapaSig_evento('" +datosEvento.tipo +"', " +datosEvento.etapa +") AS nuevaEtapa");
         nEtapa = nEtapa[0];
 
-        console.log("evento: " +eventoId);
-        console.log("usuario nuevo: " +usuarioAsignado);
+        // console.log("evento: " +eventoId);
 
         let query = 'CALL circular_evento(?, ?, ?)';
         let params = [eventoId, nEtapa.nuevaEtapa, usuarioAsignado];
 
         const [rows] = await pool.query(query, params);
 
-        // console.log(rows);
+        const nuevosDatosEvento = await getDatosEvento(eventoId);
+        [ nEtapa ] = await pool.query("SELECT getEtapaSig_evento('" +nuevosDatosEvento.tipo +"', " +nuevosDatosEvento.etapa +") AS nuevaEtapa");
+        if (nEtapa[0].nuevaEtapa == null){
+            cerrarEvento(eventoId, usuarioAsignado);
+        }
 
         return 1;
     
@@ -775,8 +743,8 @@ export const retrocederEvento = async (eventoId, usuarioAsignado) => {
         let [ nEtapa ] = await pool.query("SELECT getEtapaAnt_evento('" +datosEvento.tipo +"', " +datosEvento.etapa +") AS nuevaEtapa");
         nEtapa = nEtapa[0];
 
-        console.log("evento: " +eventoId);
-        console.log("usuario nuevo: " +usuarioAsignado);
+        // console.log("evento: " +eventoId);
+        // console.log("usuario nuevo: " +usuarioAsignado);
 
         if (nEtapa.nuevaEtapa > 0){
             let query = 'CALL circular_evento(?, ?, ?)';
@@ -805,8 +773,8 @@ export const reasignarEvento = async (eventoId, usuarioAsignado) => {
     try{
         const datosEvento = await getDatosEvento(eventoId);
 
-        console.log("evento: " +eventoId);
-        console.log("usuario nuevo: " +usuarioAsignado);
+        // console.log("evento: " +eventoId);
+        // console.log("usuario nuevo: " +usuarioAsignado);
 
         const query  = "CALL insert_audiEvento(?, ?, ?, ?, ?)"
         const params = [
@@ -819,7 +787,7 @@ export const reasignarEvento = async (eventoId, usuarioAsignado) => {
 
         const [rows] = await pool.query(query, params);
 
-        console.log(rows);
+        // console.log(rows);
 
         return rows.affectedRows
 
@@ -835,14 +803,40 @@ export const reasignarEvento = async (eventoId, usuarioAsignado) => {
  *i @param eventoId:    id del evento a estimar
  *i        estimacion:  cantidad de horas que se estiman
 */
-export const estimarEvento = async (eventoId, estimacion) => {
+export const estimarEvento = async (eventoId, estimacion, comentario) => {
     try{
         const query  = "UPDATE evento SET eventoEstimacion = ? WHERE eventoId = ?"
         const params = [estimacion, eventoId];
 
         const [rows] = await pool.query(query, params);
 
-        return rows.affectedRows
+        const detalle = await getEventoDetalle(eventoId);
+
+        /*
+            INSERT INTO eventoadicion(eAdId, eAdEvento, eAdTipo     , eAdComentario, eAdAdjFile, eAdPathFile, eAdNombreFile, eAdMimeFile, eAdFecha)
+            VALUES 					 (@id  , eventoId , "COMENTARIO", comentario   , tieneFile, pathFile, nameFile, mimeFile, now());
+        */
+
+        let comentarioId = null;
+        console.log("comentario: " +comentario);
+        if (comentario){
+            comentarioId = cadenaAleatoria(24);
+
+            const queryComm = 'INSERT INTO eventoadicion(eAdId, eAdEvento, eAdTipo , eAdComentario, eAdAdjFile, eAdFecha) VALUES (?, ?, "COMENTARIO", ?, 0, Now())'
+            const paramsComm = [
+                comentarioId,
+                eventoId,
+                comentario
+            ];
+
+            const [comm] = await pool.query(queryComm, paramsComm);
+        }
+
+        console.log("comentarioId: " +comentarioId);
+        const [audi] = await pool.query("CALL insert_audiEvento(?, ?, (SELECT getUsuarioActivoEvento(?) ), ?, ?)", [eventoId, detalle.eventoCircuito.act.etapa, eventoId, comentarioId, detalle.eventoCircuito.act.tarea.clave])
+        // console.log(audi);
+
+        return 1
     
     }catch (err){
         console.error(err);
@@ -957,12 +951,12 @@ export const comentarEventoArchivo = async (archivo) => {
    
     try{
 
-        console.log(__dirname);
+        // console.log(__dirname);
         let defaultPath = path.normalize(`${__dirname}\\..\\..\\temp\\`)
 
         let pathCompleto = defaultPath + archivo.originalname;
 
-        console.log(pathCompleto);
+        // console.log(pathCompleto);
         // console.log(archivo);
         
         let uploadPath;
@@ -1270,7 +1264,7 @@ export const cerrarEvento = async (eventoId, usuario) => {
 
         const [rows] = await pool.query(query, params);
 
-        console.log(rows);
+        // console.log(rows);
 
         return 1;
 
@@ -1280,7 +1274,6 @@ export const cerrarEvento = async (eventoId, usuario) => {
     }
 
 }
-
 
 
 // SUBS

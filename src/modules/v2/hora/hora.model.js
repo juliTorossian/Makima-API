@@ -141,6 +141,65 @@ export const getHorasUsuario = async (usuarioId) => {
     }
 }
 
+export const getHorasGenerales = async () => {
+
+    try{
+
+        const query = "SELECT * FROM registrohora INNER JOIN usuario ON usuarioId = regHoraUsuario group by regHoraUsuario";
+        let params = []
+
+        const [rows] = await pool.query(query, params);
+        // console.log(rows)
+
+        /*
+        {
+            "id":
+            "nombre":
+            "apellido":
+            "usuario":
+            "registros": [
+                "regId":
+                "regFecha":
+                "regTotal":
+                "horas": [
+                    "evento": {
+                        "tipo": 
+                        "numero": 
+                    }
+                    "inicio":
+                    "final":
+                    "total":
+                    "obs":
+                ]
+            ]
+        }
+        */
+
+        let response = []
+
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+
+            const registros = await getHorasUsuario(row.regHoraUsuario);
+
+            let responseAux = {
+                "id": row.regHoraUsuario,
+                "nombre": row.usuarioNombre,
+                "apellido": row.usuarioApellido,
+                "usuario": row.usuarioUsuario,
+                "registros": registros
+            }
+            response.push(responseAux);
+        }
+
+        return response;
+
+    }catch (err) {
+        console.error(err);
+        return null;
+    }
+}
+
 /** 
  ** Busca los registros de horas segun los filtros
  *
@@ -251,7 +310,7 @@ export const insertHora = async (hora) => {
     **/
 
     try{
-        console.log(hora)
+        // console.log(hora)
         const regHoraId = cadenaAleatoria(24);
 
         const query = "INSERT INTO registroHora(regHoraId, regHoraUsuario, regHoraFecha) VALUES (?, ?, ?)";
@@ -267,7 +326,7 @@ export const insertHora = async (hora) => {
             const queryHora = "INSERT INTO hora(horaId, horaRegistro, horaEvento, horaInicio, horaFinal, horaTotal, horaObs) VALUES ?"
             let paramsHora = [];
             hora.horas.map( (h) => {
-                let aux = [cadenaAleatoria(24), regHoraId, h.evento, h.inicio, h.final, h.total, h.observaciones]
+                let aux = [cadenaAleatoria(24), regHoraId, h.evento.id, h.inicio, h.final, h.total, h.observaciones]
                 paramsHora.push(aux)
             })
 
@@ -327,12 +386,12 @@ export const updateHora = async (hora) => {
             const queryHora = "INSERT INTO hora(horaId, horaRegistro, horaEvento, horaInicio, horaFinal, horaTotal, horaObs) VALUES ?"
             let paramsHora = [];
             hora.horas.map( (h) => {
-                let aux = [cadenaAleatoria(24), hora.id, h.evento, h.inicio, h.final, h.total, h.observaciones]
+                let aux = [cadenaAleatoria(24), hora.id, h.evento.id, h.inicio, h.final, h.total, h.observaciones]
                 paramsHora.push(aux)
             })
 
             const [rowsHora] = await pool.query(queryHora, [paramsHora]);
-            console.log(rowsHora);
+            // console.log(rowsHora);
         // }
 
         // hora.horas.map( (h) => {

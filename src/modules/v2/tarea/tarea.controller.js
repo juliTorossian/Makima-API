@@ -86,6 +86,21 @@ export const getTareasEvento = async (req, res) => {
     }
 }
 
+export const getTareaAccionCompleta = async (req, res) => {
+
+    console.log(req.params.eventoId);
+    console.log(req.query.accion);
+
+    let ok = await model.getTareaAccionCompleta(req.params.eventoId, req.query.accion);
+
+    if (ok!=undefined){
+        res.status(200).json(ok);
+    }else{
+        res.status(404).send('error');
+    }
+
+}
+
 // export const getTareasNoEvento = async (req, res) => {
 //     const tareas = await model.getTareasNoEvento(req.params.eventoId);
 

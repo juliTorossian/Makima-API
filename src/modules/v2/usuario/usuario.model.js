@@ -24,25 +24,33 @@ export const insertUsuario = async (usuario) => {
         "mail": "mail@mail.com",    //* mail del usuario
         "usuario": "usuario",       //* usuario del usuario
         "password": 123,            //* contraseña del usuario
-        "rol": "ADMIN",             //* rol del usuario
-        "color": "#D677A1"          //* color de usuario 
+        "color": "#D677A1",         //* color de usuario 
+        "rol": {
+            rol1, rol2, rol3
+        }                           //* rol del usuario
     }
     **/
 
     try{
-        const query = 'INSERT INTO usuario(usuarioId, usuarioNombre, usuarioApellido, usuarioMail, usuarioUsuario, usuarioPass, usuarioRol, usuarioActivo, usuarioColor) VALUES ((SELECT getNewId()), ?, ?, ?, ?, ?, ?, true, ?)';
+
+        const usuarioId = cadenaAleatoria(24);
+
+        const query = 'INSERT INTO usuario(usuarioId, usuarioNombre, usuarioApellido, usuarioMail, usuarioUsuario, usuarioPass, usuarioActivo, usuarioColor) VALUES (?, ?, ?, ?, ?, ?, true, ?)';
         let params = [
+            usuarioId,
             usuario.nombre,
             usuario.apellido,
             usuario.mail,
             usuario.usuario,
             usuario.password,
-            usuario.rol,
             usuario.color
         ];
 
         const [rows] = await pool.query(query, params);
-        return rows.affectedRows;
+
+        await insertRoles(usuarioId, usuario.rol);
+
+        return 1;
 
     }catch (err){
         console.error(err);
@@ -66,8 +74,10 @@ export const updateUsuario = async (usuario) => {
         "mail": "mail@mail.com",    //* mail del usuario
         "usuario": "usuario",       //* usuario del usuario
         "password": 123,            //* contraseña del usuario
-        "rol": "ADMIN",             //* rol del usuario
-        "color": "#D677A1"          //* color de usuario 
+        "color": "#D677A1",         //* color de usuario 
+        "rol": {
+            rol1, rol2
+        }             //* rol del usuario
     }
     **/
 
@@ -98,10 +108,10 @@ export const updateUsuario = async (usuario) => {
             atts.push("usuarioPass = ?");
             params.push(usuario.password);
         }
-        if (usuario.rol){
-            atts.push("usuarioRol = ?");
-            params.push(usuario.rol);
-        }
+        // if (usuario.rol){
+        //     atts.push("usuarioRol = ?");
+        //     params.push(usuario.rol);
+        // }
         if (usuario.color){
             atts.push("usuarioColor = ?");
             params.push(usuario.color);
@@ -118,10 +128,14 @@ export const updateUsuario = async (usuario) => {
 
         query += " WHERE usuarioId = ?";
 
-        console.log(query);
+        // console.log(query);
 
         const [rows] = await pool.query(query, params);
-        console.log(rows);
+        // console.log(rows);
+
+        await pool.query("DELETE FROM usuarioRol WHERE usuRolUsuario = ?", [ usuario.id ])
+        await insertRoles(usuario.id, usuario.rol);
+
         return 1;
 
     }catch (err){
@@ -179,7 +193,7 @@ export const existeUsuario = async (usuario, password) => {
         
         if (rows[0] != undefined){
             token = cadenaAleatoria(18);
-            console.log(token);
+            // console.log(token);
 
             let queryB = 'UPDATE usuario SET usuarioSesionToken = ?, usuarioFchUltLogin = now() WHERE usuarioId = ?'
             let paramsB = [
@@ -205,28 +219,46 @@ export const existeUsuario = async (usuario, password) => {
 export const getUsuarios = async () => {
 
     try{
-        const query = 'SELECT *, (SELECT rolDescripcion FROM rol WHERE rolId = usuarioRol) AS rolDescripcion FROM usuario';
-        let params = [
-        ];
+        const query = 'SELECT * FROM usuario';
+        let params = [];
 
         const [rows] = await pool.query(query, params);
+        // console.log(rows)
 
         let response = [];
-        rows.map((row) => {
+        // rows.map((row) => {
+            
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            // console.log(row);
+
+            const [ roles ] = await pool.query("SELECT rolId, rolDescripcion FROM usuariorol INNER JOIN rol ON rolId = usuRolRol WHERE usuRolUsuario = ?", [ row.usuarioId ])
+            // console.log(roles);
+            let rol = [];
+            roles.map( (r) => {
+                // console.log(r);
+                rol.push({
+                    "id": r.rolId,
+                    "descripcion": r.rolDescripcion
+                })
+            });
+
             response.push({
                 "id": row.usuarioId,
                 "nombre": row.usuarioNombre,
                 "apellido": row.usuarioApellido,
                 "mail": row.usuarioMail,
                 "usuario": row.usuarioUsuario,
-                "rol": {
-                    "id": row.usuarioRol,
-                    "descripcion": row.rolDescripcion
-                },
                 "activo": row.usuarioActivo,
-                "color": row.usuarioColor
+                "color": row.usuarioColor,
+                "rol": rol
             });
-        });
+            // "rol": {
+            //     "id": row.usuarioRol,
+            //     "descripcion": row.rolDescripcion
+            // },
+        };
+
         return response;
 
     }catch (err){
@@ -250,8 +282,6 @@ export const getUsuario = async (usuarioId) => {
                                usuarioApellido, \
                                usuarioMail, \
                                usuarioUsuario, \
-                               usuarioRol, \
-                               (SELECT rolDescripcion FROM rol WHERE rolId = usuarioRol) AS rolDescripcion, \
                                usuarioColor, \
                                usuarioActivo \
                         FROM usuario    \
@@ -261,6 +291,16 @@ export const getUsuario = async (usuarioId) => {
         ];
         const [rows] = await pool.query(query, params);
 
+        const [ roles ] = await pool.query("SELECT rolId, rolDescripcion FROM usuariorol INNER JOIN rol ON rolId = usuRolRol WHERE usuRolUsuario = ?", [ rows[0].usuarioId ])
+        let rol = [];
+        roles.map( (r) => {
+            // console.log(r);
+            rol.push({
+                "id": r.rolId,
+                "descripcion": r.rolDescripcion
+            })
+        });
+
         if (rows[0]){
             usuario = {
                 "id": rows[0].usuarioId,
@@ -268,10 +308,7 @@ export const getUsuario = async (usuarioId) => {
                 "apellido": rows[0].usuarioApellido,
                 "mail": rows[0].usuarioMail,
                 "usuario": rows[0].usuarioUsuario,
-                "rol": {
-                    "id": rows[0].usuarioRol,
-                    "descipcion": rows[0].rolDescripcion
-                },
+                "rol": rol,
                 "color": rows[0].usuarioColor,
                 "activo": rows[0].usuarioActivo
             }
@@ -300,8 +337,6 @@ export const getUsuarioToken = async (usuarioToken) => {
                                usuarioApellido, \
                                usuarioMail, \
                                usuarioUsuario, \
-                               usuarioRol, \
-                               (SELECT rolDescripcion FROM rol WHERE rolId = usuarioRol) AS rolDescripcion, \
                                usuarioColor, \
                                usuarioActivo \
                         FROM usuario    \
@@ -311,6 +346,16 @@ export const getUsuarioToken = async (usuarioToken) => {
         ];
         const [rows] = await pool.query(query, params);
 
+        const [ roles ] = await pool.query("SELECT rolId, rolDescripcion FROM usuariorol INNER JOIN rol ON rolId = usuRolRol WHERE usuRolUsuario = ?", [ rows[0].usuarioId ])
+        let rol = [];
+        roles.map( (r) => {
+            // console.log(r);
+            rol.push({
+                "id": r.rolId,
+                "descripcion": r.rolDescripcion
+            })
+        });
+
         if (rows[0]){
             usuario = {
                 "id": rows[0].usuarioId,
@@ -318,10 +363,7 @@ export const getUsuarioToken = async (usuarioToken) => {
                 "apellido": rows[0].usuarioApellido,
                 "mail": rows[0].usuarioMail,
                 "usuario": rows[0].usuarioUsuario,
-                "rol": {
-                    "id": rows[0].usuarioRol,
-                    "descipcion": rows[0].rolDescripcion
-                },
+                "rol": rol,
                 "color": rows[0].usuarioColor,
                 "activo": rows[0].usuarioActivo
             }
@@ -395,17 +437,70 @@ export const getUsuarioDetalle = async (usuarioId) => {
 export const getUsuariosRol = async (rol) => {
 
     try{
-        const query = 'SELECT *  FROM usuario WHERE usuarioActivo = true AND usuarioRol = ?';
+        const query = 'SELECT * FROM usuarioRol INNER JOIN usuario ON usuarioId = usuRolUsuario WHERE usuRolRol = ?';
         let params = [
             rol
         ];
 
         const [rows] = await pool.query(query, params);
-        return rows;
+        // console.log(rows);
+        let response = [];
+            
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+
+            const [ roles ] = await pool.query("SELECT rolId, rolDescripcion FROM usuariorol INNER JOIN rol ON rolId = usuRolRol WHERE usuRolUsuario = ?", [ row.usuarioId ])
+            let rol = [];
+            roles.map( (r) => {
+                // console.log(r);
+                rol.push({
+                    "id": r.rolId,
+                    "descripcion": r.rolDescripcion
+                })
+            });
+
+            response.push({
+                "id": row.usuarioId,
+                "nombre": row.usuarioNombre,
+                "apellido": row.usuarioApellido,
+                "mail": row.usuarioMail,
+                "usuario": row.usuarioUsuario,
+                "activo": row.usuarioActivo,
+                "color": row.usuarioColor,
+                "rol": rol
+            });
+            // "rol": {
+            //     "id": row.usuarioRol,
+            //     "descripcion": row.rolDescripcion
+            // },
+        };
+
+        return response;
 
     }catch (err){
         console.error(err);
         return 0;
+    }
+
+}
+
+const insertRoles = async (usuarioId, roles) => {
+
+    try {
+
+        const queryRol = 'INSERT INTO usuarioRol(usuRolUsuario, usuRolRol) VALUES ?';
+        let paramsRol = [];
+
+        roles.map( (r) => {
+            let aux = [usuarioId, r]
+            paramsRol.push(aux);
+        })
+        const [rowsRol] = await pool.query(queryRol, [paramsRol]);
+
+        // console.log(rowsRol);
+
+    } catch (err) {
+        console.log(err);
     }
 
 }

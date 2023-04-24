@@ -24,7 +24,10 @@ export const getTareas = async () => {
             response.push({
                 "id": row.tareaId,
                 "nombre": row.tareaNombre,
-                "rol": row.tareaRol
+                "rol": row.tareaRol,
+                "controla": row.tareaControla,
+                "clave": row.tareaClave,
+                "comentario": row.tareaComentario
             });
         });
         return response;
@@ -53,7 +56,10 @@ export const getTarea = async (id) => {
             response.push({
                 "id": row.tareaId,
                 "nombre": row.tareaNombre,
-                "rol": row.tareaRol
+                "rol": row.tareaRol,
+                "controla": row.tareaControla,
+                "clave": row.tareaClave,
+                "comentario": row.tareaComentario
             });
         });
         return response;
@@ -80,10 +86,13 @@ export const insertTarea = async (nTarea) => {
     **/
 
     try{
-        const query = 'INSERT INTO tarea(tareaId, tareaNombre, tareaRol) VALUES ((SELECT getNewId()), ?, ?)';
+        const query = 'INSERT INTO tarea(tareaId, tareaNombre, tareaRol, tareaControla, tareaClave, tareaComentario) VALUES ((SELECT getNewId()), ?, ?, ?, ?, ?)';
         let params = [
             nTarea.nombre,
-            nTarea.rol
+            nTarea.rol,
+            nTarea.controla,
+            nTarea.clave,
+            nTarea.comentario
         ];
 
         const [rows] = await pool.query(query, params);
@@ -113,11 +122,14 @@ export const updateTarea = async (tareaM) => {
     **/
 
     try{
-
-        const query = "UPDATE tarea SET tareaNombre = ?, tareaRol = ? WHERE tareaId = ?";
+        console.log(tareaM)
+        const query = "UPDATE tarea SET tareaNombre = ?, tareaRol = ?, tareaControla = ?, tareaClave = ?, tareaComentario = ? WHERE tareaId = ?";
         let params = [
             tareaM.nombre,
             tareaM.rol,
+            tareaM.controla,
+            tareaM.clave,
+            tareaM.comentario,
             tareaM.id
         ];
         const [rows] = await pool.query(query, params);
@@ -176,7 +188,10 @@ export const getTareasRol = async (rol) => {
             response.push({
                 "id": row.tareaId,
                 "nombre": row.tareaNombre,
-                "rol": row.tareaRol
+                "rol": row.tareaRol,
+                "controla": row.tareaControla,
+                "clave": row.tareaClave,
+                "comentario": row.tareaComentario
             });
         });
         return response;
@@ -228,6 +243,68 @@ export const getTareasNoEvento = async (eventoId) => {
 
         const [rows] = await pool.query(query, params);
         return rows;
+    
+    }catch (err){
+        console.error(err);
+        return 0;
+    }
+};
+
+/** 
+ ** Busca todas las tareas que NO estan asignadas al evento
+ *
+ *i @param eventoId: id del evento a consultar
+*/
+export const getTareaAccionCompleta = async (eventoId, accion) => {
+
+    try{
+        let query = 'SELECT * FROM gacieventos.audievento WHERE audiEEvento = ? AND audiEAccion = ?';
+        let params = [
+            eventoId,
+            accion
+        ];
+
+        const [rows] = await pool.query(query, params);
+
+        // console.log(rows[0]);
+        // console.log(rows[0]!=undefined);
+        return (rows[0]!=undefined);
+    
+    }catch (err){
+        console.error(err);
+        return 0;
+    }
+};
+export const getComentarioTarea = async (eventoId, clave, etapa) => {
+
+    try{
+
+        /*
+            SELECT * FROM gacieventos.audievento WHERE audiEEVento = "58ae366952ccff746c9814ee" AND audiEAccion = 'ESTIMAR';
+
+            SELECT * FROM gacieventos.audievento WHERE audiEEVento = "58ae366952ccff746c9814ee" AND audiEEtapa = 5 AND audiEAccion = 'AVANZO';
+        */
+
+        let query = "";
+        let params = [];
+        if (clave){
+            query = 'SELECT *, (SELECT eAdComentario FROM gacieventos.eventoadicion WHERE eAdId = ae.audiEAdi) AS comentario FROM audievento AS ae WHERE audiEEVento = ? AND audiEAccion = ?'
+            params.push(eventoId),
+            params.push(clave);
+        }else{
+            query = 'SELECT *, (SELECT eAdComentario FROM gacieventos.eventoadicion WHERE eAdId = ae.audiEAdi) AS comentario FROM audievento AS ae WHERE audiEEVento = ? AND audiEEtapa = ? AND audiEAccion = "AVANZO"'
+            params.push(eventoId),
+            params.push(etapa);
+        }
+
+        const [rows] = await pool.query(query, params);
+
+        console.log(rows[0]);
+        console.log(rows[0].comentario);
+
+        const comentario = rows[0].comentario;
+
+        return comentario;
     
     }catch (err){
         console.error(err);

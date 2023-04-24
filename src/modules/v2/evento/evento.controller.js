@@ -130,7 +130,7 @@ export const reasignarEvento = async (req, res) => {
 }
 
 export const estimarEvento = async (req, res) => {
-    const ok = await model.estimarEvento(req.params.evento, req.query.estimado);
+    const ok = await model.estimarEvento(req.params.evento, req.query.estimado, req.query.comentario);
 
     if (ok > 0){
         res.json("ok");

@@ -57,8 +57,18 @@ export const getHora = async (req, res) => {
 }
 
 export const getHorasUsuario = async (req, res) => {
-    console.log(req.params.usuarioId);
+    // console.log(req.params.usuarioId);
     const horas = await model.getHorasUsuario(req.params.usuarioId);
+
+    if (!(horas == null)){
+        res.json(horas);
+    }else{
+        res.status(404).send('error');
+    }
+}
+
+export const getHorasGeneral = async (req, res) => {
+    const horas = await model.getHorasGenerales();
 
     if (!(horas == null)){
         res.json(horas);
