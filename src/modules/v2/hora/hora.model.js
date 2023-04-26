@@ -145,6 +145,8 @@ export const getHorasGenerales = async () => {
 
     try{
 
+        // await pool.query("SET GLOBAL sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'")
+
         const query = "SELECT * FROM registrohora INNER JOIN usuario ON usuarioId = regHoraUsuario group by regHoraUsuario";
         let params = []
 

@@ -101,7 +101,7 @@ export const cerrarEvento = async (req, res) => {
 }
 
 export const avanzarEvento = async (req, res) => {
-    const ok = await model.avanzarEvento(req.params.evento, req.query.usuario);
+    const ok = await model.avanzarEvento(req.params.evento, req.query.usuario, req.query.comentario);
 
     if (ok > 0){
         res.json("ok");
@@ -110,7 +110,7 @@ export const avanzarEvento = async (req, res) => {
     }
 }
 export const retrocederEvento = async (req, res) => {
-    const ok = await model.retrocederEvento(req.params.evento, req.query.usuario);
+    const ok = await model.retrocederEvento(req.params.evento, req.query.usuario, req.query.comentario);
 
     if (ok > 0){
         res.json("ok");

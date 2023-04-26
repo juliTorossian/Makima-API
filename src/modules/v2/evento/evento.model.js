@@ -701,7 +701,7 @@ export const deleteEvento = async (eventoId, usuario) => {
  *i @param eventoId:        id del evento a avanzar
  *i        usuarioAsignado: id del usuario que se asigna en la nueva etapa
 */
-export const avanzarEvento = async (eventoId, usuarioAsignado) => {
+export const avanzarEvento = async (eventoId, usuarioAsignado, comentario) => {
 
     try{
         const datosEvento = await getDatosEvento(eventoId);
@@ -710,9 +710,14 @@ export const avanzarEvento = async (eventoId, usuarioAsignado) => {
         nEtapa = nEtapa[0];
 
         // console.log("evento: " +eventoId);
+        // console.log("comentario avanzo: " +comentario);
 
-        let query = 'CALL circular_evento(?, ?, ?)';
-        let params = [eventoId, nEtapa.nuevaEtapa, usuarioAsignado];
+        comentario = (comentario) ? comentario : null;
+
+        // console.log("comm: " +comentario);
+
+        let query = 'CALL circular_evento(?, ?, ?, ?)';
+        let params = [eventoId, nEtapa.nuevaEtapa, usuarioAsignado, comentario];
 
         const [rows] = await pool.query(query, params);
 
@@ -736,7 +741,7 @@ export const avanzarEvento = async (eventoId, usuarioAsignado) => {
  *i @param eventoId:        id del evento a retroceder
  *i        usuarioAsigando: id del usuario que se asigna en la nueva etapa
 */
-export const retrocederEvento = async (eventoId, usuarioAsignado) => {
+export const retrocederEvento = async (eventoId, usuarioAsignado, comentario) => {
     try{
         const datosEvento = await getDatosEvento(eventoId);
 
@@ -747,8 +752,13 @@ export const retrocederEvento = async (eventoId, usuarioAsignado) => {
         // console.log("usuario nuevo: " +usuarioAsignado);
 
         if (nEtapa.nuevaEtapa > 0){
-            let query = 'CALL circular_evento(?, ?, ?)';
-            let params = [eventoId, nEtapa.nuevaEtapa, usuarioAsignado]
+
+            // console.log("comentario avanzo: " +comentario);
+            comentario = (comentario) ? comentario : null;
+            // console.log("comm: " +comentario);
+
+            let query = 'CALL circular_evento(?, ?, ?, ?)';
+            let params = [eventoId, nEtapa.nuevaEtapa, usuarioAsignado, comentario]
             
             const [rows] = await pool.query(query, params);
     
@@ -818,7 +828,7 @@ export const estimarEvento = async (eventoId, estimacion, comentario) => {
         */
 
         let comentarioId = null;
-        console.log("comentario: " +comentario);
+        // console.log("comentario: " +comentario);
         if (comentario){
             comentarioId = cadenaAleatoria(24);
 
@@ -832,7 +842,7 @@ export const estimarEvento = async (eventoId, estimacion, comentario) => {
             const [comm] = await pool.query(queryComm, paramsComm);
         }
 
-        console.log("comentarioId: " +comentarioId);
+        // console.log("comentarioId: " +comentarioId);
         const [audi] = await pool.query("CALL insert_audiEvento(?, ?, (SELECT getUsuarioActivoEvento(?) ), ?, ?)", [eventoId, detalle.eventoCircuito.act.etapa, eventoId, comentarioId, detalle.eventoCircuito.act.tarea.clave])
         // console.log(audi);
 
@@ -865,7 +875,7 @@ export const comentarEvento = async (comentario, archivo) => {
 
     try{
 
-        console.log(archivo);
+        // console.log(archivo);
 
         let pathFile = null;
         let nameFile = null;
