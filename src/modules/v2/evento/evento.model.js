@@ -13,7 +13,6 @@
 //TOOK VER COMENTARIOS DE UN EVENTO
 //TOOKVER VIDA DEL EVENTO
 
-import { log } from 'console';
 import { pool } from '../../../db.js';
 
 import * as fs from 'fs';
@@ -342,8 +341,6 @@ export const getEvento = async (eventoId) => {
         const params = [eventoId]
 
         const [rows] = await pool.query(query, params);
-
-        log(rows[0]);
 
         // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
         // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
@@ -875,6 +872,9 @@ export const comentarEvento = async (comentario, archivo) => {
 
     try{
 
+        // console.log("(875:evento.Model)");
+
+        // console.log(comentario);
         // console.log(archivo);
 
         let pathFile = null;
@@ -902,97 +902,6 @@ export const comentarEvento = async (comentario, archivo) => {
         const [rows] = await pool.query(query, params);
 
         // const eventoId = rows[0][0].eventoId;
-
-        return 1;
-
-    }catch (err){
-        console.error(err);
-        return 0;
-    }
-
-}
-
-/** 
- ** Comenta el evento
- *
- *i @param comentario: comentario realizado al evento, con usuario
-*/
-// export const comentarEvento = async (comentario) => {
-     
-//     /** 
-//     * i Objeto que tiene que llegar por parametro
-//     {
-//         "eventoId": id,            //* id del evento
-//         "comentario": "??",        //* comentario al evento
-//         "usuario": "usuarioId",    //* usuario que realizo el comentario
-//         "tieneFile": false,        //* el comentario tiene algun adjunto
-//         "file": "base64"           //* base64 del archivo adjunto
-//     }
-//     **/
-
-//     try{
-
-//         const query = "CALL comentar_evento(?,?,?)";
-//         let params = [
-//             comentario.eventoId,
-//             comentario.comentario,
-//             comentario.usuario
-//         ]
-
-//         const [rows] = await pool.query(query, params);
-
-//         // const eventoId = rows[0][0].eventoId;
-
-//         return 1;
-
-//     }catch (err){
-//         console.error(err);
-//         return 0;
-//     }
-
-// }
-
-/** 
- ** Comenta el evento
- *
- *i @param comentario: comentario realizado al evento, con usuario
-*/
-export const comentarEventoArchivo = async (archivo) => {
-   
-    try{
-
-        // console.log(__dirname);
-        let defaultPath = path.normalize(`${__dirname}\\..\\..\\temp\\`)
-
-        let pathCompleto = defaultPath + archivo.originalname;
-
-        // console.log(pathCompleto);
-        // console.log(archivo);
-        
-        let uploadPath;
-
-        // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-        
-        // uploadPath = __dirname + '/somewhere/on/your/server/' + sampleFile.name;
-
-        // Use the mv() method to place the file somewhere on your server
-        // sampleFile.mv(uploadPath, function(err) {
-        //     if (err)
-        //     return res.status(500).send(err);
-
-        //     res.send('File uploaded!');
-        // });
-
-        // const query = "CALL comentar_evento(?,?,?)";
-        // let params = [
-        //     comentario.eventoId,
-        //     comentario.comentario,
-        //     comentario.usuario
-        // ]
-
-        // const [rows] = await pool.query(query, params);
-
-        // // const eventoId = rows[0][0].eventoId;
 
         return 1;
 
@@ -1044,6 +953,7 @@ export const getComentariosEvento = async (eventoId) => {
 
             let fileBase = "";
             let fileName = "";
+            let fileMime = "";
 
             if (response.pathFile != null){
                 // console.log(pathFile[0].pathFile);
@@ -1052,7 +962,9 @@ export const getComentariosEvento = async (eventoId) => {
                     const fileBaseAux = fs.readFileSync(response.pathFile, {encoding: 'base64'});
                     // console.log("creo base64");
 
-                    fileBase = `data:${response.mimeFile};base64,${fileBaseAux}`;
+                    // fileBase = `data:${response.mimeFile};base64,${fileBaseAux}`;
+                    fileMime = response.mimeFile;
+                    fileBase = fileBaseAux;
                     fileName = response.nameFile;    
                 }catch(e){
                     // console.log("No existe el archivo");
@@ -1075,13 +987,17 @@ export const getComentariosEvento = async (eventoId) => {
                 },
                 "adjunto": {
                     "tiene": rows[i].eAdAdjFile,
-                    "Base": fileBase,
+                    "tipo": fileMime,
+                    "base": fileBase,
                     "nombre": fileName
                 }
 
             })
 
         }
+
+        // console.log("(995:evento.Model)");
+        // console.log(res);
 
         return res;
 

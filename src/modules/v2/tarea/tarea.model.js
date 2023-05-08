@@ -122,7 +122,7 @@ export const updateTarea = async (tareaM) => {
     **/
 
     try{
-        console.log(tareaM)
+        // console.log(tareaM)
         const query = "UPDATE tarea SET tareaNombre = ?, tareaRol = ?, tareaControla = ?, tareaClave = ?, tareaComentario = ? WHERE tareaId = ?";
         let params = [
             tareaM.nombre,
@@ -299,8 +299,8 @@ export const getComentarioTarea = async (eventoId, clave, etapa) => {
 
         const [rows] = await pool.query(query, params);
 
-        console.log(rows[0]);
-        console.log(rows[0].comentario);
+        // console.log(rows[0]);
+        // console.log(rows[0].comentario);
 
         const comentario = rows[0].comentario;
 
