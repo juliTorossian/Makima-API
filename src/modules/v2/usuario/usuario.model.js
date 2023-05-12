@@ -224,6 +224,10 @@ export const getUsuarios = async () => {
 
         const [rows] = await pool.query(query, params);
         // console.log(rows)
+        
+        console.log(rows);
+        console.log(rows[0]);
+        console.log(rows[1]);
 
         let response = [];
         // rows.map((row) => {
@@ -290,6 +294,7 @@ export const getUsuario = async (usuarioId) => {
             usuarioId
         ];
         const [rows] = await pool.query(query, params);
+
 
         const [ roles ] = await pool.query("SELECT rolId, rolDescripcion FROM usuariorol INNER JOIN rol ON rolId = usuRolRol WHERE usuRolUsuario = ?", [ rows[0].usuarioId ])
         let rol = [];
