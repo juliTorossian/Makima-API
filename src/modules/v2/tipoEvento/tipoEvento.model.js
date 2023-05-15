@@ -60,7 +60,7 @@ export const getTipoEventos = async () => {
                     "rollback": tarea.etEtapaRollback
                 })
             })
-            console.log(responseAux);
+            // console.log(responseAux);
             response.push(responseAux);
         };
         return response;
@@ -165,7 +165,7 @@ export const insertTipoEvento = async (nTipoEvento) => {
                 });
             })
 
-            console.log(tareas);
+            // console.log(tareas);
             asignarTareas(tareas);
         }
 
@@ -219,7 +219,7 @@ export const updateTipoEvento = async (tipoEventoM) => {
                 });
             })
 
-            console.log(tareas);
+            // console.log(tareas);
             asignarTareas(tareas);
         }
 
@@ -297,7 +297,7 @@ export const asignarTareas = async (tareas) => {
             params.push(aux)
         });
 
-        console.log(params);
+        // console.log(params);
 
         // limpio evento_tarea
         let ok = await limpiarTareasTipoEvento(tareas.tipoEvento);

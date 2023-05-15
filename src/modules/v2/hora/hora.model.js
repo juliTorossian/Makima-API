@@ -133,6 +133,8 @@ export const getHorasUsuario = async (usuarioId) => {
             response.push(responseAux);
         }
 
+        // console.log(response);
+
         return response;
 
     }catch (err) {
@@ -146,6 +148,7 @@ export const getHorasGenerales = async () => {
     try{
 
         // await pool.query("SET GLOBAL sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'")
+        // await pool.query("SET sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'")
 
         const query = "SELECT * FROM registrohora INNER JOIN usuario ON usuarioId = regHoraUsuario group by regHoraUsuario";
         let params = []
@@ -189,6 +192,7 @@ export const getHorasGenerales = async () => {
                 "nombre": row.usuarioNombre,
                 "apellido": row.usuarioApellido,
                 "usuario": row.usuarioUsuario,
+                "promedioMes": await getPromedioHorasMesUsuario(row.regHoraUsuario),
                 "registros": registros
             }
             response.push(responseAux);
@@ -447,6 +451,53 @@ export const deleteHora = async (registroId) => {
     }
 }
 
+export const getPromedioHorasMesUsuario = async (usuarioId) => {
+
+    try{
+        let suma = 0;
+        let horas = [];
+        horas = await getHorasMesUsuario(usuarioId);
+
+        horas.forEach( (h) => {suma += h});
+        const promedio = suma / horas.length;
+
+        // console.log("promedio: ", promedio);
+        return promedio;
+
+    }catch (err) {
+        console.error(err);
+        return 0;
+    }
+}
+
+export const getHorasMesUsuario = async (usuarioId) => {
+
+    try{
+
+        let query = "SELECT SUM(h.horaTotal) AS totalMes    \
+                     FROM registrohora AS rh \
+                     INNER JOIN hora AS h ON h.horaRegistro = rh.regHoraId   \
+                     WHERE rh.regHoraUsuario = ?    \
+                     GROUP BY MONTH(rh.regHoraFecha), YEAR(rh.regHoraFecha)";
+
+        let params = [
+            usuarioId
+        ];
+        let [rows] = await pool.query(query, params);
+
+        // console.log("490 (hora.model)");
+        // console.log(rows);
+        let horas = []
+        rows.map( (h) => {horas.push(parseInt(h.totalMes))});
+        // console.log(horas);
+
+        return horas;
+
+    }catch (err) {
+        console.error(err);
+        return 0;
+    }
+}
 
 const cadenaAleatoria = longitud => {
     const banco = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

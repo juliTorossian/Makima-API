@@ -108,6 +108,7 @@ export const getEventos = async (page) => {
                 "fechaAlta": row.eventoFechaAlta,
                 "usuarioActual": usuarioActual,
                 "usuarioAlta": usuarioAlta,
+                // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
                 "detalle": await getEventoDetalle(row.eventoId)
             })
         }
@@ -209,6 +210,7 @@ export const getEventosUsuario = async (page, usuario) => {
                 "fechaAlta": row.eventoFechaAlta,
                 "usuarioActual": usuarioActual,
                 "usuarioAlta": usuarioAlta,
+                // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
                 "detalle": await getEventoDetalle(row.eventoId)
             })
         }
@@ -304,6 +306,7 @@ export const getEventosRol = async (page, rol) => {
                 "fechaAlta": row.eventoFechaAlta,
                 "usuarioActual": usuarioActual,
                 "usuarioAlta": usuarioAlta,
+                // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
                 "detalle": await getEventoDetalle(row.eventoId)
             })
         }
@@ -379,6 +382,7 @@ export const getEvento = async (eventoId) => {
             "prioridad": rows[0].eventoPrioridad,
             "usuarioActual": usuarioActual,
             "usuarioAlta": usuarioAlta,
+            // "madre": (rows[0].eventoMadre!="") ? await getEvento(rows[0].eventoMadre) : undefined,
             "detalle": await getEventoDetalle(rows[0].eventoId)
         }
 
@@ -574,12 +578,13 @@ export const insertEvento = async (nEvento) => {
         "producto": 2,                          //* id del programa
         "usuAlta": 1                            //* id del usuario de alta
         "fechaAlta": now()                      //! fecha del momento
+        "madre": idMadre                        //* Evento madre
     }
     **/
 
     try{
 
-        // log(nEvento);
+        console.log(nEvento);
 
         const query = "CALL insert_eventos(?,?,?,?,?,?)";
         let params = [
@@ -592,8 +597,11 @@ export const insertEvento = async (nEvento) => {
         ]
 
         const [rows] = await pool.query(query, params);
-
         const eventoId = rows[0][0].eventoId;
+
+        // if (nEvento.madre){
+        //     await pool.query("UPDATE evento SET eventoEsMadre = true WHERE eventoId = ? AND eventoEsMadre = false", [nEvento.madre]);
+        // }
 
         return eventoId;
 
@@ -1180,17 +1188,18 @@ export const getTareasPorTipo = async (rol) => {
 export const cerrarEvento = async (eventoId, usuario) => {
 
     try{
-        const query = "CALL delete_eventos(?,?,?)";
+        // const query = "CALL delete_eventos(?,?,?)";
+        // let params = [
+        //     eventoId,
+        //     usuario,
+        //     "CERRO"
+        // ]
+        // const [rows] = await pool.query(query, params);
 
-        let params = [
-            eventoId,
-            usuario,
-            "CERRO"
-        ]
-
-        const [rows] = await pool.query(query, params);
-
-        // console.log(rows);
+        await pool.query("UPDATE evento SET eventoCerrado = true WHERE eventoId = ?", [eventoId]);
+        const data = await getDatosEvento(eventoId);
+        await pool.query("CALL insert_audiEvento(?, ?, ?, ?, ?)", [eventoId, data.etapa, usuario, null, 'CERRO']);
+        //CALL insert_audiEvento(eventoCodigo, @etapaActual, usuario, null, accion);
 
         return 1;
 
