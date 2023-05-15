@@ -346,17 +346,18 @@ export const getUsuarioToken = async (usuarioToken) => {
         ];
         const [rows] = await pool.query(query, params);
 
-        const [ roles ] = await pool.query("SELECT rolId, rolDescripcion FROM usuariorol INNER JOIN rol ON rolId = usuRolRol WHERE usuRolUsuario = ?", [ rows[0].usuarioId ])
-        let rol = [];
-        roles.map( (r) => {
-            // console.log(r);
-            rol.push({
-                "id": r.rolId,
-                "descripcion": r.rolDescripcion
-            })
-        });
-
         if (rows[0]){
+            
+            const [ roles ] = await pool.query("SELECT rolId, rolDescripcion FROM usuariorol INNER JOIN rol ON rolId = usuRolRol WHERE usuRolUsuario = ?", [ rows[0].usuarioId ])
+            let rol = [];
+            roles.map( (r) => {
+                // console.log(r);
+                rol.push({
+                    "id": r.rolId,
+                    "descripcion": r.rolDescripcion
+                })
+            });
+
             usuario = {
                 "id": rows[0].usuarioId,
                 "nombre": rows[0].usuarioNombre,

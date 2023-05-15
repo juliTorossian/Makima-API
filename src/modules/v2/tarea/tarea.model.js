@@ -302,7 +302,10 @@ export const getComentarioTarea = async (eventoId, clave, etapa) => {
         // console.log(rows[0]);
         // console.log(rows[0].comentario);
 
-        const comentario = rows[0].comentario;
+        let comentario = "";
+        if (rows[0].coemntario) {
+            comentario = rows[0].comentario;
+        }
 
         return comentario;
     
