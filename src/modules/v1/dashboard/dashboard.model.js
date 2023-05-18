@@ -9,6 +9,7 @@ import { pool } from '../../../db.js';
 export const getUltimosMovimientos = async (cantidad, rol) => {
 
     try{
+        // console.log(rol);
         let params = [];
         let query = 'SELECT 	audiEEvento AS eventoId,    \
                                 (SELECT CONCAT(eventoTipo, "-", eventoNumero) FROM evento WHERE eventoId = ae.audiEEvento) AS evento,   \
@@ -26,7 +27,7 @@ export const getUltimosMovimientos = async (cantidad, rol) => {
                         INNER JOIN evento AS e ON e.eventoId = ae.audiEEvento   \
                         WHERE ae.audiEAccion != "ELIMINO"   \
                         ';
-        if (rol != undefined){
+        if (rol != undefined || rol != null){
             query += "AND (SELECT usuarioRol FROM usuario WHERE usuarioId = ae.audiEUsuario) = ?";
             params.push(rol);
         }
@@ -36,8 +37,30 @@ export const getUltimosMovimientos = async (cantidad, rol) => {
             params.push(parseInt(cantidad));
         }
         const [rows] = await pool.query(query, params);
+        // console.log(rows);
 
-        return rows;
+        let response = []
+        rows.map( (row) => {
+            let res = {
+                "evento": {
+                    "id": row.eventoId,
+                    "evento": row.evento,
+                    "color": row.color
+                },
+                "etapa": row.audiEEtapa,
+                "tarea": row.tarea,
+                "usuario": {
+                    "id": row.usuarioId,
+                    "usuario": row.usuario,
+                    "color": row.usuarioColor
+                },
+                "accion": row.audiEAccion,
+                "comentario": row.eAdComentario,
+                "fecha": row.audiEFecha
+            }
+            response.push(res);
+        });
+        return response;
 
     }catch (err){
         console.error(err);

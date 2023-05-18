@@ -55,7 +55,7 @@ export const insertEvento = async (req, res) => {
     let eventoId = await model.insertEvento(req.body);
 
     if (!(eventoId === "" || eventoId === undefined)){
-        res.send(eventoId);
+        res.json(eventoId);
     }else{
         res.status(404).send('error');
     }
@@ -69,7 +69,7 @@ export const updateEvento = async (req, res) => {
     let ok = await model.updateEvento(req.body);
 
     if (ok > 0){
-        res.send("ok");
+        res.json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -93,7 +93,7 @@ export const cerrarEvento = async (req, res) => {
     let ok = await model.cerrarEvento(req.params.evento, req.query.usuario);
 
     if (ok > 0){
-        res.send("ok");
+        res.json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -101,19 +101,19 @@ export const cerrarEvento = async (req, res) => {
 }
 
 export const avanzarEvento = async (req, res) => {
-    const ok = await model.avanzarEvento(req.params.evento, req.query.usuario);
+    const ok = await model.avanzarEvento(req.params.evento, req.query.usuario, req.query.comentario);
 
     if (ok > 0){
-        res.send("ok");
+        res.json("ok");
     }else{
         res.status(404).send('error');
     }
 }
 export const retrocederEvento = async (req, res) => {
-    const ok = await model.retrocederEvento(req.params.evento, req.query.usuario);
+    const ok = await model.retrocederEvento(req.params.evento, req.query.usuario, req.query.comentario);
 
     if (ok > 0){
-        res.send("ok");
+        res.json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -123,17 +123,17 @@ export const reasignarEvento = async (req, res) => {
     const ok = await model.reasignarEvento(req.params.evento, req.query.usuario);
 
     if (ok > 0){
-        res.send("ok");
+        res.json("ok");
     }else{
         res.status(404).send('error');
     }
 }
 
 export const estimarEvento = async (req, res) => {
-    const ok = await model.estimarEvento(req.params.evento, req.query.estimado);
+    const ok = await model.estimarEvento(req.params.evento, req.query.estimado, req.query.comentario);
 
     if (ok > 0){
-        res.send("ok");
+        res.json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -141,17 +141,21 @@ export const estimarEvento = async (req, res) => {
 
 export const comentarEvento = async (req, res) => {
 
-    console.log(req)
+    // console.log("(145:evento.controller)")
+
+    // console.log(JSON.parse(req.body.comentario))
+    // console.log(req.file)
 
     const comentario = JSON.parse(req.body.comentario);
     const archivo = req.file;
     const ok = await model.comentarEvento(comentario, archivo);
 
     if (ok > 0){
-        res.send("ok");
+        res.json("ok");
     }else{
         res.status(404).send('error');
     }
+
 }
 
 
@@ -169,7 +173,7 @@ export const comentarEventoArchivo = async (req, res) => {
     const ok = await model.comentarEventoArchivo(file);
 
     if (ok > 0){
-        res.send("ok");
+        res.json("ok");
     }else{
         res.status(404).send('error');
     }

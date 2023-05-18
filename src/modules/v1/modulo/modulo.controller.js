@@ -5,7 +5,7 @@ export const insertModulo = async (req, res) => {
     let ok = await model.insertModulo(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -17,7 +17,7 @@ export const updateModulo = async (req, res) => {
     let ok = await model.updateModulo(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -29,7 +29,7 @@ export const deleteModulo = async (req, res) => {
     let ok = await model.deleteModulo(req.params.moduloId);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }

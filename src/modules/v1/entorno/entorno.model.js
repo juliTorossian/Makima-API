@@ -19,7 +19,14 @@ export const getEntornos = async () => {
 
         const [rows] = await pool.query(query, params);
 
-        return rows;
+        let response = [];
+        rows.map( (row) => {
+            response.push({
+                "id": row.entornoId,
+                "nombre": row.entornoNombre
+            });
+        });
+        return response;
 
     }catch (err) {
         console.error(err);
@@ -41,7 +48,11 @@ export const getEntorno = async (entornoId) => {
 
         const [rows] = await pool.query(query, params);
 
-        return rows[0];
+        let response = {
+            "id": rows[0].entornoId,
+            "nombre": rows[0].entornoNombre
+        };
+        return response;
 
     }catch (err) {
         console.error(err);

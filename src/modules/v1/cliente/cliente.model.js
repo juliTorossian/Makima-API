@@ -24,7 +24,17 @@ export const getClientes = async () => {
 
         // console.log(rows);
 
-        return rows;
+        let response = [];
+
+        rows.map( (row) => {
+            response.push({
+                "id": row.clienteId,
+                "sigla": row.clienteSigla,
+                "nombre": row.clienteNombre,
+                "activo": row.clienteActivo
+            });
+        });
+        return response;
 
     }catch (err) {
         console.error(err);
@@ -49,7 +59,15 @@ export const getCliente = async (clienteId) => {
 
         // console.log(rows[0]);
 
-        return rows[0];
+        let response = '';
+
+        response = {
+            "id": rows[0].clienteId,
+            "sigla": rows[0].clienteSigla,
+            "nombre": rows[0].clienteNombre,
+            "activo": rows[0].clienteActivo
+        }
+        return response;
 
     }catch (err) {
         console.error(err);
