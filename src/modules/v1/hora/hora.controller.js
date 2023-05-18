@@ -57,6 +57,7 @@ export const getHora = async (req, res) => {
 }
 
 export const getHorasUsuario = async (req, res) => {
+    // console.log(req.params.usuarioId);
     const horas = await model.getHorasUsuario(req.params.usuarioId);
 
     if (!(horas == null)){
