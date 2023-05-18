@@ -81,7 +81,7 @@ export const deleteEvento = async (req, res) => {
     let ok = await model.deleteEvento(req.params.eventoId, req.query.usuario);
 
     if (ok > 0){
-        res.send("ok");
+        res.json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -145,7 +145,6 @@ export const comentarEvento = async (req, res) => {
 
     // console.log(JSON.parse(req.body.comentario))
     // console.log(req.file)
-
     const comentario = JSON.parse(req.body.comentario);
     const archivo = req.file;
     const ok = await model.comentarEvento(comentario, archivo);
