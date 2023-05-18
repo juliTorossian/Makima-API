@@ -28,7 +28,6 @@ app.use(express.json());
 // Variables globales
 
 // Rutas
-
 app.use('/api/v1', routerV1);
 
 // Archivos Publicos

@@ -18,9 +18,6 @@ import { pool } from '../../../db.js';
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
-import { getUsuario } from '../usuario/usuario.model.js';
-import { getComentarioTarea, getTareaAccionCompleta } from '../tarea/tarea.model.js';
-import { cadenaAleatoria } from '../../../helper/random.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -59,67 +56,17 @@ export const getEventos = async (page) => {
 
         const [rows] = await pool.query(query, params);
 
-        
-        let results = {
+        // console.log(rows);
+
+        const results = {
             "info": {
                 "total": total[0].total,
                 "totalPages": (paginacion ? totalPages : 1 ),
                 "next": (page >= totalPages ? null : (page + 1)),
                 "prev": (page <= 1 ? null : (page - 1))
             },
-            "results": [] //rows[0]
+            "results":rows[0]
         };
-        
-        // console.log(rows[0]);
-
-        for (let i = 0; i < rows[0].length; i++) {
-            const row = rows[0][i];
-
-            // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-            // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
-
-            const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
-            const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
-            const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
-            
-            const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
-
-            results.results.push({
-                "id": row.eventoId,
-                "tipo": row.eventoTipo,
-                "numero": row.eventoNumero,
-                "titulo": row.eventoTitulo,
-                "tareaNombre": row.tareaNombre,
-                "cliente": {
-                    "id": row.eventoCliente,
-                    "nombre": row.cliente
-                },
-                "producto": {
-                    "id": producto[0].productoId,
-                    "nombre": producto[0].productoNombre,
-                    "modulo": producto[0].productoModulo,
-                    "submodulo": producto[0].productoSubModulo,
-                    "entorno": producto[0].productoEntorno,
-                    "activo": producto[0].productoActivo
-                },
-                "cerrado": row.eventoCerrado,
-                "propio": row.eventoPropio,
-                "prioridad": row.eventoPrioridad,
-                "fechaAlta": row.eventoFechaAlta,
-                "usuarioActual": usuarioActual,
-                "usuarioAlta": usuarioAlta,
-                // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
-                "detalle": await getEventoDetalle(row.eventoId)
-            })
-        }
-
-        // rows[0].map( (row) => {
-            
-        // })
-
-        // console.log(results);
-        
-
 
         return results;
     
@@ -164,57 +111,15 @@ export const getEventosUsuario = async (page, usuario) => {
 
         const [rows] = await pool.query(query, params);
 
-        let results = {
+        const results = {
             "info": {
                 "total": total[0].total,
                 "totalPages": (paginacion ? totalPages : 1 ),
                 "next": (page >= totalPages ? null : (page + 1)),
                 "prev": (page <= 1 ? null : (page - 1))
             },
-            "results": [] //rows[0]
+            "results":rows[0]
         };
-
-        for (let i = 0; i < rows[0].length; i++) {
-            const row = rows[0][i];
-
-            // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-            // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
-
-            const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
-            const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
-            const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
-
-            const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
-
-            results.results.push({
-                "id": row.eventoId,
-                "tipo": row.eventoTipo,
-                "numero": row.eventoNumero,
-                "titulo": row.eventoTitulo,
-                "tareaNombre": row.tareaNombre,
-                "cliente": {
-                    "id": row.eventoCliente,
-                    "nombre": row.cliente
-                },
-                "producto": {
-                    "id": producto[0].productoId,
-                    "nombre": producto[0].productoNombre,
-                    "modulo": producto[0].productoModulo,
-                    "submodulo": producto[0].productoSubModulo,
-                    "entorno": producto[0].productoEntorno,
-                    "activo": producto[0].productoActivo
-                },
-                "cerrado": row.eventoCerrado,
-                "propio": row.eventoPropio,
-                "prioridad": row.eventoPrioridad,
-                "fechaAlta": row.eventoFechaAlta,
-                "usuarioActual": usuarioActual,
-                "usuarioAlta": usuarioAlta,
-                // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
-                "detalle": await getEventoDetalle(row.eventoId)
-            })
-        }
-        
 
         return results;
     
@@ -267,49 +172,8 @@ export const getEventosRol = async (page, rol) => {
                 "next": (page >= totalPages ? null : (page + 1)),
                 "prev": (page <= 1 ? null : (page - 1))
             },
-            "results": [] //rows[0]
+            "results":rows[0]
         };
-
-        for (let i = 0; i < rows[0].length; i++) {
-            const row = rows[0][i];
-
-            // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-            // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
-
-            const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
-            const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
-            const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
-            
-            const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
-
-            results.results.push({
-                "id": row.eventoId,
-                "tipo": row.eventoTipo,
-                "numero": row.eventoNumero,
-                "titulo": row.eventoTitulo,
-                "tareaNombre": row.tareaNombre,
-                "cliente": {
-                    "id": row.eventoCliente,
-                    "nombre": row.cliente
-                },
-                "producto": {
-                    "id": producto[0].productoId,
-                    "nombre": producto[0].productoNombre,
-                    "modulo": producto[0].productoModulo,
-                    "submodulo": producto[0].productoSubModulo,
-                    "entorno": producto[0].productoEntorno,
-                    "activo": producto[0].productoActivo
-                },
-                "cerrado": row.eventoCerrado,
-                "propio": row.eventoPropio,
-                "prioridad": row.eventoPrioridad,
-                "fechaAlta": row.eventoFechaAlta,
-                "usuarioActual": usuarioActual,
-                "usuarioAlta": usuarioAlta,
-                // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
-                "detalle": await getEventoDetalle(row.eventoId)
-            })
-        }
 
         return results;
     
@@ -327,66 +191,28 @@ export const getEventosRol = async (page, rol) => {
 export const getEvento = async (eventoId) => {
 
     try{
-        const query = "SELECT 	e.*,                                                                                                 \
-                                ta.tareaNombre,                                                                                                 \
-                                (SELECT clienteId FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'clienteId',                    \
-                                (SELECT clienteNombre FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'cliente',                    \
-                                (SELECT clienteSigla FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'clienteSigla',                    \
-                                (SELECT productoId FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'productoId',               \
-                                (SELECT productoNombre FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'producto',               \
-                                (SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'usuarioAlta'        \
-                        FROM evento as e                                                                                                        \
-                        LEFT JOIN evento_tarea as tet ON tet.etEvento = e.eventoTipo                                                           \
-                        LEFT JOIN tarea as ta ON ta.tareaId = tet.etTarea                                                                      \
-                        WHERE	(e.eventoEtapa = tet.etEtapa OR ((SELECT te.tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) = true)) \
-                        AND 	e.eventoId = ?                                                                                                 \
+        const query = "SELECT 	e.eventoId,                                                                                                     \
+                            e.eventoTipo,                                                                                                   \
+                            e.eventoNumero,                                                                                                 \
+                            e.eventoTitulo,                                                                                                 \
+                            e.eventoPrioridad,                                                                                                 \
+                            ta.tareaNombre,                                                                                                 \
+                            (SELECT clienteId FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'clienteId',                    \
+                            (SELECT clienteNombre FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'cliente',                    \
+                            (SELECT productoId FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'productoId',               \
+                            (SELECT productoNombre FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'producto',               \
+                            (SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'usuarioAlta'        \
+                    FROM evento as e                                                                                                        \
+                    INNER JOIN evento_tarea as tet ON tet.etEvento = e.eventoTipo                                                           \
+                    INNER JOIN tarea as ta ON ta.tareaId = tet.etTarea                                                                      \
+                    WHERE	e.eventoEtapa = tet.etEtapa                                                                                     \
+                    AND 	e.eventoId = ?                                                                                                 \
                     "
         const params = [eventoId]
 
         const [rows] = await pool.query(query, params);
 
-        // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-        // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
-
-        const usuarioAlta = await getUsuario(rows[0].eventoUsuarioAlta);
-        const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ rows[0].eventoId ]);
-        const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
-
-        let producto = [];
-        if (rows[0].eventoProducto){
-            const [productoAux] = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ rows[0].eventoProducto ]);
-            producto = {
-                "id": productoAux[0].productoId,
-                "nombre": productoAux[0].productoNombre,
-                "modulo": productoAux[0].productoModulo,
-                "submodulo": productoAux[0].productoSubModulo,
-                "entorno": productoAux[0].productoEntorno,
-                "activo": productoAux[0].productoActivo
-            }
-        }
-
-        let results = {
-            "id": rows[0].eventoId,
-            "tipo": rows[0].eventoTipo,
-            "numero": rows[0].eventoNumero,
-            "titulo": rows[0].eventoTitulo,
-            "tareaNombre": rows[0].tareaNombre,
-            "cliente": {
-                "id": rows[0].eventoCliente,
-                "sigla": rows[0].clienteSigla,
-                "nombre": rows[0].cliente
-            },
-            "producto": producto,
-            "cerrado": rows[0].eventoCerrado,
-            "propio": rows[0].eventoPropio,
-            "prioridad": rows[0].eventoPrioridad,
-            "usuarioActual": usuarioActual,
-            "usuarioAlta": usuarioAlta,
-            // "madre": (rows[0].eventoMadre!="") ? await getEvento(rows[0].eventoMadre) : undefined,
-            "detalle": await getEventoDetalle(rows[0].eventoId)
-        }
-
-        return results;
+        return rows[0];
     }catch (err){
         console.error(err);
         return null;
@@ -451,6 +277,10 @@ export const getEventoDetalle = async (eventoId) => {
 
     try{
         const query = "SELECT 	e.*,    \
+                                u.usuarioId,    \
+                                u.usuarioUsuario,   \
+                                u.usuarioRol,   \
+                                u.usuarioColor,    \
                                 (SELECT tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) AS eventoPropio,   \
                                 (SELECT etTarea FROM evento_tarea AS et WHERE et.etEvento = e.eventoTipo AND et.etEtapa = e.eventoEtapa) AS tareaActual,    \
                                 (SELECT getEtapaSig_evento(e.eventoTipo, e.eventoEtapa)) AS sigEtapa,   \
@@ -466,7 +296,7 @@ export const getEventoDetalle = async (eventoId) => {
             eventoId
         ];
 
-        // console.log(params);
+        console.log(params);
 
         const [rows] = await pool.query(query, params);
 
@@ -474,77 +304,38 @@ export const getEventoDetalle = async (eventoId) => {
 
         let eventoDetalle = null;
         if (rows.length > 0){
-            let actTarea = null;
-            if (rows[0].tareaActual){
-                const [actTareaAux] = await pool.query("SELECT * FROM tarea WHERE tareaId = ?", rows[0].tareaActual);
-                if (actTareaAux){
-                    // console.log("getComentarioTarea")
-                    // console.log(await getComentarioTarea(eventoId, actTareaAux[0].tareaClave, rows[0].eventoEtapa));
-                    actTarea = {
-                        "id": actTareaAux[0].tareaId,
-                        "nombre": actTareaAux[0].tareaNombre,
-                        "rol": actTareaAux[0].tareaRol,
-                        "controla": actTareaAux[0].tareaControla,
-                        "clave": actTareaAux[0].tareaClave,
-                        "reqComentario": actTareaAux[0].tareaComentario,
-                        "completada": await getTareaAccionCompleta(eventoId, actTareaAux[0].tareaClave),
-                        "comentario": ((actTareaAux[0].tareaClave) || (actTareaAux[0].tareaComentario)) ? await getComentarioTarea(eventoId, actTareaAux[0].tareaClave, rows[0].eventoEtapa) : ""
-                    }
-                }
-            }
-            let sigTarea = null;
-            if (rows[0].sigTarea){
-                const [sigTareaAux] = await pool.query("SELECT * FROM tarea WHERE tareaId = ?", rows[0].sigTarea);
-                if (sigTareaAux){
-                    sigTarea = {
-                        "id": sigTareaAux[0].tareaId,
-                        "nombre": sigTareaAux[0].tareaNombre,
-                        "rol": sigTareaAux[0].tareaRol,
-                        "controla": sigTareaAux[0].tareaControla,
-                        "clave": sigTareaAux[0].tareaClave,
-                        "comentario": sigTareaAux[0].tareaComentario
-                    }
-                }
-            }
-            let antTarea = null;
-            if (rows[0].antTarea){
-                const [antTareaAux] = await pool.query("SELECT * FROM tarea WHERE tareaId = ?", rows[0].antTarea);
-                if (antTareaAux){
-                    antTarea = {
-                        "id": antTareaAux[0].tareaId,
-                        "nombre": antTareaAux[0].tareaNombre,
-                        "rol": antTareaAux[0].tareaRol,
-                        "controla": antTareaAux[0].tareaControla,
-                        "clave": antTareaAux[0].tareaClave,
-                        "comentario": antTareaAux[0].tareaComentario
-                    }
-                }
-            }
-            const [horas] = await pool.query("SELECT sum(horaTotal) AS total FROM registrohora INNER JOIN hora ON horaRegistro = regHoraId WHERE horaEvento = ? ORDER BY regHoraFecha, horaInicio", eventoId);
-            // console.log(horas);
-
             eventoDetalle = {
-                                "eventoCircuito": {
-                                    "act": {
-                                        "tiene": null,    
-                                        "etapa": rows[0].eventoEtapa,
-                                        "tarea": actTarea
+                                "evento": {
+                                    "id": rows[0].eventoId,
+                                    "tipo": rows[0].eventoTipo,
+                                    "numero": rows[0].eventoNumero,
+                                    "propio": rows[0].eventoPropio,
+                                    "estimacion": rows[0].eventoEstimacion,
+                                    "usuarioActual":
+                                    {
+                                        "id": rows[0].usuarioId,
+                                        "usuario": rows[0].usuarioUsuario,
+                                        "rol": rows[0].usuarioRol,
+                                        "color": rows[0].usuarioColor
                                     },
-                                    "sig": {
+                                    "cerrado": rows[0].eventoCerrado
+                                },
+                                "circuito":{
+                                    "act":{
+                                        "etapa": rows[0].eventoEtapa,
+                                        "tarea": rows[0].tareaActual
+                                    },
+                                    "sig":{
                                         "tiene": (rows[0].sigEtapa > 0),
                                         "etapa": rows[0].sigEtapa,
-                                        "tarea": sigTarea
+                                        "tarea": rows[0].sigTarea
                                     },
-                                    "ant": {
+                                    "ant":{
                                         "tiene": (rows[0].antEtapa > 0),
                                         "etapa": rows[0].antEtapa,
-                                        "tarea": antTarea
+                                        "tarea": rows[0].antTarea
                                     },
                                     "totalEtapas": rows[0].totalEtapas
-                                },
-                                "eventoHoras": {
-                                    "estimacion": (rows[0].eventoEstimacion > 0) ? rows[0].eventoEstimacion : 0 ,
-                                    "total": (horas[0].total) ? horas[0].total : 0
                                 }
                             }
         }
@@ -578,13 +369,10 @@ export const insertEvento = async (nEvento) => {
         "producto": 2,                          //* id del programa
         "usuAlta": 1                            //* id del usuario de alta
         "fechaAlta": now()                      //! fecha del momento
-        "madre": idMadre                        //* Evento madre
     }
     **/
 
     try{
-
-        console.log(nEvento);
 
         const query = "CALL insert_eventos(?,?,?,?,?,?)";
         let params = [
@@ -597,11 +385,8 @@ export const insertEvento = async (nEvento) => {
         ]
 
         const [rows] = await pool.query(query, params);
-        const eventoId = rows[0][0].eventoId;
 
-        // if (nEvento.madre){
-        //     await pool.query("UPDATE evento SET eventoEsMadre = true WHERE eventoId = ? AND eventoEsMadre = false", [nEvento.madre]);
-        // }
+        const eventoId = rows[0][0].eventoId;
 
         return eventoId;
 
@@ -706,7 +491,7 @@ export const deleteEvento = async (eventoId, usuario) => {
  *i @param eventoId:        id del evento a avanzar
  *i        usuarioAsignado: id del usuario que se asigna en la nueva etapa
 */
-export const avanzarEvento = async (eventoId, usuarioAsignado, comentario) => {
+export const avanzarEvento = async (eventoId, usuarioAsignado) => {
 
     try{
         const datosEvento = await getDatosEvento(eventoId);
@@ -714,23 +499,12 @@ export const avanzarEvento = async (eventoId, usuarioAsignado, comentario) => {
         let [ nEtapa ] = await pool.query("SELECT getEtapaSig_evento('" +datosEvento.tipo +"', " +datosEvento.etapa +") AS nuevaEtapa");
         nEtapa = nEtapa[0];
 
-        // console.log("evento: " +eventoId);
-        // console.log("comentario avanzo: " +comentario);
-
-        comentario = (comentario) ? comentario : null;
-
-        // console.log("comm: " +comentario);
-
-        let query = 'CALL circular_evento(?, ?, ?, ?)';
-        let params = [eventoId, nEtapa.nuevaEtapa, usuarioAsignado, comentario];
+        let query = 'CALL circular_evento(?, ?, ?)';
+        let params = [eventoId, nEtapa.nuevaEtapa, usuarioAsignado];
 
         const [rows] = await pool.query(query, params);
 
-        const nuevosDatosEvento = await getDatosEvento(eventoId);
-        [ nEtapa ] = await pool.query("SELECT getEtapaSig_evento('" +nuevosDatosEvento.tipo +"', " +nuevosDatosEvento.etapa +") AS nuevaEtapa");
-        if (nEtapa[0].nuevaEtapa == null){
-            cerrarEvento(eventoId, usuarioAsignado);
-        }
+        // console.log(rows);
 
         return 1;
     
@@ -746,24 +520,19 @@ export const avanzarEvento = async (eventoId, usuarioAsignado, comentario) => {
  *i @param eventoId:        id del evento a retroceder
  *i        usuarioAsigando: id del usuario que se asigna en la nueva etapa
 */
-export const retrocederEvento = async (eventoId, usuarioAsignado, comentario) => {
+export const retrocederEvento = async (eventoId, usuarioAsignado) => {
     try{
         const datosEvento = await getDatosEvento(eventoId);
 
         let [ nEtapa ] = await pool.query("SELECT getEtapaAnt_evento('" +datosEvento.tipo +"', " +datosEvento.etapa +") AS nuevaEtapa");
         nEtapa = nEtapa[0];
 
-        // console.log("evento: " +eventoId);
-        // console.log("usuario nuevo: " +usuarioAsignado);
+        // console.log(nEtapa);
+        // console.log(nEtapa.nuevaEtapa);
 
         if (nEtapa.nuevaEtapa > 0){
-
-            // console.log("comentario avanzo: " +comentario);
-            comentario = (comentario) ? comentario : null;
-            // console.log("comm: " +comentario);
-
-            let query = 'CALL circular_evento(?, ?, ?, ?)';
-            let params = [eventoId, nEtapa.nuevaEtapa, usuarioAsignado, comentario]
+            let query = 'CALL circular_evento(?, ?, ?)';
+            let params = [eventoId, nEtapa.nuevaEtapa, usuarioAsignado]
             
             const [rows] = await pool.query(query, params);
     
@@ -788,9 +557,6 @@ export const reasignarEvento = async (eventoId, usuarioAsignado) => {
     try{
         const datosEvento = await getDatosEvento(eventoId);
 
-        // console.log("evento: " +eventoId);
-        // console.log("usuario nuevo: " +usuarioAsignado);
-
         const query  = "CALL insert_audiEvento(?, ?, ?, ?, ?)"
         const params = [
             eventoId, 
@@ -802,7 +568,7 @@ export const reasignarEvento = async (eventoId, usuarioAsignado) => {
 
         const [rows] = await pool.query(query, params);
 
-        // console.log(rows);
+        console.log(rows);
 
         return rows.affectedRows
 
@@ -818,40 +584,14 @@ export const reasignarEvento = async (eventoId, usuarioAsignado) => {
  *i @param eventoId:    id del evento a estimar
  *i        estimacion:  cantidad de horas que se estiman
 */
-export const estimarEvento = async (eventoId, estimacion, comentario) => {
+export const estimarEvento = async (eventoId, estimacion) => {
     try{
         const query  = "UPDATE evento SET eventoEstimacion = ? WHERE eventoId = ?"
         const params = [estimacion, eventoId];
 
         const [rows] = await pool.query(query, params);
 
-        const detalle = await getEventoDetalle(eventoId);
-
-        /*
-            INSERT INTO eventoadicion(eAdId, eAdEvento, eAdTipo     , eAdComentario, eAdAdjFile, eAdPathFile, eAdNombreFile, eAdMimeFile, eAdFecha)
-            VALUES 					 (@id  , eventoId , "COMENTARIO", comentario   , tieneFile, pathFile, nameFile, mimeFile, now());
-        */
-
-        let comentarioId = null;
-        // console.log("comentario: " +comentario);
-        if (comentario){
-            comentarioId = cadenaAleatoria(24);
-
-            const queryComm = 'INSERT INTO eventoadicion(eAdId, eAdEvento, eAdTipo , eAdComentario, eAdAdjFile, eAdFecha) VALUES (?, ?, "COMENTARIO", ?, 0, Now())'
-            const paramsComm = [
-                comentarioId,
-                eventoId,
-                comentario
-            ];
-
-            const [comm] = await pool.query(queryComm, paramsComm);
-        }
-
-        // console.log("comentarioId: " +comentarioId);
-        const [audi] = await pool.query("CALL insert_audiEvento(?, ?, (SELECT getUsuarioActivoEvento(?) ), ?, ?)", [eventoId, detalle.eventoCircuito.act.etapa, eventoId, comentarioId, detalle.eventoCircuito.act.tarea.clave])
-        // console.log(audi);
-
-        return 1
+        return rows.affectedRows
     
     }catch (err){
         console.error(err);
@@ -880,9 +620,6 @@ export const comentarEvento = async (comentario, archivo) => {
 
     try{
 
-        // console.log("(875:evento.Model)");
-
-        // console.log(comentario);
         // console.log(archivo);
 
         let pathFile = null;
@@ -921,6 +658,97 @@ export const comentarEvento = async (comentario, archivo) => {
 }
 
 /** 
+ ** Comenta el evento
+ *
+ *i @param comentario: comentario realizado al evento, con usuario
+*/
+// export const comentarEvento = async (comentario) => {
+     
+//     /** 
+//     * i Objeto que tiene que llegar por parametro
+//     {
+//         "eventoId": id,            //* id del evento
+//         "comentario": "??",        //* comentario al evento
+//         "usuario": "usuarioId",    //* usuario que realizo el comentario
+//         "tieneFile": false,        //* el comentario tiene algun adjunto
+//         "file": "base64"           //* base64 del archivo adjunto
+//     }
+//     **/
+
+//     try{
+
+//         const query = "CALL comentar_evento(?,?,?)";
+//         let params = [
+//             comentario.eventoId,
+//             comentario.comentario,
+//             comentario.usuario
+//         ]
+
+//         const [rows] = await pool.query(query, params);
+
+//         // const eventoId = rows[0][0].eventoId;
+
+//         return 1;
+
+//     }catch (err){
+//         console.error(err);
+//         return 0;
+//     }
+
+// }
+
+/** 
+ ** Comenta el evento
+ *
+ *i @param comentario: comentario realizado al evento, con usuario
+*/
+export const comentarEventoArchivo = async (archivo) => {
+   
+    try{
+
+        console.log(__dirname);
+        let defaultPath = path.normalize(`${__dirname}\\..\\..\\temp\\`)
+
+        let pathCompleto = defaultPath + archivo.originalname;
+
+        console.log(pathCompleto);
+        // console.log(archivo);
+        
+        let uploadPath;
+
+        // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+        
+        // uploadPath = __dirname + '/somewhere/on/your/server/' + sampleFile.name;
+
+        // Use the mv() method to place the file somewhere on your server
+        // sampleFile.mv(uploadPath, function(err) {
+        //     if (err)
+        //     return res.status(500).send(err);
+
+        //     res.send('File uploaded!');
+        // });
+
+        // const query = "CALL comentar_evento(?,?,?)";
+        // let params = [
+        //     comentario.eventoId,
+        //     comentario.comentario,
+        //     comentario.usuario
+        // ]
+
+        // const [rows] = await pool.query(query, params);
+
+        // // const eventoId = rows[0][0].eventoId;
+
+        return 1;
+
+    }catch (err){
+        console.error(err);
+        return 0;
+    }
+
+}
+
+/** 
  ** Ver los comentarios de un evento
  *
  *i @param eventoId: evento a cual consultar
@@ -930,8 +758,6 @@ export const getComentariosEvento = async (eventoId) => {
     try{
         let query  = "";
         let params = "";
-
-        let res = [];
 
         query = " SELECT ea.eAdId, ea.eAdComentario, ea.eAdAdjFile, ea.eAdFecha, ae.audiEUsuario, u.usuarioUsuario, '' AS fileBase, '' AS fileName  \
                         FROM eventoadicion AS ea    \
@@ -959,55 +785,23 @@ export const getComentariosEvento = async (eventoId) => {
             let response = await pool.query(query, params);
             response = response[0][0];
 
-            let fileBase = "";
-            let fileName = "";
-            let fileMime = "";
-
             if (response.pathFile != null){
                 // console.log(pathFile[0].pathFile);
                 
                 try{
-                    const fileBaseAux = fs.readFileSync(response.pathFile, {encoding: 'base64'});
+                    const fileBase = fs.readFileSync(response.pathFile, {encoding: 'base64'});
                     // console.log("creo base64");
 
-                    // fileBase = `data:${response.mimeFile};base64,${fileBaseAux}`;
-                    fileMime = response.mimeFile;
-                    fileBase = fileBaseAux;
-                    fileName = response.nameFile;    
+                    rows[i].fileBase = `data:${response.mimeFile};base64,${fileBase}`;
+                    rows[i].fileName = response.nameFile;    
                 }catch(e){
                     // console.log("No existe el archivo");
                     // console.error(e)
                 }
             }
-
-            const [usuario] = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", rows[i].audiEUsuario);
-
-            res.push({
-                "id": rows[i].eAdId,
-                "comentario": rows[i].eAdComentario,
-                "fecha": rows[i].eAdFecha,
-                "usuario": {
-                    "id": usuario[0].usuarioId,
-                    "nombre": usuario[0].usuarioNombre,
-                    "apellido": usuario[0].usuarioApellido,
-                    "usuario": usuario[0].usuarioUsuario,
-                    "rol": usuario[0].usuarioRol,
-                },
-                "adjunto": {
-                    "tiene": rows[i].eAdAdjFile,
-                    "tipo": fileMime,
-                    "base": fileBase,
-                    "nombre": fileName
-                }
-
-            })
-
         }
 
-        // console.log("(995:evento.Model)");
-        // console.log(res);
-
-        return res;
+        return rows;
 
     }catch (err){
         console.error(err);
@@ -1051,7 +845,6 @@ export const getVidaEvento = async (eventoId) => {
 
         const query = ` SELECT 	(SELECT CONCAT(eventoTipo, "-", eventoNumero) FROM evento WHERE eventoId = ae.audiEEvento) AS evento,   \
                                 audiEEtapa,     \
-                                audiEUsuario,     \
                                 (SELECT t.tareaNombre FROM tarea AS t INNER JOIN evento_tarea AS et ON et.etTarea = t.tareaId WHERE et.etEvento = e.eventoTipo AND et.etEtapa = audiEEtapa) AS tarea,   \
                                 (SELECT usuarioUsuario FROM usuario WHERE usuarioId = ae.audiEUsuario) AS usuario,  \
                                 (SELECT usuarioColor FROM usuario WHERE usuarioId = ae.audiEUsuario) AS usuarioColor,  \
@@ -1070,23 +863,7 @@ export const getVidaEvento = async (eventoId) => {
 
         const [rows] = await pool.query(query, params);
 
-        let response = []
-        rows.map( (row) => {
-            let res = {
-                "etapa": row.audiEEtapa,
-                "tarea": row.tarea,
-                "usuario": {
-                    "id": row.audiEUsuario,
-                    "usuario": row.usuario,
-                    "color": row.color
-                },
-                "accion": row.audiEAccion,
-                "comentario": row.eAdComentario,
-                "fecha": row.audiEFecha
-            }
-            response.push(res);
-        });
-        return response;
+        return rows;
 
     }catch (err){
         console.error(err);
@@ -1126,53 +903,9 @@ export const getTareasPorTipo = async (rol) => {
 
         const [rows] = await pool.query(query, params);
 
-        const [tiposEvento] = await pool.query("SELECT * FROM tipoEvento");
-        // console.log(tiposEvento);
-        const [tareas] = await pool.query("SELECT * FROM tarea");
+        // console.log(rows);
 
-        let response = {
-            "data": [],
-            "tipos": [],
-            "tareas": []
-        };
-        
-        rows.map( (row) => {
-            response.data.push({
-                "cantidad": row.cantidadEventos,
-                "tipo": row.eventoTipo,
-                "tarea": row.tarea
-            });
-        });
-
-    //     "tipoEventoId": "CAS",
-    //   "tipoEventoDesc": null,
-    //   "tipoEventoActivo": 1,
-    //   "tipoEventoColor": "#fb8b9f",
-    //   "tipoEventoPropio": 0
-        tiposEvento.map( (tipo) => {
-            response.tipos.push({
-                "id": tipo.tipoEventoId,
-                "descripcion": tipo.tipoEventoDesc,
-                "activo": tipo.tipoEventoActivo,
-                "color": tipo.tipoEventoColor,
-                "propio": tipo.tipoEventoPropio
-            });
-        })
-
-
-    //     "tareaId": "0a2cd2e6258e8ba3f1fbacec",
-    //   "tareaNombre": "Aprobar",
-    //   "tareaRol": "CONS"
-
-        tareas.map( (tarea) => {
-            response.tareas.push({
-                "id": tarea.tareaId,
-                "nombre": tarea.tareaNombre,
-                "rol": tarea.tareaRol
-            });
-        })
-
-        return response;
+        return rows;
 
     }catch (err) {
         console.error(err);
@@ -1188,18 +921,17 @@ export const getTareasPorTipo = async (rol) => {
 export const cerrarEvento = async (eventoId, usuario) => {
 
     try{
-        // const query = "CALL delete_eventos(?,?,?)";
-        // let params = [
-        //     eventoId,
-        //     usuario,
-        //     "CERRO"
-        // ]
-        // const [rows] = await pool.query(query, params);
+        const query = "CALL delete_eventos(?,?,?)";
 
-        await pool.query("UPDATE evento SET eventoCerrado = true WHERE eventoId = ?", [eventoId]);
-        const data = await getDatosEvento(eventoId);
-        await pool.query("CALL insert_audiEvento(?, ?, ?, ?, ?)", [eventoId, data.etapa, usuario, null, 'CERRO']);
-        //CALL insert_audiEvento(eventoCodigo, @etapaActual, usuario, null, accion);
+        let params = [
+            eventoId,
+            usuario,
+            "CERRO"
+        ]
+
+        const [rows] = await pool.query(query, params);
+
+        console.log(rows);
 
         return 1;
 
@@ -1209,6 +941,7 @@ export const cerrarEvento = async (eventoId, usuario) => {
     }
 
 }
+
 
 
 // SUBS

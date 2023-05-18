@@ -9,7 +9,7 @@ import { pool } from '../../../db.js';
 export const getUltimosMovimientos = async (cantidad, rol) => {
 
     try{
-        console.log(rol);
+        // console.log(rol);
         let params = [];
         let query = 'SELECT 	audiEEvento AS eventoId,    \
                                 (SELECT CONCAT(eventoTipo, "-", eventoNumero) FROM evento WHERE eventoId = ae.audiEEvento) AS evento,   \
