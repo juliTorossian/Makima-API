@@ -66,7 +66,6 @@ export const getHorasUsuario = async (req, res) => {
         res.status(404).send('error');
     }
 }
-
 export const getHorasGeneral = async (req, res) => {
     const horas = await model.getHorasGenerales();
 

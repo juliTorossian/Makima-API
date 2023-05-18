@@ -21,6 +21,7 @@ import { fileURLToPath } from 'url';
 import { getUsuario } from '../usuario/usuario.model.js';
 import { getComentarioTarea, getTareaAccionCompleta } from '../tarea/tarea.model.js';
 import { cadenaAleatoria } from '../../../helper/random.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -59,7 +60,6 @@ export const getEventos = async (page) => {
 
         const [rows] = await pool.query(query, params);
 
-        
         let results = {
             "info": {
                 "total": total[0].total,
@@ -118,9 +118,6 @@ export const getEventos = async (page) => {
         // })
 
         // console.log(results);
-        
-
-
         return results;
     
     }catch (err){
@@ -214,8 +211,6 @@ export const getEventosUsuario = async (page, usuario) => {
                 "detalle": await getEventoDetalle(row.eventoId)
             })
         }
-        
-
         return results;
     
     }catch (err){
@@ -310,7 +305,6 @@ export const getEventosRol = async (page, rol) => {
                 "detalle": await getEventoDetalle(row.eventoId)
             })
         }
-
         return results;
     
     }catch (err){
@@ -339,7 +333,7 @@ export const getEvento = async (eventoId) => {
                         LEFT JOIN evento_tarea as tet ON tet.etEvento = e.eventoTipo                                                           \
                         LEFT JOIN tarea as ta ON ta.tareaId = tet.etTarea                                                                      \
                         WHERE	(e.eventoEtapa = tet.etEtapa OR ((SELECT te.tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) = true)) \
-                        AND 	e.eventoId = ?                                                                                                 \
+                        AND 	e.eventoId = ?
                     "
         const params = [eventoId]
 
@@ -465,13 +459,8 @@ export const getEventoDetalle = async (eventoId) => {
         const params = [
             eventoId
         ];
-
         // console.log(params);
-
         const [rows] = await pool.query(query, params);
-
-
-
         let eventoDetalle = null;
         if (rows.length > 0){
             let actTarea = null;
@@ -584,8 +573,7 @@ export const insertEvento = async (nEvento) => {
 
     try{
 
-        console.log(nEvento);
-
+        // console.log(nEvento);
         const query = "CALL insert_eventos(?,?,?,?,?,?)";
         let params = [
             nEvento.tipo,
@@ -790,7 +778,6 @@ export const reasignarEvento = async (eventoId, usuarioAsignado) => {
 
         // console.log("evento: " +eventoId);
         // console.log("usuario nuevo: " +usuarioAsignado);
-
         const query  = "CALL insert_audiEvento(?, ?, ?, ?, ?)"
         const params = [
             eventoId, 
@@ -932,7 +919,6 @@ export const getComentariosEvento = async (eventoId) => {
         let params = "";
 
         let res = [];
-
         query = " SELECT ea.eAdId, ea.eAdComentario, ea.eAdAdjFile, ea.eAdFecha, ae.audiEUsuario, u.usuarioUsuario, '' AS fileBase, '' AS fileName  \
                         FROM eventoadicion AS ea    \
                         INNER JOIN audievento AS ae ON ae.audiEAdi = ea.eAdId     \
@@ -979,7 +965,6 @@ export const getComentariosEvento = async (eventoId) => {
                     // console.error(e)
                 }
             }
-
             const [usuario] = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", rows[i].audiEUsuario);
 
             res.push({
@@ -1209,7 +1194,6 @@ export const cerrarEvento = async (eventoId, usuario) => {
     }
 
 }
-
 
 // SUBS
 

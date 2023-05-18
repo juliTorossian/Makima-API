@@ -10,7 +10,6 @@ usuarioRouter.put('/', controller.updateUsuario);
 usuarioRouter.delete('/:usuarioId', controller.deleteUsuario);
 usuarioRouter.get('/:usuarioId/reactivar', controller.reactivarUsuario);
 
-
 usuarioRouter.get('/:usuarioId/detalle', controller.getUsuarioDetalle);
 usuarioRouter.get('/gestion/iniciarSesion', controller.iniciarSesion);
 

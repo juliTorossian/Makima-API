@@ -27,7 +27,7 @@ export const insertUsuario = async (usuario) => {
         "color": "#D677A1",         //* color de usuario 
         "rol": {
             rol1, rol2, rol3
-        }                           //* rol del usuario
+        }
     }
     **/
 
@@ -47,7 +47,6 @@ export const insertUsuario = async (usuario) => {
         ];
 
         const [rows] = await pool.query(query, params);
-
         await insertRoles(usuarioId, usuario.rol);
 
         return 1;
@@ -108,10 +107,6 @@ export const updateUsuario = async (usuario) => {
             atts.push("usuarioPass = ?");
             params.push(usuario.password);
         }
-        // if (usuario.rol){
-        //     atts.push("usuarioRol = ?");
-        //     params.push(usuario.rol);
-        // }
         if (usuario.color){
             atts.push("usuarioColor = ?");
             params.push(usuario.color);

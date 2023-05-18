@@ -297,8 +297,6 @@ export const asignarTareas = async (tareas) => {
             params.push(aux)
         });
 
-        // console.log(params);
-
         // limpio evento_tarea
         let ok = await limpiarTareasTipoEvento(tareas.tipoEvento);
 

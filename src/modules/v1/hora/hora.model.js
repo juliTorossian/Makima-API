@@ -89,7 +89,6 @@ export const getHorasUsuario = async (usuarioId) => {
     **/
 
     try{
-
         const query = "SELECT * FROM registrohora WHERE regHoraUsuario = ? ORDER BY regHoraFecha";
         let params = [
             usuarioId
@@ -268,7 +267,6 @@ export const getHorasEvento = async (eventoId) => {
         return null;
     }
 }
-
 /** 
  ** Busca un registro de hora
  *
