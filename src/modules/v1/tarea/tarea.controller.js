@@ -25,7 +25,7 @@ export const insertTarea = async (req, res) => {
     let ok = await model.insertTarea(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(200).json("success");
     }else{
         res.status(404).send('error');
     }
@@ -37,7 +37,7 @@ export const updateTarea = async (req, res) => {
     let ok = await model.updateTarea(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(200).json("success");
     }else{
         res.status(404).send('error');
     }
@@ -84,6 +84,21 @@ export const getTareasEvento = async (req, res) => {
     }else{
         res.status(404).send('error');
     }
+}
+
+export const getTareaAccionCompleta = async (req, res) => {
+
+    console.log(req.params.eventoId);
+    console.log(req.query.accion);
+
+    let ok = await model.getTareaAccionCompleta(req.params.eventoId, req.query.accion);
+
+    if (ok!=undefined){
+        res.status(200).json(ok);
+    }else{
+        res.status(404).send('error');
+    }
+
 }
 
 // export const getTareasNoEvento = async (req, res) => {

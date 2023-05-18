@@ -3,6 +3,7 @@ import * as controller from './tarea.controller.js';
 
 const tareaRouter = express.Router();
 
+
 tareaRouter.get('/', controller.getTareas);
 tareaRouter.get('/:tareaId', controller.getTarea);
 tareaRouter.post('/', controller.insertTarea);
@@ -12,6 +13,7 @@ tareaRouter.delete('/:tareaId', controller.deleteTarea);
 tareaRouter.get('/rol/:rol', controller.getTareasRol);
 
 tareaRouter.get('/evento/:eventoId', controller.getTareasEvento);
-// tareaRouter.get('/evento/no/:eventoId', controller.getTareasNoEvento);
+
+tareaRouter.get('/evento/:eventoId/accion', controller.getTareaAccionCompleta);
 
 export default tareaRouter;

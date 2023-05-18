@@ -4,6 +4,8 @@ import * as controller from './hora.controller.js';
 const horaRouter = express.Router();
 
 
+horaRouter.get(   '/generales/'           , controller.getHorasGeneral);
+
 horaRouter.get(   '/'          , controller.getHoras);
 horaRouter.get(   '/:horaId'   , controller.getHora);
 horaRouter.post(  '/'          , controller.insertHora);

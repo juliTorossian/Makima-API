@@ -5,7 +5,7 @@ export const insertHora = async (req, res) => {
     let ok = await model.insertHora(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -17,7 +17,7 @@ export const updateHora = async (req, res) => {
     let ok = await model.updateHora(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -29,7 +29,7 @@ export const deleteHora = async (req, res) => {
     let ok = await model.deleteHora(req.params.horaId);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -57,8 +57,18 @@ export const getHora = async (req, res) => {
 }
 
 export const getHorasUsuario = async (req, res) => {
-    console.log(req.params.usuarioId);
+    // console.log(req.params.usuarioId);
     const horas = await model.getHorasUsuario(req.params.usuarioId);
+
+    if (!(horas == null)){
+        res.json(horas);
+    }else{
+        res.status(404).send('error');
+    }
+}
+
+export const getHorasGeneral = async (req, res) => {
+    const horas = await model.getHorasGenerales();
 
     if (!(horas == null)){
         res.json(horas);

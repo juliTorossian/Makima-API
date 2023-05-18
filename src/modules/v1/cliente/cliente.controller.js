@@ -5,7 +5,7 @@ export const insertCliente = async (req, res) => {
     let ok = await model.insertCliente(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(200).json("succes");
     }else{
         res.status(404).send('error');
     }
@@ -17,7 +17,7 @@ export const updateCliente = async (req, res) => {
     let ok = await model.updateCliente(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(200).json("succes");
     }else{
         res.status(404).send('error');
     }
@@ -29,7 +29,7 @@ export const deleteCliente = async (req, res) => {
     let ok = await model.deleteCliente(req.params.clienteId);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(200).json("succes");
     }else{
         res.status(404).send('error');
     }
@@ -41,7 +41,7 @@ export const reactivarCliente = async (req, res) => {
     let ok = await model.reactivarCliente(req.params.clienteId);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(200).json("succes");
     }else{
         res.status(404).send('error');
     }

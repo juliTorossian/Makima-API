@@ -5,7 +5,7 @@ export const insertUsuario = async (req, res) => {
     const ok = await model.insertUsuario(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -17,7 +17,7 @@ export const updateUsuario = async (req, res) => {
     const ok = await model.updateUsuario(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -29,7 +29,7 @@ export const deleteUsuario = async (req, res) => {
     const ok = await model.deleteUsuario(req.params.usuarioId);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -41,7 +41,7 @@ export const reactivarUsuario = async (req, res) => {
     const ok = await model.reactivarUsuario(req.params.usuarioId);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(201).json("ok");
     }else{
         res.status(404).send('error');
     }
@@ -50,12 +50,10 @@ export const reactivarUsuario = async (req, res) => {
 
 export const iniciarSesion = async (req, res) => {
 
-    const usuario = await model.existeUsuario(req.query.usuario, req.query.password);
+    const usuarioToken = await model.existeUsuario(req.query.usuario, req.query.password);
 
-    // res.send(usuario); 
-
-    if (usuario){
-        res.send(usuario); 
+    if (usuarioToken != ""){
+        res.json(usuarioToken); 
     }else{
         res.status(404).send('error');
     }
@@ -72,10 +70,15 @@ export const getUsuarios = async (req, res) => {
 }
 
 export const getUsuario = async (req, res) => {
-    const usuario = await model.getUsuario(req.params.usuarioId);
+    let usuario = null;
+    if (req.query.token){
+        usuario = await model.getUsuarioToken(req.params.usuarioId);
+    }else{
+        usuario = await model.getUsuario(req.params.usuarioId);
+    }
 
     if (!(usuario == null)){
-        res.json(usuario);
+        res.json({"tokenUsuario":usuario});
     }else{
         res.status(404).send('error');
     }

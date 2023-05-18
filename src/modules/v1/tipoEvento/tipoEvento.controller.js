@@ -35,7 +35,7 @@ export const insertTipoEvento = async (req, res) => {
     let ok = await model.insertTipoEvento(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(200).json("success");
     }else{
         res.status(404).send('error');
     }
@@ -47,7 +47,7 @@ export const updateTipoEvento = async (req, res) => {
     let ok = await model.updateTipoEvento(req.body);
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(200).json("success");
     }else{
         res.status(404).send('error');
     }
@@ -59,7 +59,7 @@ export const deleteTipoEvento = async (req, res) => {
     let ok = await model.deleteTipoEvento(req.params.tipoEventoId);
 
     if (ok > 0){
-        res.status(200).send("ok");
+        res.status(200).json("success");
     }else{
         res.status(404).send('error');
     }
@@ -71,7 +71,7 @@ export const asignarTareas = async (req, res) => {
     let ok = await model.asignarTareas(req.body)
 
     if (ok > 0){
-        res.status(201).send("ok");
+        res.status(200).json("success");
     }else{
         res.status(404).send('error');
     }

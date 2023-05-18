@@ -21,7 +21,15 @@ export const getModulos = async () => {
 
         const [rows] = await pool.query(query, params);
 
-        return rows;
+        let response = [];
+        rows.map( (row) => {
+            response.push({
+                "id": row.moduloId,
+                "nombre": row.moduloNombre,
+                "padre": row.moduloPadre
+            });
+        });
+        return response;
 
     }catch (err) {
         console.error(err);
@@ -43,7 +51,12 @@ export const getModulo = async (moduloId) => {
 
         const [rows] = await pool.query(query, params);
 
-        return rows[0];
+        let response = {
+            "id": rows[0].moduloId,
+            "nombre": rows[0].moduloNombre,
+            "padre": rows[0].moduloPadre
+        };
+        return response;
 
     }catch (err) {
         console.error(err);
@@ -182,7 +195,15 @@ export const getModulosPadre = async (padreId) => {
 
         const [rows] = await pool.query(query, params);
 
-        return rows;
+        let response = [];
+        rows.map( (row) => {
+            response.push({
+                "id": row.moduloId,
+                "nombre": row.moduloNombre,
+                "padre": row.moduloPadre
+            });
+        });
+        return response;
 
     }catch (err) {
         console.error(err);

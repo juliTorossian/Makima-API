@@ -22,13 +22,28 @@ export const getRoles = async () => {
 
         // console.log(rows);
 
-        return rows;
+        let response = [];
+        rows.map( (row) => {
+            response.push({
+                "id": row.rolId,
+                "descripcion": row.rolDescripcion,
+                "controlTotal": row.rolCtrlTotal,
+                "controlEvento": row.rolCtrlEvento,
+                "controlCliente": row.rolCtrlCliente,
+                "controlProducto": row.rolCtrlProducto,
+                "controlTipo": row.rolCtrlTipo,
+                "controlHora": row.rolCtrlHora,
+                "controlUsuario": row.rolCtrlUsuario
+            });
+        });
+        return response;
 
     }catch (err) {
         console.error(err);
         return null;
     }
 }
+
 
 /** 
  ** Busca un rol
@@ -44,7 +59,18 @@ export const getRol = async (rolId) => {
 
         const [rows] = await pool.query(query, params);
 
-        return rows[0];
+        let response = {
+            "id": rows[0].rolId,
+            "descripcion": rows[0].rolDescripcion,
+            "controlTotal": rows[0].rolCtrlTotal,
+            "controlEvento": rows[0].rolCtrlEvento,
+            "controlCliente": rows[0].rolCtrlCliente,
+            "controlProducto": rows[0].rolCtrlProducto,
+            "controlTipo": rows[0].rolCtrlTipo,
+            "controlHora": row.rolCtrlHora,
+            "controlUsuario": rows[0].rolCtrlUsuario
+        };
+        return response;
 
     }catch (err) {
         console.error(err);
@@ -64,17 +90,28 @@ export const insertRol = async (rol) => {
     {
         "id": "CUS",                //* sigla del rol
         "descripcion": "CUSTOM",    //* nombre del rol
-        "nivel": 0                  //* nivel del rol
+        "controlTotal": false
+        "controlEvento": true
+        "controlCliente": true
+        "controlProducto": true
+        "controlTipo": true
+        "controlUsuario": false
     }
     **/
 
     try{
 
-        const query = "INSERT INTO rol(rolId, rolDescripcion, rolNivel) VALUES  (?, ?, ?)";
+        const query = "INSERT INTO rol(rolId, rolDescripcion, rolCtrlTotal, rolCtrlEvento, rolCtrlCliente, rolCtrlProducto, rolCtrlTipo, rolCtrlHora, rolCtrlUsuario) VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         let params = [
             rol.id,
             rol.descripcion,
-            rol.nivel
+            rol.controlTotal,
+            rol.controlEvento,
+            rol.controlCliente,
+            rol.controlProducto,
+            rol.controlTipo,
+            rol.controlHora,
+            rol.controlUsuario
         ];
 
         const [rows] = await pool.query(query, params);
@@ -107,10 +144,16 @@ export const updateRol = async (rol) => {
 
     try{
 
-        const query = "UPDATE rol SET rolDescripcion = ?, rolNivel = ? WHERE rolId = ?";
+        const query = "UPDATE rol SET rolDescripcion = ?, rolCtrlTotal = ?, rolCtrlEvento = ?, rolCtrlCliente = ?, rolCtrlProducto = ?, rolCtrlTipo = ?, rolCtrlHora = ?, rolCtrlUsuario = ? WHERE rolId = ?";
         let params = [
             rol.descripcion,
-            rol.nivel,
+            rol.controlTotal,
+            rol.controlEvento,
+            rol.controlCliente,
+            rol.controlProducto,
+            rol.controlTipo,
+            rol.controlHora,
+            rol.controlUsuario,
             rol.id
         ];
 

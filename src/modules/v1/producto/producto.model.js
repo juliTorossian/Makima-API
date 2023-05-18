@@ -24,8 +24,24 @@ export const getProductos = async () => {
 
         // console.log(rows);
 
-        return rows;
-
+        let response = [];
+        rows.map( (row) => {
+            response.push({
+                "id": row.productoId,
+                "nombre": row.productoNombre,
+                "modulo": {
+                    "id": row.productoModulo
+                },
+                "submodulo": {
+                    "id": row.productoSubModulo
+                },
+                "entorno": {
+                    "id": row.productoEntorno
+                },
+                "activo": row.productoActivo
+            });
+        });
+        return response;
     }catch (err) {
         console.error(err);
         return null;
@@ -41,9 +57,21 @@ export const getProducto = async (productoId) => {
 
         const [rows] = await pool.query(query, params);
 
-        // console.log(rows[0]);
-
-        return rows[0];
+        let response = {
+            "id": rows[0].productoId,
+            "nombre": rows[0].productoNombre,
+            "modulo": {
+                "id": rows[0].productoModulo
+            },
+            "submodulo": {
+                "id": rows[0].productoSubModulo
+            },
+            "entorno": {
+                "id": rows[0].productoEntorno
+            },
+            "activo": rows[0].productoActivo
+        };
+        return response;
 
     }catch (err) {
         console.error(err);
