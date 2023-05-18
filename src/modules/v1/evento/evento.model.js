@@ -333,7 +333,7 @@ export const getEvento = async (eventoId) => {
                         LEFT JOIN evento_tarea as tet ON tet.etEvento = e.eventoTipo                                                           \
                         LEFT JOIN tarea as ta ON ta.tareaId = tet.etTarea                                                                      \
                         WHERE	(e.eventoEtapa = tet.etEtapa OR ((SELECT te.tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) = true)) \
-                        AND 	e.eventoId = ?
+                        AND 	e.eventoId = ?  \
                     "
         const params = [eventoId]
 
