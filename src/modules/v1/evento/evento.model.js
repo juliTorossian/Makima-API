@@ -82,7 +82,26 @@ export const getEventos = async (page) => {
             const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
             const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
             
-            const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
+            let producto = {
+                "id": "",
+                "nombre": "",
+                "modulo": "",
+                "submodulo": "",
+                "entorno": "",
+                "activo": ""
+            };
+            if (row.eventoProducto){
+                const [productoAux]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
+
+                producto = {
+                    "id": productoAux[0].productoId,
+                    "nombre": productoAux[0].productoNombre,
+                    "modulo": productoAux[0].productoModulo,
+                    "submodulo": productoAux[0].productoSubModulo,
+                    "entorno": productoAux[0].productoEntorno,
+                    "activo": productoAux[0].productoActivo
+                }
+            }
 
             results.results.push({
                 "id": row.eventoId,
@@ -94,14 +113,7 @@ export const getEventos = async (page) => {
                     "id": row.eventoCliente,
                     "nombre": row.cliente
                 },
-                "producto": {
-                    "id": producto[0].productoId,
-                    "nombre": producto[0].productoNombre,
-                    "modulo": producto[0].productoModulo,
-                    "submodulo": producto[0].productoSubModulo,
-                    "entorno": producto[0].productoEntorno,
-                    "activo": producto[0].productoActivo
-                },
+                "producto": producto,
                 "cerrado": row.eventoCerrado,
                 "propio": row.eventoPropio,
                 "prioridad": row.eventoPrioridad,
@@ -1111,7 +1123,7 @@ export const getTareasPorTipo = async (rol) => {
 
         const [rows] = await pool.query(query, params);
 
-        const [tiposEvento] = await pool.query("SELECT * FROM tipoEvento");
+        const [tiposEvento] = await pool.query("SELECT * FROM tipoEvento WHERE tipoEventoPropio = false AND (SELECT gacieventos.getCantEventosxTipoEvento(tipoEventoId)) > 0");
         // console.log(tiposEvento);
         const [tareas] = await pool.query("SELECT * FROM tarea");
 

@@ -14,7 +14,7 @@ import { pool } from '../../../db.js';
 export const getTareas = async () => {
 
     try{
-        let query = 'SELECT * FROM tarea';
+        let query = 'SELECT * FROM tarea ORDER BY tareaNombre';
         let params = [];
 
         const [rows] = await pool.query(query, params);
@@ -303,7 +303,7 @@ export const getComentarioTarea = async (eventoId, clave, etapa) => {
         // console.log(rows[0].comentario);
 
         let comentario = "";
-        if (rows[0].coemntario) {
+        if (rows[0].comentario) {
             comentario = rows[0].comentario;
         }
 
