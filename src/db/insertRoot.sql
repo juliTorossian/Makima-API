@@ -5,7 +5,7 @@ USE gacieventos;
 SET GLOBAL log_bin_trust_function_creators = 1;
 
 INSERT INTO rol(rolId, rolDescripcion, rolCtrlTotal, rolCtrlEvento, rolCtrlCliente, rolCtrlProducto, rolCtrlTipo, rolCtrlUsuario, rolCtrlHora)
-VALUES('ROOT', 'Rol de configuracion', true, true, true, true, true, true, true);
+VALUES('ROOT', 'Rol de configuracion', false, false, false, false, false, true, false);
 
 INSERT INTO usuario(usuarioId, usuarioNombre, usuarioApellido, usuarioMail, usuarioUsuario, usuarioPass, usuarioActivo, usuarioColor)
 VALUES ('usuarioRootTemporal', 'Administrador', 'Temporal','', 'ROOT', 'G3U4IjzqPdNqJSDPrePNhg==', True, '#3ACEE5');
