@@ -84,7 +84,7 @@ export const getEventos = async (page) => {
         //     const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
         //     const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
         //     const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
-            
+
         //     const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
 
         //     results.results.push({
@@ -116,7 +116,6 @@ export const getEventos = async (page) => {
         //         "detalle": await getEventoDetalle(row.eventoId)
         //     })
         // }
-
         // rows[0].map( (row) => {
             
         // })
@@ -1124,7 +1123,7 @@ export const getTareasPorTipo = async (rol) => {
 
         const [rows] = await pool.query(query, params);
 
-        const [tiposEvento] = await pool.query("SELECT * FROM tipoEvento");
+        const [tiposEvento] = await pool.query("SELECT * FROM tipoEvento WHERE tipoEventoPropio = false AND (SELECT gacieventos.getCantEventosxTipoEvento(tipoEventoId)) > 0");
         // console.log(tiposEvento);
         const [tareas] = await pool.query("SELECT * FROM tarea");
 

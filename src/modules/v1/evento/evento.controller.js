@@ -1,4 +1,6 @@
+import { avisoEventoAsignado } from "../../../helper/envioMail.js";
 import * as model from "./evento.model.js";
+import * as modelUsuario from "../usuario/usuario.model.js";
 
 export const getEventos = async (req, res) => {
     const eventos = await model.getEventos(req.query.page);
@@ -101,7 +103,16 @@ export const cerrarEvento = async (req, res) => {
 }
 
 export const avanzarEvento = async (req, res) => {
-    const ok = await model.avanzarEvento(req.params.evento, req.query.usuario, req.query.comentario);
+
+    
+
+    const eventoId = req.params.evento;
+    const usuarioId = req.query.usuario;
+    const comentario = req.query.comentario;
+
+    const ok = await model.avanzarEvento(eventoId,usuarioId,comentario);
+
+    eviarAvisoMail(usuarioId, eventoId);
 
     if (ok > 0){
         res.json("ok");
@@ -121,6 +132,9 @@ export const retrocederEvento = async (req, res) => {
 
 export const reasignarEvento = async (req, res) => {
     const ok = await model.reasignarEvento(req.params.evento, req.query.usuario);
+
+    
+    eviarAvisoMail(req.params.evento, req.query.usuario);
 
     if (ok > 0){
         res.json("ok");
@@ -207,4 +221,13 @@ export const getVidaEvento = async (req, res) => {
     }else{
         res.status(404).send('error');
     }
+}
+
+async function eviarAvisoMail(usuarioId, eventoId){
+
+    const usuario = await modelUsuario.getUsuario(usuarioId);
+    const evento  = await model.getEvento(eventoId);
+
+    avisoEventoAsignado(usuario, evento);
+
 }

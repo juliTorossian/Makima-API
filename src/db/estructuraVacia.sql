@@ -917,22 +917,27 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`sa`@`%` PROCEDURE `getEventosAsignadosUsuario`(usuario CHAR(24))
 BEGIN
-	
 	SELECT 	DISTINCT e.eventoTipo, 
 			(SELECT COUNT(e2.eventoTipo) 
 			 FROM evento AS e2 
 			 WHERE getUsuarioActivoEvento(e2.eventoId) = usuario
 			 AND e2.eventoCerrado != true 
 			 AND e2.eventoTipo = e.eventoTipo
-			 ) AS cantidad
+			 ) AS cantidadEventos,
+			(SELECT t.tareaNombre
+			FROM tarea AS t
+			INNER JOIN evento_tarea AS et ON et.etTarea = t.tareaId
+			WHERE et.etEvento = e.eventoTipo AND et.etEtapa = e.eventoEtapa) AS tarea
 	FROM evento AS e
+	LEFT JOIN tipoevento AS tp ON tp.tipoEventoId = e.eventoTipo
 	WHERE getUsuarioActivoEvento(e.eventoId) = usuario
-	AND   e.eventoCerrado != true
-    ;
+	AND   e.eventoCerrado = false
+	AND   tp.tipoEventoPropio = false
+	;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1003,7 +1008,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`sa`@`localhost` PROCEDURE `select_eventos`(paginacion boolean, pagina int, cantidad int)
 BEGIN
@@ -1013,15 +1018,17 @@ BEGIN
     IF paginacion = true THEN
         SET @query = CONCAT("SELECT e.*,
 								ta.tareaNombre,
+								te.tipoEventoPropio AS 'eventoPropio',
 								(SELECT clienteNombre FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'cliente',
 								(SELECT productoNombre FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'producto',
 								(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'usuarioAlta',
-								(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = auE.audiEUsuario) as 'usuarioActivo',
-                                (SELECT te.tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) AS 'eventoPropio'
+								(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = auE.audiEUsuario) as 'usuarioActivo'
 						FROM evento as e
-						INNER JOIN evento_tarea as tet ON tet.etEvento = e.eventoTipo
-						INNER JOIN tarea as ta ON ta.tareaId = tet.etTarea
+						LEFT JOIN evento_tarea as tet ON tet.etEvento = e.eventoTipo
+						LEFT JOIN tarea as ta ON ta.tareaId = tet.etTarea
+						LEFT JOIN tipoevento AS te ON te.tipoEventoId = e.eventoTipo
 						WHERE	e.eventoEtapa = tet.etEtapa
+						OR		te.tipoEventoPropio = true
                         LIMIT ",
                         (pagina - 1) * cantidad,
                         ",",
@@ -1030,14 +1037,16 @@ BEGIN
 	ELSE
 		SET @query ="SELECT e.*,
 								ta.tareaNombre,
+								te.tipoEventoPropio AS 'eventoPropio',
 								(SELECT clienteNombre FROM cliente as cl WHERE cl.clienteId = e.eventoCliente) as 'cliente',
 								(SELECT productoNombre FROM producto as pr WHERE pr.productoId = e.eventoProducto) as 'producto',
-								(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'usuarioAlta',
-                                (SELECT te.tipoEventoPropio FROM tipoEvento AS te WHERE te.tipoEventoId = e.eventoTipo) AS 'eventoPropio'
+								(SELECT us.usuarioUsuario FROM usuario as us WHERE us.usuarioId = e.eventoUsuarioAlta) as 'usuarioAlta'
 						FROM evento as e
-						INNER JOIN evento_tarea as tet ON tet.etEvento = e.eventoTipo
-						INNER JOIN tarea as ta ON ta.tareaId = tet.etTarea
+						LEFT JOIN evento_tarea as tet ON tet.etEvento = e.eventoTipo
+						LEFT JOIN tarea as ta ON ta.tareaId = tet.etTarea
+						LEFT JOIN tipoevento AS te ON te.tipoEventoId = e.eventoTipo
 						WHERE	e.eventoEtapa = tet.etEtapa
+						OR		te.tipoEventoPropio = true
                         ";
     END IF;
     
@@ -1212,4 +1221,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-15 11:10:33
+-- Dump completed on 2023-05-22  8:06:02
