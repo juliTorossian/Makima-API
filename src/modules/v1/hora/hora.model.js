@@ -117,7 +117,7 @@ export const getHorasUsuario = async (usuarioId) => {
                 responseAux.horas.push({
                     "id": hora.horaId,
                     "evento": {
-                        "id": hora.horaId,
+                        "id": evento[0].eventoId,
                         "tipo": evento[0].eventoTipo,
                         "numero": evento[0].eventoNumero,
                         "titulo": evento[0].eventoTitulo
