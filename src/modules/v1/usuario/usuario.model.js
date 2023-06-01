@@ -126,10 +126,11 @@ export const updateUsuario = async (usuario) => {
         // console.log(query);
 
         const [rows] = await pool.query(query, params);
-        // console.log(rows);
 
-        await pool.query("DELETE FROM usuarioRol WHERE usuRolUsuario = ?", [ usuario.id ])
-        await insertRoles(usuario.id, usuario.rol);
+        if (usuario.rol){
+            await pool.query("DELETE FROM usuarioRol WHERE usuRolUsuario = ?", [ usuario.id ])
+            await insertRoles(usuario.id, usuario.rol);
+        }
 
         return 1;
 
@@ -220,9 +221,9 @@ export const getUsuarios = async () => {
         const [rows] = await pool.query(query, params);
         // console.log(rows)
         
-        console.log(rows);
-        console.log(rows[0]);
-        console.log(rows[1]);
+        // console.log(rows);
+        // console.log(rows[0]);
+        // console.log(rows[1]);
 
         let response = [];
         // rows.map((row) => {
@@ -296,7 +297,6 @@ export const getUsuario = async (usuarioId) => {
             usuarioId
         ];
         const [rows] = await pool.query(query, params);
-
 
         const [ roles ] = await pool.query("SELECT * FROM usuariorol INNER JOIN rol ON rolId = usuRolRol WHERE usuRolUsuario = ?", [ rows[0].usuarioId ])
         let rol = [];
@@ -534,7 +534,6 @@ const insertRoles = async (usuarioId, roles) => {
 
 }
 
-
 /*
  ! 
  ! ESTADISTICAS
@@ -550,21 +549,76 @@ export const getEventosUsuarioEstadisticas = async (usuario) => {
 
     try{
 
-
-
         const query =  'CALL getEventosAsignadosUsuario(?)'; 
-
-        let params = [
-            usuario
-        ];
-
-        // console.log(query);
+        let params = [ usuario ];
 
         const [rows] = await pool.query(query, params);
 
-        // console.log(rows[0]);
+        const [tiposEvento] = await pool.query("SELECT * FROM tipoEvento WHERE tipoEventoPropio = false");
+        const [tareas] = await pool.query("SELECT * FROM tarea");
 
-        return rows[0];
+        let response = {
+            "data": [],
+            "tipos": [],
+            "tareas": []
+        };
+
+        let tiposAux = [];
+        
+        rows[0].map( (row) => {
+            tiposAux.push(row.eventoTipo);
+            response.data.push({
+                "cantidad": row.cantidadEventos,
+                "tipo": row.eventoTipo,
+                "tarea": row.tarea
+            });
+        });
+
+    //     "tipoEventoId": "CAS",
+    //   "tipoEventoDesc": null,
+    //   "tipoEventoActivo": 1,
+    //   "tipoEventoColor": "#fb8b9f",
+    //   "tipoEventoPropio": 0
+        tiposEvento.map( (tipo) => {
+            if ((tiposAux.indexOf(tipo.tipoEventoId)) != -1){
+                response.tipos.push({
+                    "id": tipo.tipoEventoId,
+                    "descripcion": tipo.tipoEventoDesc,
+                    "activo": tipo.tipoEventoActivo,
+                    "color": tipo.tipoEventoColor,
+                    "propio": tipo.tipoEventoPropio
+                });
+            }
+        })
+
+
+    //     "tareaId": "0a2cd2e6258e8ba3f1fbacec",
+    //   "tareaNombre": "Aprobar",
+    //   "tareaRol": "CONS"
+
+        tareas.map( (tarea) => {
+            response.tareas.push({
+                "id": tarea.tareaId,
+                "nombre": tarea.tareaNombre,
+                "rol": tarea.tareaRol
+            });
+        })
+
+        return response;
+
+        // const query =  'CALL getEventosAsignadosUsuario(?)'; 
+
+        // let params = [
+        //     usuario
+        // ];
+
+        // // console.log(query);
+
+        // const [rows] = await pool.query(query, params);
+
+        // // console.log(rows[0]);
+
+        // return rows[0];
 
     }catch (err){
         console.error(err);

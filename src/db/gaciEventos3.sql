@@ -93,15 +93,18 @@ CREATE TABLE `evento` (
   `eventoPrioridad` int DEFAULT NULL,
   `eventoEsMadre` tinyint(1) DEFAULT '0',
   `eventoMadre` char(24) DEFAULT NULL,
+  `eventoModulo` char(4) DEFAULT NULL,
   PRIMARY KEY (`eventoId`),
   UNIQUE KEY `evento_index_7` (`eventoTipo`,`eventoNumero`),
   KEY `evento_index_8` (`eventoCliente`),
   KEY `eventoProducto` (`eventoProducto`),
   KEY `eventoUsuarioAlta` (`eventoUsuarioAlta`),
+  KEY `evento_ibfk_5` (`eventoModulo`),
   CONSTRAINT `evento_ibfk_1` FOREIGN KEY (`eventoTipo`) REFERENCES `tipoevento` (`tipoEventoId`),
   CONSTRAINT `evento_ibfk_2` FOREIGN KEY (`eventoCliente`) REFERENCES `cliente` (`clienteId`),
   CONSTRAINT `evento_ibfk_3` FOREIGN KEY (`eventoProducto`) REFERENCES `producto` (`productoId`),
-  CONSTRAINT `evento_ibfk_4` FOREIGN KEY (`eventoUsuarioAlta`) REFERENCES `usuario` (`usuarioId`)
+  CONSTRAINT `evento_ibfk_4` FOREIGN KEY (`eventoUsuarioAlta`) REFERENCES `usuario` (`usuarioId`),
+  CONSTRAINT `evento_ibfk_5` FOREIGN KEY (`eventoModulo`) REFERENCES `modulo` (`moduloId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -232,16 +235,10 @@ DROP TABLE IF EXISTS `producto`;
 CREATE TABLE `producto` (
   `productoId` char(24) NOT NULL,
   `productoNombre` varchar(60) DEFAULT NULL,
-  `productoModulo` char(4) DEFAULT NULL,
-  `productoSubModulo` char(4) DEFAULT NULL,
   `productoEntorno` char(5) DEFAULT NULL,
   `productoActivo` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`productoId`),
-  KEY `producto_index_1` (`productoModulo`),
   KEY `producto_index_2` (`productoEntorno`),
-  KEY `productoSubModulo` (`productoSubModulo`),
-  CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`productoModulo`) REFERENCES `modulo` (`moduloId`),
-  CONSTRAINT `producto_ibfk_2` FOREIGN KEY (`productoSubModulo`) REFERENCES `modulo` (`moduloId`),
   CONSTRAINT `producto_ibfk_3` FOREIGN KEY (`productoEntorno`) REFERENCES `entorno` (`entornoId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -976,9 +973,9 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`localhost` PROCEDURE `insert_eventos`(tipo char(3), titulo varchar(200), cliente char(24), producto char(24), usuario char(24), prioridad INT)
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `insert_eventos`(tipo char(3), titulo varchar(200), cliente char(24), producto char(24), modulo CHAR(4), usuario char(24), prioridad INT)
 BEGIN
 	SET @numero = (SELECT getUltimoNumero_eventos(tipo)) + 1;
     
@@ -988,8 +985,8 @@ BEGIN
     
     SET @eventoId = (SELECT getNewId());
     
-	INSERT INTO evento(eventoId, eventoTipo,eventoNumero,eventoTitulo,eventoCerrado,eventoEtapa,eventoCliente,eventoProducto,eventoUsuarioAlta, eventoPrioridad,eventoFechaAlta) 
-	VALUES ( @eventoId, tipo,@numero,titulo,0,1,cliente,producto,usuario, prioridad,now());
+	INSERT INTO evento(eventoId, eventoTipo, eventoNumero, eventoTitulo, eventoCerrado, eventoEtapa, eventoCliente, eventoProducto, eventoModulo, eventoUsuarioAlta, eventoPrioridad, eventoFechaAlta) 
+	VALUES ( @eventoId, tipo, @numero, titulo, 0, 1, cliente, producto, modulo, usuario, prioridad, now());
 
     CALL insert_audiEvento(@eventoId, 1, usuario, null, "CREO");
     COMMIT;
@@ -1187,7 +1184,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`localhost` PROCEDURE `update_eventos`(eventoCodigo char(24), titulo varchar(200), cliente char(24), producto char(24), prioridad INT)
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `update_eventos`(eventoCodigo char(24), titulo varchar(200), cliente char(24), producto char(24), modulo CHAR(4), prioridad INT)
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
@@ -1200,6 +1197,7 @@ BEGIN
 		eventoTitulo = titulo,
         eventoCliente = cliente,
         eventoProducto = producto,
+        eventoModulo = modulo,
         eventoPrioridad = prioridad
 	WHERE
 		eventoId = eventoCodigo
@@ -1221,4 +1219,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-22  8:06:02
+-- Dump completed on 2023-05-30 23:35:45

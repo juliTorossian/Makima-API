@@ -1,3 +1,4 @@
+import { testEnvioMail } from "../../../helper/envioMail.js";
 import * as model from "./usuario.model.js";
 
 export const insertUsuario = async (req, res) => {
@@ -70,6 +71,7 @@ export const getUsuarios = async (req, res) => {
 }
 
 export const getUsuario = async (req, res) => {
+
     let usuario = null;
     if (req.query.token){
         usuario = await model.getUsuarioToken(req.params.usuarioId);
