@@ -29,12 +29,6 @@ export const getProductos = async () => {
             response.push({
                 "id": row.productoId,
                 "nombre": row.productoNombre,
-                "modulo": {
-                    "id": row.productoModulo
-                },
-                "submodulo": {
-                    "id": row.productoSubModulo
-                },
                 "entorno": {
                     "id": row.productoEntorno
                 },
@@ -60,12 +54,6 @@ export const getProducto = async (productoId) => {
         let response = {
             "id": rows[0].productoId,
             "nombre": rows[0].productoNombre,
-            "modulo": {
-                "id": rows[0].productoModulo
-            },
-            "submodulo": {
-                "id": rows[0].productoSubModulo
-            },
             "entorno": {
                 "id": rows[0].productoEntorno
             },
@@ -90,19 +78,15 @@ export const insertProducto = async (producto) => {
     * i Objeto que tiene que llegar por parametro
     {
         "nombre": "CUS",            //* nombre del producto
-        "modulo": "CUSTOM",         //* modulo del producto
-        "submodulo": "STK",         //* submodulo del producto
         "entorno": "WEB"            //* entorno del producto
     }
     **/
 
     try{
 
-        const query = "INSERT producto(productoId, productoNombre, productoModulo, productoSubModulo, productoEntorno, productoActivo) VALUE ((SELECT getNewId()), ?, ?, ?, ?, true)";
+        const query = "INSERT producto(productoId, productoNombre, productoEntorno, productoActivo) VALUE ((SELECT getNewId()), ?, ?, true)";
         let params = [
             producto.nombre,
-            producto.modulo,
-            producto.submodulo,
             producto.entorno
         ];
 
@@ -130,19 +114,15 @@ export const updateProducto = async (producto) => {
     {
         "id": 1                     //* id del producto
         "nombre": "CUS",            //* nombre del producto
-        "modulo": "CUSTOM",         //* modulo del producto
-        "submodulo": "STK",         //* submodulo del producto
         "entorno": "WEB"            //* entorno del producto
     }
     **/
 
     try{
 
-        const query = "UPDATE producto SET productoNombre = ? , productoModulo = ? , productoSubModulo = ? , productoEntorno = ? WHERE productoId = ?";
+        const query = "UPDATE producto SET productoNombre = ? , productoEntorno = ? WHERE productoId = ?";
         let params = [
             producto.nombre,
-            producto.modulo,
-            producto.submodulo,
             producto.entorno,
             producto.id
         ];

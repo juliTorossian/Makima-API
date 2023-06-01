@@ -21,6 +21,8 @@ import { fileURLToPath } from 'url';
 import { getUsuario } from '../usuario/usuario.model.js';
 import { getComentarioTarea, getTareaAccionCompleta } from '../tarea/tarea.model.js';
 import { cadenaAleatoria } from '../../../helper/random.js';
+import { getTipoEvento } from '../tipoEvento/tipoEvento.model.js';
+import { getModulo } from '../modulo/modulo.model.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -67,51 +69,53 @@ export const getEventos = async (page) => {
                 "next": (page >= totalPages ? null : (page + 1)),
                 "prev": (page <= 1 ? null : (page - 1))
             },
-            "results": [] //rows[0]
+            "results": await formatearEvento(rows[0])
         };
+
         
         // console.log(rows[0]);
 
-        for (let i = 0; i < rows[0].length; i++) {
-            const row = rows[0][i];
+        // for (let i = 0; i < rows[0].length; i++) {
+        //     const row = rows[0][i];
 
-            // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-            // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
+        //     // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
+        //     // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
 
-            const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
-            const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
-            const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
+        //     const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
+        //     const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
+        //     const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
             
-            const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
+        //     const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
 
-            results.results.push({
-                "id": row.eventoId,
-                "tipo": row.eventoTipo,
-                "numero": row.eventoNumero,
-                "titulo": row.eventoTitulo,
-                "tareaNombre": row.tareaNombre,
-                "cliente": {
-                    "id": row.eventoCliente,
-                    "nombre": row.cliente
-                },
-                "producto": {
-                    "id": producto[0].productoId,
-                    "nombre": producto[0].productoNombre,
-                    "modulo": producto[0].productoModulo,
-                    "submodulo": producto[0].productoSubModulo,
-                    "entorno": producto[0].productoEntorno,
-                    "activo": producto[0].productoActivo
-                },
-                "cerrado": row.eventoCerrado,
-                "propio": row.eventoPropio,
-                "prioridad": row.eventoPrioridad,
-                "fechaAlta": row.eventoFechaAlta,
-                "usuarioActual": usuarioActual,
-                "usuarioAlta": usuarioAlta,
-                // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
-                "detalle": await getEventoDetalle(row.eventoId)
-            })
-        }
+        //     results.results.push({
+        //         "id": row.eventoId,
+        //         "tipo": row.eventoTipo,
+        //         "numero": row.eventoNumero,
+        //         "titulo": row.eventoTitulo,
+        //         "tareaNombre": row.tareaNombre,
+        //         "cliente": {
+        //             "id": row.eventoCliente,
+        //             "nombre": row.cliente
+        //         },
+        //         "producto": {
+        //             "id": producto[0].productoId,
+        //             "nombre": producto[0].productoNombre,
+        //             "modulo": producto[0].productoModulo,
+        //             "submodulo": producto[0].productoSubModulo,
+        //             "entorno": producto[0].productoEntorno,
+        //             "activo": producto[0].productoActivo
+        //         },
+        //         "modulo": row.eventoModulo,
+        //         "cerrado": row.eventoCerrado,
+        //         "propio": row.eventoPropio,
+        //         "prioridad": row.eventoPrioridad,
+        //         "fechaAlta": row.eventoFechaAlta,
+        //         "usuarioActual": usuarioActual,
+        //         "usuarioAlta": usuarioAlta,
+        //         // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
+        //         "detalle": await getEventoDetalle(row.eventoId)
+        //     })
+        // }
 
         // rows[0].map( (row) => {
             
@@ -168,49 +172,50 @@ export const getEventosUsuario = async (page, usuario) => {
                 "next": (page >= totalPages ? null : (page + 1)),
                 "prev": (page <= 1 ? null : (page - 1))
             },
-            "results": [] //rows[0]
+            "results": await formatearEvento(rows[0])
         };
 
-        for (let i = 0; i < rows[0].length; i++) {
-            const row = rows[0][i];
+        // for (let i = 0; i < rows[0].length; i++) {
+        //     const row = rows[0][i];
 
-            // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-            // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
+        //     // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
+        //     // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
 
-            const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
-            const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
-            const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
+        //     const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
+        //     const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
+        //     const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
 
-            const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
+        //     const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
 
-            results.results.push({
-                "id": row.eventoId,
-                "tipo": row.eventoTipo,
-                "numero": row.eventoNumero,
-                "titulo": row.eventoTitulo,
-                "tareaNombre": row.tareaNombre,
-                "cliente": {
-                    "id": row.eventoCliente,
-                    "nombre": row.cliente
-                },
-                "producto": {
-                    "id": producto[0].productoId,
-                    "nombre": producto[0].productoNombre,
-                    "modulo": producto[0].productoModulo,
-                    "submodulo": producto[0].productoSubModulo,
-                    "entorno": producto[0].productoEntorno,
-                    "activo": producto[0].productoActivo
-                },
-                "cerrado": row.eventoCerrado,
-                "propio": row.eventoPropio,
-                "prioridad": row.eventoPrioridad,
-                "fechaAlta": row.eventoFechaAlta,
-                "usuarioActual": usuarioActual,
-                "usuarioAlta": usuarioAlta,
-                // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
-                "detalle": await getEventoDetalle(row.eventoId)
-            })
-        }
+        //     results.results.push({
+        //         "id": row.eventoId,
+        //         "tipo": row.eventoTipo,
+        //         "numero": row.eventoNumero,
+        //         "titulo": row.eventoTitulo,
+        //         "tareaNombre": row.tareaNombre,
+        //         "cliente": {
+        //             "id": row.eventoCliente,
+        //             "nombre": row.cliente
+        //         },
+        //         "producto": {
+        //             "id": producto[0].productoId,
+        //             "nombre": producto[0].productoNombre,
+        //             "modulo": producto[0].productoModulo,
+        //             "submodulo": producto[0].productoSubModulo,
+        //             "entorno": producto[0].productoEntorno,
+        //             "activo": producto[0].productoActivo
+        //         },
+        //         "modulo": row.eventoModulo,
+        //         "cerrado": row.eventoCerrado,
+        //         "propio": row.eventoPropio,
+        //         "prioridad": row.eventoPrioridad,
+        //         "fechaAlta": row.eventoFechaAlta,
+        //         "usuarioActual": usuarioActual,
+        //         "usuarioAlta": usuarioAlta,
+        //         // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
+        //         "detalle": await getEventoDetalle(row.eventoId)
+        //     })
+        // }
         return results;
     
     }catch (err){
@@ -262,49 +267,50 @@ export const getEventosRol = async (page, rol) => {
                 "next": (page >= totalPages ? null : (page + 1)),
                 "prev": (page <= 1 ? null : (page - 1))
             },
-            "results": [] //rows[0]
+            "results": await formatearEvento(rows[0])
         };
 
-        for (let i = 0; i < rows[0].length; i++) {
-            const row = rows[0][i];
+        // for (let i = 0; i < rows[0].length; i++) {
+        //     const row = rows[0][i];
 
-            // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-            // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
+        //     // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
+        //     // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
 
-            const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
-            const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
-            const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
+        //     const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
+        //     const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
+        //     const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
             
-            const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
+        //     const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
 
-            results.results.push({
-                "id": row.eventoId,
-                "tipo": row.eventoTipo,
-                "numero": row.eventoNumero,
-                "titulo": row.eventoTitulo,
-                "tareaNombre": row.tareaNombre,
-                "cliente": {
-                    "id": row.eventoCliente,
-                    "nombre": row.cliente
-                },
-                "producto": {
-                    "id": producto[0].productoId,
-                    "nombre": producto[0].productoNombre,
-                    "modulo": producto[0].productoModulo,
-                    "submodulo": producto[0].productoSubModulo,
-                    "entorno": producto[0].productoEntorno,
-                    "activo": producto[0].productoActivo
-                },
-                "cerrado": row.eventoCerrado,
-                "propio": row.eventoPropio,
-                "prioridad": row.eventoPrioridad,
-                "fechaAlta": row.eventoFechaAlta,
-                "usuarioActual": usuarioActual,
-                "usuarioAlta": usuarioAlta,
-                // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
-                "detalle": await getEventoDetalle(row.eventoId)
-            })
-        }
+        //     results.results.push({
+        //         "id": row.eventoId,
+        //         "tipo": row.eventoTipo,
+        //         "numero": row.eventoNumero,
+        //         "titulo": row.eventoTitulo,
+        //         "tareaNombre": row.tareaNombre,
+        //         "cliente": {
+        //             "id": row.eventoCliente,
+        //             "nombre": row.cliente
+        //         },
+        //         "producto": {
+        //             "id": producto[0].productoId,
+        //             "nombre": producto[0].productoNombre,
+        //             "modulo": producto[0].productoModulo,
+        //             "submodulo": producto[0].productoSubModulo,
+        //             "entorno": producto[0].productoEntorno,
+        //             "activo": producto[0].productoActivo
+        //         },
+        //         "modulo": row.eventoModulo,
+        //         "cerrado": row.eventoCerrado,
+        //         "propio": row.eventoPropio,
+        //         "prioridad": row.eventoPrioridad,
+        //         "fechaAlta": row.eventoFechaAlta,
+        //         "usuarioActual": usuarioActual,
+        //         "usuarioAlta": usuarioAlta,
+        //         // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
+        //         "detalle": await getEventoDetalle(row.eventoId)
+        //     })
+        // }
         return results;
     
     }catch (err){
@@ -339,48 +345,51 @@ export const getEvento = async (eventoId) => {
 
         const [rows] = await pool.query(query, params);
 
-        // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-        // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
+        // // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
+        // // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
 
-        const usuarioAlta = await getUsuario(rows[0].eventoUsuarioAlta);
-        const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ rows[0].eventoId ]);
-        const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
+        // const usuarioAlta = await getUsuario(rows[0].eventoUsuarioAlta);
+        // const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ rows[0].eventoId ]);
+        // const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
 
-        let producto = [];
-        if (rows[0].eventoProducto){
-            const [productoAux] = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ rows[0].eventoProducto ]);
-            producto = {
-                "id": productoAux[0].productoId,
-                "nombre": productoAux[0].productoNombre,
-                "modulo": productoAux[0].productoModulo,
-                "submodulo": productoAux[0].productoSubModulo,
-                "entorno": productoAux[0].productoEntorno,
-                "activo": productoAux[0].productoActivo
-            }
-        }
+        // let producto = [];
+        // if (rows[0].eventoProducto){
+        //     const [productoAux] = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ rows[0].eventoProducto ]);
+        //     producto = {
+        //         "id": productoAux[0].productoId,
+        //         "nombre": productoAux[0].productoNombre,
+        //         "modulo": productoAux[0].productoModulo,
+        //         "submodulo": productoAux[0].productoSubModulo,
+        //         "entorno": productoAux[0].productoEntorno,
+        //         "activo": productoAux[0].productoActivo
+        //     }
+        // }
 
-        let results = {
-            "id": rows[0].eventoId,
-            "tipo": rows[0].eventoTipo,
-            "numero": rows[0].eventoNumero,
-            "titulo": rows[0].eventoTitulo,
-            "tareaNombre": rows[0].tareaNombre,
-            "cliente": {
-                "id": rows[0].eventoCliente,
-                "sigla": rows[0].clienteSigla,
-                "nombre": rows[0].cliente
-            },
-            "producto": producto,
-            "cerrado": rows[0].eventoCerrado,
-            "propio": rows[0].eventoPropio,
-            "prioridad": rows[0].eventoPrioridad,
-            "usuarioActual": usuarioActual,
-            "usuarioAlta": usuarioAlta,
-            // "madre": (rows[0].eventoMadre!="") ? await getEvento(rows[0].eventoMadre) : undefined,
-            "detalle": await getEventoDetalle(rows[0].eventoId)
-        }
 
-        return results;
+        let results = await formatearEvento(rows);
+
+        // let results = {
+        //     "id": rows[0].eventoId,
+        //     "tipo": rows[0].eventoTipo,
+        //     "numero": rows[0].eventoNumero,
+        //     "titulo": rows[0].eventoTitulo,
+        //     "tareaNombre": rows[0].tareaNombre,
+        //     "cliente": {
+        //         "id": rows[0].eventoCliente,
+        //         "sigla": rows[0].clienteSigla,
+        //         "nombre": rows[0].cliente
+        //     },
+        //     "producto": producto,
+        //     "cerrado": rows[0].eventoCerrado,
+        //     "propio": rows[0].eventoPropio,
+        //     "prioridad": rows[0].eventoPrioridad,
+        //     "usuarioActual": usuarioActual,
+        //     "usuarioAlta": usuarioAlta,
+        //     // "madre": (rows[0].eventoMadre!="") ? await getEvento(rows[0].eventoMadre) : undefined,
+        //     "detalle": await getEventoDetalle(rows[0].eventoId)
+        // }
+
+        return results[0];
     }catch (err){
         console.error(err);
         return null;
@@ -565,6 +574,7 @@ export const insertEvento = async (nEvento) => {
         "etapa": 1                              //! siempre nace en 1
         "cliente": 2,                           //* id del cliente
         "producto": 2,                          //* id del programa
+        "modulo": 1,                            //* id del modulo
         "usuAlta": 1                            //* id del usuario de alta
         "fechaAlta": now()                      //! fecha del momento
         "madre": idMadre                        //* Evento madre
@@ -574,12 +584,13 @@ export const insertEvento = async (nEvento) => {
     try{
 
         // console.log(nEvento);
-        const query = "CALL insert_eventos(?,?,?,?,?,?)";
+        const query = "CALL insert_eventos(?,?,?,?,?,?,?)";
         let params = [
             nEvento.tipo,
             nEvento.titulo,
             (nEvento.cliente == "") ? null : nEvento.cliente,
             (nEvento.producto == "") ? null : nEvento.producto,
+            (nEvento.modulo == "") ? null : nEvento.modulo,
             nEvento.usuAlta,
             nEvento.prioridad
         ]
@@ -615,6 +626,7 @@ export const updateEvento = async (eventoM) => {
         "titulo": "Titulo del nuevo evento",    //* titulo del evento
         "cliente": 2,                           //* id del cliente
         "producto": 2,                          //* id del programa
+        "modulo"; 1                             //* id del modulo
     }
     **/
 
@@ -624,12 +636,13 @@ export const updateEvento = async (eventoM) => {
 
         // console.log(eventoM);
 
-        const query = "CALL update_eventos(?,?,?,?,?)";
+        const query = "CALL update_eventos(?,?,?,?,?,?)";
         let params = [
             eventoM.id,
             eventoM.titulo,
             eventoM.cliente,
             eventoM.producto,
+            eventoM.modulo,
             eventoM.prioridad
         ]
         // console.log(params);
@@ -1216,4 +1229,64 @@ async function getDatosEvento(id){
                                             );
     datosEvento = datosEvento[0];
     return datosEvento;
+}
+
+async function formatearEvento(eventos){
+    let eventosFinal = [];
+
+    for (let i = 0; i < eventos.length; i++) {
+        const row = eventos[i];
+
+        // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
+        // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
+
+        const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
+        const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
+        const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
+        
+        // const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
+        
+        let producto = [];
+        if (row.eventoProducto){
+            const [productoAux] = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
+            producto = {
+                "id": productoAux[0].productoId,
+                "nombre": productoAux[0].productoNombre,
+                // "modulo": productoAux[0].productoModulo,
+                // "submodulo": productoAux[0].productoSubModulo,
+                "entorno": productoAux[0].productoEntorno,
+                "activo": productoAux[0].productoActivo
+            }
+        }
+
+        // let tipo = await getTipoEvento(row.eventoTipo);
+        // let modulo = null;
+        // if (row.modulo){
+        //     modulo = await getModulo(row.modulo);
+        // }
+
+        eventosFinal.push({
+            "id": row.eventoId,
+            "tipo": row.eventoTipo,
+            "numero": row.eventoNumero,
+            "titulo": row.eventoTitulo,
+            "tareaNombre": row.tareaNombre,
+            "cliente": {
+                "id": row.eventoCliente,
+                "nombre": row.cliente
+            },
+            "producto": producto,
+            "modulo": row.eventoModulo,
+            "cerrado": row.eventoCerrado,
+            "propio": row.eventoPropio,
+            "prioridad": row.eventoPrioridad,
+            "fechaAlta": row.eventoFechaAlta,
+            "usuarioActual": usuarioActual,
+            "usuarioAlta": usuarioAlta,
+            // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
+            "detalle": await getEventoDetalle(row.eventoId)
+        })
+    }
+
+    return eventosFinal;
 }
