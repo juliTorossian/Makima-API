@@ -21,6 +21,8 @@ import { fileURLToPath } from 'url';
 import { getUsuario } from '../usuario/usuario.model.js';
 import { getComentarioTarea, getTareaAccionCompleta } from '../tarea/tarea.model.js';
 import { cadenaAleatoria } from '../../../helper/random.js';
+import { getTipoEvento } from '../tipoEvento/tipoEvento.model.js';
+import { getModulo } from '../modulo/modulo.model.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -1256,6 +1258,12 @@ async function formatearEvento(eventos){
                 "activo": productoAux[0].productoActivo
             }
         }
+
+        // let tipo = await getTipoEvento(row.eventoTipo);
+        // let modulo = null;
+        // if (row.modulo){
+        //     modulo = await getModulo(row.modulo);
+        // }
 
         eventosFinal.push({
             "id": row.eventoId,
