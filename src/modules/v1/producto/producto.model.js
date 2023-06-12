@@ -28,6 +28,7 @@ export const getProductos = async () => {
         rows.map( (row) => {
             response.push({
                 "id": row.productoId,
+                "sigla": row.productoSigla,
                 "nombre": row.productoNombre,
                 "entorno": {
                     "id": row.productoEntorno
@@ -53,6 +54,7 @@ export const getProducto = async (productoId) => {
 
         let response = {
             "id": rows[0].productoId,
+            "sigla": rows[0].productoSigla,
             "nombre": rows[0].productoNombre,
             "entorno": {
                 "id": rows[0].productoEntorno
@@ -77,6 +79,7 @@ export const insertProducto = async (producto) => {
     /** 
     * i Objeto que tiene que llegar por parametro
     {
+        "sigla": ""
         "nombre": "CUS",            //* nombre del producto
         "entorno": "WEB"            //* entorno del producto
     }
@@ -84,8 +87,9 @@ export const insertProducto = async (producto) => {
 
     try{
 
-        const query = "INSERT producto(productoId, productoNombre, productoEntorno, productoActivo) VALUE ((SELECT getNewId()), ?, ?, true)";
+        const query = "INSERT producto(productoId, productoSigla, productoNombre, productoEntorno, productoActivo) VALUE ((SELECT getNewId()), ?, ?, ?, true)";
         let params = [
+            producto.sigla,
             producto.nombre,
             producto.entorno
         ];
@@ -120,8 +124,9 @@ export const updateProducto = async (producto) => {
 
     try{
 
-        const query = "UPDATE producto SET productoNombre = ? , productoEntorno = ? WHERE productoId = ?";
+        const query = "UPDATE producto SET productoSigla = ? , productoNombre = ? , productoEntorno = ? WHERE productoId = ?";
         let params = [
+            producto.sigla,
             producto.nombre,
             producto.entorno,
             producto.id
