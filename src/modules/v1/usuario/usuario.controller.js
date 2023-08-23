@@ -1,14 +1,25 @@
+import { validationResult } from "express-validator";
 import { testEnvioMail } from "../../../helper/envioMail.js";
 import * as model from "./usuario.model.js";
 
 export const insertUsuario = async (req, res) => {
 
-    const ok = await model.insertUsuario(req.body);
+    try {
+        const validatorError = validationResult(req);
+        if (!validatorError.isEmpty()){
+            return res.status(400).json( { errors: validatorError.array() } );
+        }
+    
+        const ok = await model.insertUsuario(req.body);
+    
+        if (ok > 0){
+            res.status(201).json("ok");
+        }else{
+            res.status(404).send('error');
+        }
 
-    if (ok > 0){
-        res.status(201).json("ok");
-    }else{
-        res.status(404).send('error');
+    } catch (err) {
+        res.status(500).json(err);
     }
 
 }

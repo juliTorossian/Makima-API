@@ -1,11 +1,14 @@
 import express from 'express';
 import * as controller from './usuario.controller.js';
+import * as validator from './usuario.validator.js';
+import { checkSchema } from 'express-validator';
 
 const usuarioRouter = express.Router();
 
 usuarioRouter.get('/', controller.getUsuarios);
 usuarioRouter.get('/:usuarioId', controller.getUsuario);
-usuarioRouter.post('/', controller.insertUsuario);
+// usuarioRouter.post('/', validator.insertUsuario, controller.insertUsuario);
+usuarioRouter.post('/', checkSchema(validator.insertUsuario), controller.insertUsuario);
 usuarioRouter.put('/', controller.updateUsuario);
 usuarioRouter.delete('/:usuarioId', controller.deleteUsuario);
 usuarioRouter.get('/:usuarioId/reactivar', controller.reactivarUsuario);

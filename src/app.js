@@ -1,5 +1,5 @@
 import express from 'express';
-import morgan  from "morgan";
+import morgan  from 'morgan';
 import cors    from 'cors';
 
 import routerV1 from './router/router.v1.js';
