@@ -1,17 +1,44 @@
-import { validationResult } from "express-validator";
 import { testEnvioMail } from "../../../helper/envioMail.js";
 import * as model from "./usuario.model.js";
+import * as validador from "./usuario.validator.js";
 
 export const insertUsuario = async (req, res) => {
 
     try {
-        const validatorError = validationResult(req);
-        if (!validatorError.isEmpty()){
-            return res.status(400).json( { errors: validatorError.array() } );
+
+        const resultado = validador.validarUsuario(req.body);
+        console.log(resultado);
+
+        if (!resultado.success) {
+            // 422 Unprocessable Entity
+            return res.status(400).json({ error: JSON.parse(result.error.message) })
         }
+        const nuevoUsuario = await model.insertUsuario(resultado.data);
     
-        const ok = await model.insertUsuario(req.body);
-    
+        if (nuevoUsuario != null){
+            res.status(201).json(nuevoUsuario);
+        }else{
+            res.status(404).send('error');
+        }
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
+
+}
+
+export const updateUsuario = async (req, res) => {
+
+    try {
+
+        const resultado = validador.validacionParcialUsuario(req.body);
+        if (!resultado.success) {
+            return res.status(400).json({ error: JSON.parse(result.error.message) })
+        }
+
+        const ok = await model.updateUsuario(resultado);
+
         if (ok > 0){
             res.status(201).json("ok");
         }else{
@@ -22,29 +49,25 @@ export const insertUsuario = async (req, res) => {
         res.status(500).json(err);
     }
 
-}
-
-export const updateUsuario = async (req, res) => {
-
-    const ok = await model.updateUsuario(req.body);
-
-    if (ok > 0){
-        res.status(201).json("ok");
-    }else{
-        res.status(404).send('error');
-    }
 
 }
 
 export const deleteUsuario = async (req, res) => {
 
-    const ok = await model.deleteUsuario(req.params.usuarioId);
+    try {
 
-    if (ok > 0){
-        res.status(201).json("ok");
-    }else{
-        res.status(404).send('error');
+        const ok = await model.deleteUsuario(req.params.usuarioId);
+
+        if (ok > 0){
+            res.status(201).json("ok");
+        }else{
+            res.status(404).send('error');
+        }
+
+    } catch (err) {
+        res.status(500).json(err);
     }
+
 
 }
 

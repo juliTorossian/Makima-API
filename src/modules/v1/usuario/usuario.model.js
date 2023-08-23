@@ -9,14 +9,14 @@
 
 import { pool } from '../../../db.js';
 import { cadenaAleatoria } from '../../../helper/random.js';
-
+import crypto from 'node:crypto';
 /** 
  ** Crea un nuevo usuario
  *
  *i @param usuario: objeto con los datos necesarios del usuario - especificado mas abajo
 */
 export const insertUsuario = async (usuario) => {
-     
+
     /** 
     {
         "nombre": "julian",         //* nombre del usuario
@@ -33,7 +33,11 @@ export const insertUsuario = async (usuario) => {
 
     try{
 
-        const usuarioId = cadenaAleatoria(24);
+        // const usuarioId = cadenaAleatoria(24);
+        const usuarioId = crypto.randomUUID();
+
+        console.log(usuarioId);
+        console.log(usuarioId.length);
 
         const query = 'INSERT INTO usuario(usuarioId, usuarioNombre, usuarioApellido, usuarioMail, usuarioUsuario, usuarioPass, usuarioActivo, usuarioColor) VALUES (?, ?, ?, ?, ?, ?, true, ?)';
         let params = [
@@ -49,11 +53,16 @@ export const insertUsuario = async (usuario) => {
         const [rows] = await pool.query(query, params);
         await insertRoles(usuarioId, usuario.rol);
 
-        return 1;
+        let nuevoUsuario = {
+            id: usuarioId,
+            ...usuario
+        }
+
+        return nuevoUsuario;
 
     }catch (err){
         console.error(err);
-        return 0;
+        return null;
     }
 
 }
@@ -64,7 +73,7 @@ export const insertUsuario = async (usuario) => {
  *i @param usuario: objeto con los datos necesarios del usuario - especificado mas abajo
 */
 export const updateUsuario = async (usuario) => {
-     
+
     /** 
     {
         "id": "id" ,                //* id del usuario
