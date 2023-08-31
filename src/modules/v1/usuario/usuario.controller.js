@@ -11,7 +11,7 @@ export const insertUsuario = async (req, res) => {
 
         if (!resultado.success) {
             // 422 Unprocessable Entity
-            return res.status(400).json({ error: JSON.parse(result.error.message) })
+            return res.status(400).json({ error: JSON.parse(resultado.error.message) })
         }
         const nuevoUsuario = await model.insertUsuario(resultado.data);
     
@@ -34,10 +34,17 @@ export const updateUsuario = async (req, res) => {
 
         const resultado = validador.validacionParcialUsuario(req.body);
         if (!resultado.success) {
-            return res.status(400).json({ error: JSON.parse(result.error.message) })
+            return res.status(400).json({ error: JSON.parse(resultado.error.message) })
         }
 
-        const ok = await model.updateUsuario(resultado);
+        let aux;
+        if (!resultado.data.id){
+            aux = {id:req.params.usuarioId, ...resultado.data}
+        }else{
+            aux = resultado.data
+        }
+
+        const ok = await model.updateUsuario(aux);
 
         if (ok > 0){
             res.status(201).json("ok");
@@ -46,6 +53,7 @@ export const updateUsuario = async (req, res) => {
         }
 
     } catch (err) {
+        console.log(err)
         res.status(500).json(err);
     }
 
@@ -85,7 +93,12 @@ export const reactivarUsuario = async (req, res) => {
 
 export const iniciarSesion = async (req, res) => {
 
-    const usuarioToken = await model.existeUsuario(req.query.usuario, req.query.password);
+    const { usuario, password } = req.query;
+    console.log(usuario);
+    console.log(password);
+
+    const usuarioToken = await model.existeUsuario(usuario, password);
+    console.log(usuarioToken)
 
     if (usuarioToken != ""){
         res.json(usuarioToken); 

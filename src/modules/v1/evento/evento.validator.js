@@ -1,5 +1,4 @@
 import z from "zod";
-import * as rolModel from "./../rol/rol.model.js";
 
 /** 
     {
@@ -15,7 +14,6 @@ import * as rolModel from "./../rol/rol.model.js";
     }
 **/
 
-// const roles = await rolModel.getRoles();
 
 const usuarioEsquema = z.object({
     nombre: z.string(),
@@ -24,7 +22,9 @@ const usuarioEsquema = z.object({
     usuario: z.string(),
     password: z.string(),
     color: z.string(),
-    rol: z.string().array().max(5)
+    // rol: z.array(
+    //     z.enum(roles)
+    // )
 });
 
 export const validarUsuario = (input) => {

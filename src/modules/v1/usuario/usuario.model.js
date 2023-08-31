@@ -50,6 +50,9 @@ export const insertUsuario = async (usuario) => {
             usuario.color
         ];
 
+
+        // console.log(usuario.rol)
+
         const [rows] = await pool.query(query, params);
         await insertRoles(usuarioId, usuario.rol);
 
@@ -90,6 +93,9 @@ export const updateUsuario = async (usuario) => {
     **/
 
     try{
+
+        console.log(usuario)
+
         let query = 'UPDATE usuario SET ';
         let params = [
         ];
@@ -198,7 +204,6 @@ export const existeUsuario = async (usuario, password) => {
         
         if (rows[0] != undefined){
             token = cadenaAleatoria(18);
-            // console.log(token);
 
             let queryB = 'UPDATE usuario SET usuarioSesionToken = ?, usuarioFchUltLogin = now() WHERE usuarioId = ?'
             let paramsB = [

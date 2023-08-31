@@ -8,7 +8,7 @@ usuarioRouter.get('/', controller.getUsuarios);
 usuarioRouter.get('/:usuarioId', controller.getUsuario);
 
 usuarioRouter.post('/', controller.insertUsuario);
-usuarioRouter.patch('/', controller.updateUsuario);
+usuarioRouter.patch('/:usuarioId', controller.updateUsuario);
 usuarioRouter.delete('/:usuarioId', controller.deleteUsuario);
 usuarioRouter.get('/:usuarioId/reactivar', controller.reactivarUsuario);
 
