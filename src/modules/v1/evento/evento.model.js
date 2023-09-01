@@ -14,6 +14,7 @@
 //TOOKVER VIDA DEL EVENTO
 
 import { pool } from '../../../db.js';
+import crypto from 'node:crypto';
 
 import * as fs from 'fs';
 import * as path from 'path';
@@ -72,100 +73,6 @@ export const getEventos = async (page) => {
             "results": await formatearEvento(rows[0])
         };
         
-        // console.log(rows[0]);
-
-        for (let i = 0; i < rows[0].length; i++) {
-            const row = rows[0][i];
-
-            // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-            // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
-
-            const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
-            const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
-            const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
-            
-            const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
-
-            results.results.push({
-                "id": row.eventoId,
-                "tipo": row.eventoTipo,
-                "numero": row.eventoNumero,
-                "titulo": row.eventoTitulo,
-                "tareaNombre": row.tareaNombre,
-                "cliente": {
-                    "id": row.eventoCliente,
-                    "nombre": row.cliente
-                },
-                "producto": {
-                    "id": producto[0].productoId,
-                    "nombre": producto[0].productoNombre,
-                    "modulo": producto[0].productoModulo,
-                    "submodulo": producto[0].productoSubModulo,
-                    "entorno": producto[0].productoEntorno,
-                    "activo": producto[0].productoActivo
-                },
-                "cerrado": row.eventoCerrado,
-                "propio": row.eventoPropio,
-                "prioridad": row.eventoPrioridad,
-                "fechaAlta": row.eventoFechaAlta,
-                "usuarioActual": usuarioActual,
-                "usuarioAlta": usuarioAlta,
-                // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
-                "detalle": await getEventoDetalle(row.eventoId)
-            })
-        }
-
-        // rows[0].map( (row) => {
-            
-        // })
-
-        // console.log(rows[0]);
-
-        // for (let i = 0; i < rows[0].length; i++) {
-        //     const row = rows[0][i];
-
-        //     // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-        //     // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
-
-        //     const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
-        //     const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
-        //     const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
-
-        //     const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
-
-        //     results.results.push({
-        //         "id": row.eventoId,
-        //         "tipo": row.eventoTipo,
-        //         "numero": row.eventoNumero,
-        //         "titulo": row.eventoTitulo,
-        //         "tareaNombre": row.tareaNombre,
-        //         "cliente": {
-        //             "id": row.eventoCliente,
-        //             "nombre": row.cliente
-        //         },
-        //         "producto": {
-        //             "id": producto[0].productoId,
-        //             "nombre": producto[0].productoNombre,
-        //             "modulo": producto[0].productoModulo,
-        //             "submodulo": producto[0].productoSubModulo,
-        //             "entorno": producto[0].productoEntorno,
-        //             "activo": producto[0].productoActivo
-        //         },
-        //         "modulo": row.eventoModulo,
-        //         "cerrado": row.eventoCerrado,
-        //         "propio": row.eventoPropio,
-        //         "prioridad": row.eventoPrioridad,
-        //         "fechaAlta": row.eventoFechaAlta,
-        //         "usuarioActual": usuarioActual,
-        //         "usuarioAlta": usuarioAlta,
-        //         // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
-        //         "detalle": await getEventoDetalle(row.eventoId)
-        //     })
-        // }
-        // rows[0].map( (row) => {
-            
-        // })
-        // console.log(results);
         return results;
     
     }catch (err){
@@ -219,47 +126,6 @@ export const getEventosUsuario = async (page, usuario) => {
             "results": await formatearEvento(rows[0])
         };
 
-        // for (let i = 0; i < rows[0].length; i++) {
-        //     const row = rows[0][i];
-
-        //     // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-        //     // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
-
-        //     const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
-        //     const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
-        //     const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
-
-        //     const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
-
-        //     results.results.push({
-        //         "id": row.eventoId,
-        //         "tipo": row.eventoTipo,
-        //         "numero": row.eventoNumero,
-        //         "titulo": row.eventoTitulo,
-        //         "tareaNombre": row.tareaNombre,
-        //         "cliente": {
-        //             "id": row.eventoCliente,
-        //             "nombre": row.cliente
-        //         },
-        //         "producto": {
-        //             "id": producto[0].productoId,
-        //             "nombre": producto[0].productoNombre,
-        //             "modulo": producto[0].productoModulo,
-        //             "submodulo": producto[0].productoSubModulo,
-        //             "entorno": producto[0].productoEntorno,
-        //             "activo": producto[0].productoActivo
-        //         },
-        //         "modulo": row.eventoModulo,
-        //         "cerrado": row.eventoCerrado,
-        //         "propio": row.eventoPropio,
-        //         "prioridad": row.eventoPrioridad,
-        //         "fechaAlta": row.eventoFechaAlta,
-        //         "usuarioActual": usuarioActual,
-        //         "usuarioAlta": usuarioAlta,
-        //         // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
-        //         "detalle": await getEventoDetalle(row.eventoId)
-        //     })
-        // }
         return results;
     
     }catch (err){
@@ -314,47 +180,6 @@ export const getEventosRol = async (page, rol) => {
             "results": await formatearEvento(rows[0])
         };
 
-        // for (let i = 0; i < rows[0].length; i++) {
-        //     const row = rows[0][i];
-
-        //     // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-        //     // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
-
-        //     const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
-        //     const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
-        //     const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
-            
-        //     const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
-
-        //     results.results.push({
-        //         "id": row.eventoId,
-        //         "tipo": row.eventoTipo,
-        //         "numero": row.eventoNumero,
-        //         "titulo": row.eventoTitulo,
-        //         "tareaNombre": row.tareaNombre,
-        //         "cliente": {
-        //             "id": row.eventoCliente,
-        //             "nombre": row.cliente
-        //         },
-        //         "producto": {
-        //             "id": producto[0].productoId,
-        //             "nombre": producto[0].productoNombre,
-        //             "modulo": producto[0].productoModulo,
-        //             "submodulo": producto[0].productoSubModulo,
-        //             "entorno": producto[0].productoEntorno,
-        //             "activo": producto[0].productoActivo
-        //         },
-        //         "modulo": row.eventoModulo,
-        //         "cerrado": row.eventoCerrado,
-        //         "propio": row.eventoPropio,
-        //         "prioridad": row.eventoPrioridad,
-        //         "fechaAlta": row.eventoFechaAlta,
-        //         "usuarioActual": usuarioActual,
-        //         "usuarioAlta": usuarioAlta,
-        //         // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
-        //         "detalle": await getEventoDetalle(row.eventoId)
-        //     })
-        // }
         return results;
     
     }catch (err){
@@ -389,49 +214,7 @@ export const getEvento = async (eventoId) => {
 
         const [rows] = await pool.query(query, params);
 
-        // // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-        // // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
-
-        // const usuarioAlta = await getUsuario(rows[0].eventoUsuarioAlta);
-        // const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ rows[0].eventoId ]);
-        // const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
-
-        // let producto = [];
-        // if (rows[0].eventoProducto){
-        //     const [productoAux] = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ rows[0].eventoProducto ]);
-        //     producto = {
-        //         "id": productoAux[0].productoId,
-        //         "nombre": productoAux[0].productoNombre,
-        //         "modulo": productoAux[0].productoModulo,
-        //         "submodulo": productoAux[0].productoSubModulo,
-        //         "entorno": productoAux[0].productoEntorno,
-        //         "activo": productoAux[0].productoActivo
-        //     }
-        // }
-
-
         let results = await formatearEvento(rows);
-
-        // let results = {
-        //     "id": rows[0].eventoId,
-        //     "tipo": rows[0].eventoTipo,
-        //     "numero": rows[0].eventoNumero,
-        //     "titulo": rows[0].eventoTitulo,
-        //     "tareaNombre": rows[0].tareaNombre,
-        //     "cliente": {
-        //         "id": rows[0].eventoCliente,
-        //         "sigla": rows[0].clienteSigla,
-        //         "nombre": rows[0].cliente
-        //     },
-        //     "producto": producto,
-        //     "cerrado": rows[0].eventoCerrado,
-        //     "propio": rows[0].eventoPropio,
-        //     "prioridad": rows[0].eventoPrioridad,
-        //     "usuarioActual": usuarioActual,
-        //     "usuarioAlta": usuarioAlta,
-        //     // "madre": (rows[0].eventoMadre!="") ? await getEvento(rows[0].eventoMadre) : undefined,
-        //     "detalle": await getEventoDetalle(rows[0].eventoId)
-        // }
 
         return results[0];
     }catch (err){
@@ -606,7 +389,7 @@ export const getEventoDetalle = async (eventoId) => {
  *i @param nEvento: objeto con los datos necesarios del evento - especificado mas abajo
 */
 export const insertEvento = async (nEvento) => {
-     
+    
     /** 
     * i Objeto que tiene que llegar por parametro (nEvento)
     * ! no espera este att
@@ -661,7 +444,7 @@ export const insertEvento = async (nEvento) => {
  *i @param eventoM: objeto con los datos modificados del evento - especificado mas abajo
 */
 export const updateEvento = async (eventoM) => {
-     
+    
     /** 
     * i Objeto que tiene que llegar por parametro (eventoM)
     * ! no espera este att

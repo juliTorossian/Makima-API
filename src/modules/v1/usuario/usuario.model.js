@@ -36,8 +36,6 @@ export const insertUsuario = async (usuario) => {
         // const usuarioId = cadenaAleatoria(24);
         const usuarioId = crypto.randomUUID();
 
-        console.log(usuarioId);
-        console.log(usuarioId.length);
 
         const query = 'INSERT INTO usuario(usuarioId, usuarioNombre, usuarioApellido, usuarioMail, usuarioUsuario, usuarioPass, usuarioActivo, usuarioColor) VALUES (?, ?, ?, ?, ?, ?, true, ?)';
         let params = [
@@ -94,8 +92,6 @@ export const updateUsuario = async (usuario) => {
 
     try{
 
-        console.log(usuario)
-
         let query = 'UPDATE usuario SET ';
         let params = [
         ];
@@ -142,9 +138,12 @@ export const updateUsuario = async (usuario) => {
 
         const [rows] = await pool.query(query, params);
 
+
         if (usuario.rol){
             await pool.query("DELETE FROM usuarioRol WHERE usuRolUsuario = ?", [ usuario.id ])
-            await insertRoles(usuario.id, usuario.rol);
+            if (usuario.rol.length > 0){
+                await insertRoles(usuario.id, usuario.rol);
+            }
         }
 
         return 1;

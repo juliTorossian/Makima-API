@@ -18,12 +18,12 @@ import * as rolModel from "./../rol/rol.model.js";
 // const roles = await rolModel.getRoles();
 
 const usuarioEsquema = z.object({
-    nombre: z.string(),
-    apellido: z.string(),
-    mail: z.string().email(),
-    usuario: z.string(),
+    nombre: z.string().max(45),
+    apellido: z.string().max(60),
+    mail: z.string().email().max(60),
+    usuario: z.string().max(45),
     password: z.string(),
-    color: z.string(),
+    color: z.string().length(7),
     rol: z.string().array().max(5)
 });
 

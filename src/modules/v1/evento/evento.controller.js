@@ -3,7 +3,8 @@ import * as model from "./evento.model.js";
 import * as modelUsuario from "../usuario/usuario.model.js";
 
 export const getEventos = async (req, res) => {
-    const eventos = await model.getEventos(req.query.page);
+    const { page } = req.query;
+    const eventos = await model.getEventos(page);
 
     if (!(eventos == null)){
         res.json(eventos);
