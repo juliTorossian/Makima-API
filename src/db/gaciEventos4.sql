@@ -234,6 +234,7 @@ DROP TABLE IF EXISTS `producto`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `producto` (
   `productoId` char(36) NOT NULL,
+  `productoSigla` varchar(5) DEFAULT NULL,
   `productoNombre` varchar(60) DEFAULT NULL,
   `productoEntorno` char(5) DEFAULT NULL,
   `productoActivo` tinyint(1) DEFAULT NULL,

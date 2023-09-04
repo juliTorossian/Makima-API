@@ -345,6 +345,25 @@ export const getEventoDetalle = async (eventoId) => {
                     }
                 }
             }
+
+            const [estimacionQuery] = await pool.query("SELECT * FROM eventoEstimacion WHERE eEstEvento = ?", eventoId);
+            // console.log(estimacionQuery);
+            let estimacion = {
+                "total": 0,
+                "detalle": []
+            }
+
+            estimacionQuery.map( (est) => {
+                let aux = {
+                    "rol": est.eEstRol,
+                    "estimacion": est.eEstEstimacion
+                }
+                estimacion.total += est.eEstEstimacion
+                estimacion.detalle.push(aux)
+            })
+            
+
+
             const [horas] = await pool.query("SELECT sum(horaTotal) AS total FROM registrohora INNER JOIN hora ON horaRegistro = regHoraId WHERE horaEvento = ? ORDER BY regHoraFecha, horaInicio", eventoId);
             // console.log(horas);
 
@@ -368,10 +387,11 @@ export const getEventoDetalle = async (eventoId) => {
                                     "totalEtapas": rows[0].totalEtapas
                                 },
                                 "eventoHoras": {
-                                    "estimacion": (rows[0].eventoEstimacion > 0) ? rows[0].eventoEstimacion : 0 ,
-                                    "total": (horas[0].total) ? horas[0].total : 0
+                                    "estimacion": estimacion,
+                                    "trabajadas": (horas[0].total) ? horas[0].total : 0
                                 }
                             }
+            //"estimacion": (rows[0].eventoEstimacion > 0) ? rows[0].eventoEstimacion : 0 ,
         }
 
         return eventoDetalle;
@@ -645,14 +665,61 @@ export const reasignarEvento = async (eventoId, usuarioAsignado) => {
  *i @param eventoId:    id del evento a estimar
  *i        estimacion:  cantidad de horas que se estiman
 */
-export const estimarEvento = async (eventoId, estimacion, comentario) => {
+export const estimarEvento = async (estimacion) => {
     try{
-        const query  = "UPDATE evento SET eventoEstimacion = ? WHERE eventoId = ?"
-        const params = [estimacion, eventoId];
+
+        /*
+            INSERT eventoEstimacion(eEstId, eEstEvento, eEstUsuario, eEstRol, eEstEstimacion)
+            VALUES 	((SELECT UUID()), "9657834b-485d-11ee-932a-1c1b0d9efeb6", "0321742d-7dcc-4e33-9b46-6d02aaf99fa1", "ADMIN", 10),
+                    ((SELECT UUID()), "9657834b-485d-11ee-932a-1c1b0d9efeb6", "0321742d-7dcc-4e33-9b46-6d02aaf99fa1", "TEST", 13)
+            ;
+        */
+        
+        const estimacionId = crypto.randomUUID();
+        let query  = "SELECT eEstId FROM eventoEstimacion WHERE eEstEvento = ? AND eEstUsuario = ? AND eEstRol = ?"
+        let params = [
+            estimacion.evento,
+            estimacion.usuario,
+            estimacion.rol
+        ];
+        const [existe] = await pool.query(query, params);
+        // console.log(existe.length);
+
+        if (existe.length > 0){
+            query = "DELETE FROM eventoEstimacion WHERE eEstId = ?"
+            params = [ existe[0].eEstId ]
+            const [rows] = await pool.query(query, params);
+        }
+
+        query  = "INSERT eventoEstimacion(eEstId, eEstEvento, eEstUsuario, eEstRol, eEstEstimacion) VALUES (?, ?, ?, ?, ?)"
+        params = [
+            estimacionId,
+            estimacion.evento, 
+            estimacion.usuario,
+            estimacion.rol,
+            estimacion.estimacion
+        ];
 
         const [rows] = await pool.query(query, params);
+        // console.log(rows);
 
-        const detalle = await getEventoDetalle(eventoId);
+        query  = "SELECT SUM(eEstEstimacion) AS total FROM eventoEstimacion WHERE eEstEvento = ?"
+        params = [
+            estimacion.evento
+        ];
+        
+        const [total] = await pool.query(query, params);
+        // console.log(total[0].total);
+        
+        query  = "UPDATE evento SET eventoEstimacion = ? WHERE eventoId = ?"
+        params = [
+            total[0].total,
+            estimacion.evento
+        ];
+        
+        const [update] = await pool.query(query, params);
+
+        const detalle = await getEventoDetalle(estimacion.evento);
 
         /*
             INSERT INTO eventoadicion(eAdId, eAdEvento, eAdTipo     , eAdComentario, eAdAdjFile, eAdPathFile, eAdNombreFile, eAdMimeFile, eAdFecha)
@@ -661,21 +728,21 @@ export const estimarEvento = async (eventoId, estimacion, comentario) => {
 
         let comentarioId = null;
         // console.log("comentario: " +comentario);
-        if (comentario){
-            comentarioId = cadenaAleatoria(24);
+        if (estimacion.comentario){
+            comentarioId = crypto.randomUUID();
 
             const queryComm = 'INSERT INTO eventoadicion(eAdId, eAdEvento, eAdTipo , eAdComentario, eAdAdjFile, eAdFecha) VALUES (?, ?, "COMENTARIO", ?, 0, Now())'
             const paramsComm = [
                 comentarioId,
-                eventoId,
-                comentario
+                estimacion.evento,
+                estimacion.comentario
             ];
 
             const [comm] = await pool.query(queryComm, paramsComm);
         }
 
         // console.log("comentarioId: " +comentarioId);
-        const [audi] = await pool.query("CALL insert_audiEvento(?, ?, (SELECT getUsuarioActivoEvento(?) ), ?, ?)", [eventoId, detalle.eventoCircuito.act.etapa, eventoId, comentarioId, detalle.eventoCircuito.act.tarea.clave])
+        const [audi] = await pool.query("CALL insert_audiEvento(?, ?, (SELECT getUsuarioActivoEvento(?) ), ?, ?)", [estimacion.evento, detalle.eventoCircuito.act.etapa, estimacion.evento, comentarioId, detalle.eventoCircuito.act.tarea.clave])
         // console.log(audi);
 
         return 1
@@ -693,7 +760,7 @@ export const estimarEvento = async (eventoId, estimacion, comentario) => {
  *i @param comentario: comentario realizado al evento, con usuario
 */
 export const comentarEvento = async (comentario, archivo) => {
-     
+    
     /** 
     * i Objeto que tiene que llegar por parametro
     {

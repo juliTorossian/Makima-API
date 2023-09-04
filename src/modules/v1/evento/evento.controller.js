@@ -1,6 +1,9 @@
 import { avisoEventoAsignado } from "../../../helper/envioMail.js";
 import * as model from "./evento.model.js";
 import * as modelUsuario from "../usuario/usuario.model.js";
+import * as validador from "./evento.validator.js";
+
+
 
 export const getEventos = async (req, res) => {
     const { page } = req.query;
@@ -145,13 +148,29 @@ export const reasignarEvento = async (req, res) => {
 }
 
 export const estimarEvento = async (req, res) => {
-    const ok = await model.estimarEvento(req.params.evento, req.query.estimado, req.query.comentario);
 
-    if (ok > 0){
-        res.json("ok");
-    }else{
-        res.status(404).send('error');
+    try {
+        console.log(req.body);
+        const resultado = validador.validarEstimacion(req.body);
+        console.log(resultado);
+
+        if (!resultado.success) {
+            // 422 Unprocessable Entity
+            return res.status(400).json({ error: JSON.parse(resultado.error.message) })
+        }
+        const estimacion = await model.estimarEvento(resultado.data);
+    
+        if (estimacion != null){
+            res.status(201).json(estimacion);
+        }else{
+            res.status(404).send('error');
+        }
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
     }
+
 }
 
 export const comentarEvento = async (req, res) => {
@@ -229,6 +248,6 @@ async function eviarAvisoMail(usuarioId, eventoId){
     const usuario = await modelUsuario.getUsuario(usuarioId);
     const evento  = await model.getEvento(eventoId);
 
-    avisoEventoAsignado(usuario, evento);
+    // avisoEventoAsignado(usuario, evento);
 
 }

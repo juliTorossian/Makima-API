@@ -1,26 +1,80 @@
 import * as model from "./producto.model.js";
+import * as validador from "./producto.validator.js";
 
 export const insertProducto = async (req, res) => {
 
-    let ok = await model.insertProducto(req.body);
+    try {
 
-    if (ok > 0){
-        res.status(201).json("ok");
-    }else{
-        res.status(404).send('error');
+        const resultado = validador.validarProducto(req.body);
+        console.log(resultado);
+
+        if (!resultado.success) {
+            // 422 Unprocessable Entity
+            return res.status(400).json({ error: JSON.parse(resultado.error.message) })
+        }
+        const nuevoProducto = await model.insertProducto(resultado.data);
+    
+        if (nuevoProducto != null){
+            res.status(201).json(nuevoProducto);
+        }else{
+            res.status(404).send('error');
+        }
+
+    } catch (err) {
+        // console.log(err);
+        res.status(500).json(err);
     }
+
+
+    // let ok = await model.insertProducto(req.body);
+
+    // if (ok > 0){
+    //     res.status(201).json("ok");
+    // }else{
+    //     res.status(404).send('error');
+    // }
 
 }
 
 export const updateProducto = async (req, res) => {
+    
+    try {
 
-    let ok = await model.updateProducto(req.body);
+        const resultado = validador.validacionParcialProducto(req.body);
+        // console.log(resultado);
 
-    if (ok > 0){
-        res.status(201).json("ok");
-    }else{
-        res.status(404).send('error');
+        if (!resultado.success) {
+            // 422 Unprocessable Entity
+            return res.status(400).json({ error: JSON.parse(resultado.error.message) })
+        }
+
+        let aux;
+        if (!resultado.data.id){
+            aux = {id:req.params.productoId, ...resultado.data}
+        }else{
+            aux = resultado.data
+        }
+
+        const productoMod = await model.updateProducto(aux);
+
+        if (productoMod != null){
+            res.status(201).json(productoMod);
+        }else{
+            res.status(404).send('error');
+        }
+
+    } catch (err) {
+        // console.log(err);
+        res.status(500).json(err);
     }
+
+    // let ok = await model.updateProducto(req.body);
+
+    // if (ok > 0){
+    //     res.status(201).json("ok");
+    // }else{
+    //     res.status(404).send('error');
+    // }
 
 }
 

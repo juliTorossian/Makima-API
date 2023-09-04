@@ -39,7 +39,7 @@ eventoRouter.get('/:evento/circular/a', controller.avanzarEvento);
 eventoRouter.get('/:evento/circular/r', controller.retrocederEvento);
 eventoRouter.get('/:evento/circular/c', controller.cerrarEvento);
 eventoRouter.get('/:evento/reasignar', controller.reasignarEvento);
-eventoRouter.get('/:evento/estimar', controller.estimarEvento);
+eventoRouter.post('/:evento/estimar', controller.estimarEvento);
 
 eventoRouter.post('/:evento/comentar', upload.single('file'), controller.comentarEvento);
 eventoRouter.post('/:evento/comentar/archivo', upload.single('file'), controller.comentarEventoArchivo);
