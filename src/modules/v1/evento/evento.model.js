@@ -1154,7 +1154,8 @@ async function formatearEvento(eventos){
             }
         }
 
-        // let tipo = await getTipoEvento(row.eventoTipo);
+        // console.log(row.eventoTipo)
+        let tipo = await getTipoEvento(row.eventoTipo, true);
         // let modulo = null;
         // if (row.modulo){
         //     modulo = await getModulo(row.modulo);
@@ -1162,7 +1163,7 @@ async function formatearEvento(eventos){
 
         eventosFinal.push({
             "id": row.eventoId,
-            "tipo": row.eventoTipo,
+            "tipo": tipo,
             "numero": row.eventoNumero,
             "titulo": row.eventoTitulo,
             "tareaNombre": row.tareaNombre,
