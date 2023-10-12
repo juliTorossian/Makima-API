@@ -18,6 +18,8 @@ import * as rolModel from "./../rol/rol.model.js";
 // const roles = await rolModel.getRoles();
 
 const usuarioEsquema = z.object({
+    // id: z.string().cuid().optional(),
+    id: z.string().optional(),
     nombre: z.string().max(45),
     apellido: z.string().max(60),
     mail: z.string().email().max(60),

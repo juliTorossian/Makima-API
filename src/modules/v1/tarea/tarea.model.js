@@ -255,13 +255,14 @@ export const getTareasNoEvento = async (eventoId) => {
  *
  *i @param eventoId: id del evento a consultar
 */
-export const getTareaAccionCompleta = async (eventoId, accion) => {
+export const getTareaAccionCompleta = async (eventoId, accion, etapa) => {
 
     try{
-        let query = 'SELECT * FROM gacieventos.audievento WHERE audiEEvento = ? AND audiEAccion = ?';
+        let query = 'SELECT * FROM gacieventos.audievento WHERE audiEEvento = ? AND audiEAccion = ? AND audiEEtapa = ?';
         let params = [
             eventoId,
-            accion
+            accion,
+            etapa
         ];
 
         const [rows] = await pool.query(query, params);

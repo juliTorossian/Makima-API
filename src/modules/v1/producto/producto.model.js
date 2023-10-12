@@ -29,6 +29,7 @@ export const getProductos = async () => {
         rows.map( (row) => {
             response.push({
                 "id": row.productoId,
+                "sigla": row.productoSigla,
                 "nombre": row.productoNombre,
                 "entorno": {
                     "id": row.productoEntorno
@@ -54,6 +55,7 @@ export const getProducto = async (productoId) => {
 
         let response = {
             "id": rows[0].productoId,
+            "sigla": rows[0].productoSigla,
             "nombre": rows[0].productoNombre,
             "entorno": {
                 "id": rows[0].productoEntorno

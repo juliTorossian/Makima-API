@@ -312,7 +312,7 @@ export const getEventoDetalle = async (eventoId) => {
                         "controla": actTareaAux[0].tareaControla,
                         "clave": actTareaAux[0].tareaClave,
                         "reqComentario": actTareaAux[0].tareaComentario,
-                        "completada": await getTareaAccionCompleta(eventoId, actTareaAux[0].tareaClave),
+                        "completada": await getTareaAccionCompleta(eventoId, actTareaAux[0].tareaClave, rows[0].eventoEtapa),
                         "comentario": ((actTareaAux[0].tareaClave) || (actTareaAux[0].tareaComentario)) ? await getComentarioTarea(eventoId, actTareaAux[0].tareaClave, rows[0].eventoEtapa) : ""
                     }
                 }
@@ -1180,7 +1180,8 @@ async function formatearEvento(eventos){
             "usuarioActual": usuarioActual,
             "usuarioAlta": usuarioAlta,
             // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
-            "detalle": await getEventoDetalle(row.eventoId)
+            "detalle": await getEventoDetalle(row.eventoId),
+            "busqueda": tipo.id + '-' +row.eventoNumero
         })
     }
 

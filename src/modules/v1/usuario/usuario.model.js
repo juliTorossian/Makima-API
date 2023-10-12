@@ -547,6 +547,24 @@ const insertRoles = async (usuarioId, roles) => {
 
 }
 
+export const reactivarUsuario = async (usuarioId) => {
+
+    try {
+
+        const queryRol = 'UPDATE usuario SET usuarioActivo = True WHERE usuarioId = ? AND usuarioActivo = False';
+        let paramsRol = [usuarioId];
+
+        const [rows] = await pool.query(queryRol, [paramsRol]);
+
+        console.log(rows);
+        return 1
+
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
 /*
  ! 
  ! ESTADISTICAS

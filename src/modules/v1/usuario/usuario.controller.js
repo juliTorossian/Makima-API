@@ -81,12 +81,24 @@ export const deleteUsuario = async (req, res) => {
 
 export const reactivarUsuario = async (req, res) => {
 
-    const ok = await model.reactivarUsuario(req.params.usuarioId);
+    try {
 
-    if (ok > 0){
-        res.status(201).json("ok");
-    }else{
-        res.status(404).send('error');
+        const resultado = validador.validacionParcialUsuario({ id: req.params.usuarioId});
+        if (!resultado.success) {
+            return res.status(400).json({ error: JSON.parse(resultado.error.message) })
+        }
+
+        const ok = await model.reactivarUsuario(resultado.data.id);
+
+        if (ok > 0){
+            res.status(201).json("ok");
+        }else{
+            res.status(404).send('error');
+        }
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).json(err);
     }
 
 }
@@ -94,8 +106,6 @@ export const reactivarUsuario = async (req, res) => {
 export const iniciarSesion = async (req, res) => {
 
     const { usuario, password } = req.query;
-    console.log(usuario);
-    console.log(password);
 
     const usuarioToken = await model.existeUsuario(usuario, password);
     console.log(usuarioToken)
