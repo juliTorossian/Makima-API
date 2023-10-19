@@ -1,31 +1,11 @@
-import * as path from 'path';
-import { fileURLToPath } from 'url';
 
 import { createCacheMiddleware as cache} from '../../../helper/middleware/cacheMiddleware.js';
 import { ONE_MINUTE_IN_SECONDS } from '../../../helper/time.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { uploadMiddleware } from '../../../helper/middleware/uploadMiddleware.js'
 
 import express from 'express';
 import * as controller from './evento.controller.js';
-import multer from 'multer';
 
-// const upload = multer({ storage: multer.memoryStorage() });
-
-const upload = multer({
-    storage: multer.diskStorage({
-        destination: path.normalize(`${__dirname}\\..\\..\\..\\temp\\`),
-        limits: { fileSize: 10 * 1024 * 1024 * 1024}, // Maximo 10Mb
-        filename: ( req, file, cb ) => {
-            console.log("file");
-            console.log(file);
-            console.log("type");
-            console.log(file.type);
-            cb( null, `${Date.now()}&${file.originalname}`);
-        }
-    })
-})
 
 const eventoRouter = express.Router();
 
@@ -45,9 +25,10 @@ eventoRouter.get('/:evento/circular/c', controller.cerrarEvento);
 eventoRouter.get('/:evento/reasignar', controller.reasignarEvento);
 eventoRouter.post('/:evento/estimar', controller.estimarEvento);
 
-eventoRouter.post('/:evento/comentar', upload.single('file'), controller.comentarEvento);
-eventoRouter.post('/:evento/comentar/archivo', upload.single('file'), controller.comentarEventoArchivo);
+eventoRouter.post('/:evento/comentar', uploadMiddleware, controller.comentarEvento);
+eventoRouter.post('/:evento/adjuntar', uploadMiddleware, controller.adjuntarEvento);
 eventoRouter.get('/:evento/comentarios', cache(ONE_MINUTE_IN_SECONDS), controller.getComentariosEvento);
+eventoRouter.get('/:evento/adjuntos', cache(ONE_MINUTE_IN_SECONDS), controller.getAdjuntosEvento);
 
 eventoRouter.get('/:evento/vida', controller.getVidaEvento);
 eventoRouter.get('/:evento/detalle', controller.getEventoDetalle);

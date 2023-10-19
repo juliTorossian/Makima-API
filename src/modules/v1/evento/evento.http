@@ -23,3 +23,9 @@ Content-Type: application/json
     "rol": "TES",
     "estimacion": 10
 }
+
+###
+
+# Get Evento Adjunto
+
+get http://localhost:4000/api/v1/evento/52f1fab2-57ba-11ee-931b-30d0421a74c1/adjuntos

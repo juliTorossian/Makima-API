@@ -815,6 +815,46 @@ export const comentarEvento = async (comentario, archivo) => {
 }
 
 /** 
+ ** Adjunta archivos al evento
+ *
+ *i @param archivos: array de archivos a adjuntar
+*/
+export const adjuntarEvento = async (eventoId, usuarioId, archivos) => {
+
+    try{
+
+        let res = 1;
+
+        for (let i = 0; i < archivos.length; i++) {
+            const archivo = archivos[i];
+
+            let pathFile = archivo.path;
+            let nameFile = archivo.originalname;
+            let mimeFile = archivo.mimetype;
+            
+            const query = "CALL adjuntar_evento(?,?,?,?,?)";
+            let params = [
+                eventoId,
+                usuarioId,
+                pathFile,
+                nameFile,
+                mimeFile
+            ]
+    
+            const [rows] = await pool.query(query, params);
+
+        }
+
+        return res;
+
+    }catch (err){
+        console.error(err);
+        return 0;
+    }
+
+}
+
+/** 
  ** Ver los comentarios de un evento
  *
  *i @param eventoId: evento a cual consultar
@@ -898,6 +938,102 @@ export const getComentariosEvento = async (eventoId) => {
 
         // console.log("(995:evento.Model)");
         // console.log(res);
+
+        return res;
+
+    }catch (err){
+        console.error(err);
+        return 0;
+    }
+
+}
+
+/** 
+ ** Ver los adjuntos de un evento
+ *
+ *i @param eventoId: evento a cual consultar
+*/
+export const getAdjuntosEvento = async (eventoId) => {
+
+    try{
+        let query  = "";
+        let params = "";
+
+        let res = [];
+        query = "SELECT ea.eAdId, ea.eAdComentario, ea.eAdAdjFile, ea.eAdFecha, ae.audiEUsuario, u.usuarioUsuario, '' AS fileBase, '' AS fileName  \
+                        FROM eventoadicion AS ea    \
+                        INNER JOIN audievento AS ae ON ae.audiEAdi = ea.eAdId     \
+                        INNER JOIN usuario AS u ON u.usuarioId = ae.audiEUsuario    \
+                        WHERE   ea.eAdTipo = 'ADJUNTO' AND     \
+                                ae.audiEEvento = ?  \
+                        ORDER BY ea.eAdFecha DESC";
+        params = [
+            eventoId
+        ];
+
+        let [rows] = await pool.query(query, params);
+        
+        for (let i = 0; i < rows.length; i++){
+
+            console.log("978")
+            console.log(rows[i]);
+            console.log(rows[i].eAdId);
+
+            let query = "SELECT ea.eAdPathFile AS pathFile, ea.eAdNombreFile AS nameFile, ea.eAdMimeFile AS mimeFile  \
+                        FROM eventoadicion AS ea    \
+                        WHERE   ea.eAdId = ?";
+
+            let params = [  
+                rows[i].eAdId
+            ];
+
+            let response = await pool.query(query, params);
+            console.log(response[0]);
+            response = response[0];
+
+            for (let z = 0; z < response.length; z++) {
+                const file = response[z];
+                
+                console.log(file);
+    
+                let fileBase = "";
+                let fileName = "";
+                let fileMime = "";
+    
+                if (response.pathFile != null){
+                    // console.log(pathFile[0].pathFile);
+                    
+                    try{
+                        const fileBaseAux = fs.readFileSync(response.pathFile, {encoding: 'base64'});
+                        console.log("creo base64");
+    
+                        // fileBase = `data:${response.mimeFile};base64,${fileBaseAux}`;
+                        fileMime = response.mimeFile;
+                        fileBase = fileBaseAux;
+                        fileName = response.nameFile;    
+                    }catch(e){
+                        console.log("No existe el archivo");
+                        // console.error(e)
+                    }
+    
+                    res.push({
+                        "id": rows[i].eAdId,
+                        "fecha": rows[i].eAdFecha,
+                        "adjunto": {
+                            "tiene": rows[i].eAdAdjFile,
+                            "tipo": fileMime,
+                            "base": fileBase,
+                            "nombre": fileName
+                        }
+        
+                    })
+                }
+                const [usuario] = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", rows[i].audiEUsuario);
+            }
+
+
+
+        }
 
         return res;
 
@@ -1181,7 +1317,8 @@ async function formatearEvento(eventos){
             "usuarioAlta": usuarioAlta,
             // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
             "detalle": await getEventoDetalle(row.eventoId),
-            "busqueda": tipo.id + '-' +row.eventoNumero
+            "busqueda": tipo.id + '-' +row.eventoNumero,
+            "descripcion": row.eventoDesc
         })
     }
 

@@ -192,18 +192,16 @@ export const comentarEvento = async (req, res) => {
 }
 
 
-export const comentarEventoArchivo = async (req, res) => {
+export const adjuntarEvento = async (req, res) => {
 
-    const file = req.file
+    const files = req.files
+    const eventoId = req.params.evento
+    const usuarioId = req.query.usuario
 
-    console.log(file)
+    console.log(files)
+    // console.log(usuarioId); 
 
-    if (!req.file || Object.keys(req.file).length === 0) {
-        return res.status(400).send('No files were uploaded.');
-    }
-
-
-    const ok = await model.comentarEventoArchivo(file);
+    const ok = await model.adjuntarEvento(eventoId, usuarioId, files);
 
     if (ok > 0){
         res.json("ok");
@@ -211,6 +209,17 @@ export const comentarEventoArchivo = async (req, res) => {
         res.status(404).send('error');
     }
 
+}
+
+export const getAdjuntosEvento = async (req, res) => {
+    
+    const adjuntos = await model.getAdjuntosEvento(req.params.evento);
+    
+    if (!(adjuntos == null)){
+        res.json(adjuntos);
+    }else{
+        res.status(404).send('error');
+    }
 }
 
 export const getComentariosEvento = async (req, res) => {
