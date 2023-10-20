@@ -179,9 +179,8 @@ export const comentarEvento = async (req, res) => {
 
     // console.log(JSON.parse(req.body.comentario))
     // console.log(req.file)
-    const comentario = JSON.parse(req.body.comentario);
-    const archivo = req.file;
-    const ok = await model.comentarEvento(comentario, archivo);
+    const comentario = req.body;
+    const ok = await model.comentarEvento(comentario);
 
     if (ok > 0){
         res.json("ok");
@@ -209,6 +208,18 @@ export const adjuntarEvento = async (req, res) => {
         res.status(404).send('error');
     }
 
+}
+
+export const deleteAdjunto = async (req, res) => {
+
+    const adicionId = req.params.adicion
+    const ok = await model.deleteAdjunto(adicionId);
+
+    if (ok > 0){
+        res.json("ok");
+    }else{
+        res.status(404).send('error');
+    }
 }
 
 export const getAdjuntosEvento = async (req, res) => {

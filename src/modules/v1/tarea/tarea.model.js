@@ -311,7 +311,7 @@ export const getComentarioTarea = async (eventoId, clave, etapa) => {
         return comentario;
     
     }catch (err){
-        console.error(err);
+        // console.error(err);
         return 0;
     }
 };

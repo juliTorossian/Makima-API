@@ -25,10 +25,12 @@ eventoRouter.get('/:evento/circular/c', controller.cerrarEvento);
 eventoRouter.get('/:evento/reasignar', controller.reasignarEvento);
 eventoRouter.post('/:evento/estimar', controller.estimarEvento);
 
-eventoRouter.post('/:evento/comentar', uploadMiddleware, controller.comentarEvento);
+eventoRouter.post('/:evento/comentar', controller.comentarEvento);
 eventoRouter.post('/:evento/adjuntar', uploadMiddleware, controller.adjuntarEvento);
 eventoRouter.get('/:evento/comentarios', cache(ONE_MINUTE_IN_SECONDS), controller.getComentariosEvento);
 eventoRouter.get('/:evento/adjuntos', cache(ONE_MINUTE_IN_SECONDS), controller.getAdjuntosEvento);
+
+eventoRouter.delete('/adjunto/:adicion', controller.deleteAdjunto);
 
 eventoRouter.get('/:evento/vida', controller.getVidaEvento);
 eventoRouter.get('/:evento/detalle', controller.getEventoDetalle);
