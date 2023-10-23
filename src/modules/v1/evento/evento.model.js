@@ -21,9 +21,7 @@ import * as path from 'path';
 import { fileURLToPath } from 'url';
 import { getUsuario } from '../usuario/usuario.model.js';
 import { getComentarioTarea, getTareaAccionCompleta } from '../tarea/tarea.model.js';
-import { cadenaAleatoria } from '../../../helper/random.js';
 import { getTipoEvento } from '../tipoEvento/tipoEvento.model.js';
-import { getModulo } from '../modulo/modulo.model.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -1175,7 +1173,8 @@ export const getTareasPorTipo = async (rol) => {
             response.tareas.push({
                 "id": tarea.tareaId,
                 "nombre": tarea.tareaNombre,
-                "rol": tarea.tareaRol
+                "rol": tarea.tareaRol,
+                "color": tarea.tareaColor
             });
         })
 

@@ -631,7 +631,8 @@ export const getEventosUsuarioEstadisticas = async (usuario) => {
             response.tareas.push({
                 "id": tarea.tareaId,
                 "nombre": tarea.tareaNombre,
-                "rol": tarea.tareaRol
+                "rol": tarea.tareaRol,
+                "color": tarea.tareaColor
             });
         })
 
