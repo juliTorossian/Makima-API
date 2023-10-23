@@ -34,6 +34,7 @@ eventoRouter.delete('/adjunto/:adicion', controller.deleteAdjunto);
 
 eventoRouter.get('/:evento/vida', controller.getVidaEvento);
 eventoRouter.get('/:evento/detalle', controller.getEventoDetalle);
+eventoRouter.get('/:evento/horas', controller.getEventoHoras);
 
 eventoRouter.get('/dashboard/tareaPortipo', cache(ONE_MINUTE_IN_SECONDS), controller.getTareasPorTipo);
 

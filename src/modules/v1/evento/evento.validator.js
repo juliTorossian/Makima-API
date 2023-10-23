@@ -52,7 +52,8 @@ const estimacionEsquema = z.object({
     usuario: z.string().max(36),
     comentario: z.string(),
     rol: z.string(),
-    estimacion: z.number().nonnegative()
+    estimacion: z.number().nonnegative(),
+    descripcion: z.string().max(1000).optional()
 });
 
 export const validarEstimacion = (input) => {

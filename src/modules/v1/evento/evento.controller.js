@@ -1,6 +1,7 @@
 import { avisoEventoAsignado } from "../../../helper/envioMail.js";
 import * as model from "./evento.model.js";
 import * as modelUsuario from "../usuario/usuario.model.js";
+import * as modelHora from "../hora/hora.model.js";
 import * as validador from "./evento.validator.js";
 
 
@@ -28,6 +29,16 @@ export const getEvento = async (req, res) => {
 
 export const getEventoDetalle = async (req, res) => {
     const evento = await model.getEventoDetalle(req.params.evento);
+    
+    if (!(evento == null)){
+        res.json(evento);
+    }else{
+        res.status(404).send('error');
+    }
+}
+
+export const getEventoHoras = async (req, res) => {
+    const evento = await modelHora.getHorasEvento(req.params.evento);
     
     if (!(evento == null)){
         res.json(evento);

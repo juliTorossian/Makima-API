@@ -425,13 +425,14 @@ export const insertEvento = async (nEvento) => {
         "usuAlta": 1                            //* id del usuario de alta
         "fechaAlta": now()                      //! fecha del momento
         "madre": idMadre                        //* Evento madre
+        "descripcion":                          //* Descripcion del evento
     }
     **/
 
     try{
 
         // console.log(nEvento);
-        const query = "CALL insert_eventos(?,?,?,?,?,?,?)";
+        const query = "CALL insert_eventos(?,?,?,?,?,?,?,?)";
         let params = [
             nEvento.tipo,
             nEvento.titulo,
@@ -439,7 +440,8 @@ export const insertEvento = async (nEvento) => {
             (nEvento.producto == "") ? null : nEvento.producto,
             (nEvento.modulo == "") ? null : nEvento.modulo,
             nEvento.usuAlta,
-            nEvento.prioridad
+            nEvento.prioridad,
+            nEvento.descripcion
         ]
 
         const [rows] = await pool.query(query, params);
@@ -483,14 +485,15 @@ export const updateEvento = async (eventoM) => {
 
         // console.log(eventoM);
 
-        const query = "CALL update_eventos(?,?,?,?,?,?)";
+        const query = "CALL update_eventos(?,?,?,?,?,?,?)";
         let params = [
             eventoM.id,
             eventoM.titulo,
             eventoM.cliente,
             eventoM.producto,
             eventoM.modulo,
-            eventoM.prioridad
+            eventoM.prioridad,
+            eventoM.descripcion
         ]
         // console.log(params);
 
