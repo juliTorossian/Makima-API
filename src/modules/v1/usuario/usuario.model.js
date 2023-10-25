@@ -248,20 +248,27 @@ export const getUsuarios = async () => {
             const [ roles ] = await pool.query("SELECT * FROM usuariorol INNER JOIN rol ON rolId = usuRolRol WHERE usuRolUsuario = ?", [ row.usuarioId ])
             // console.log(roles);
             let rol = [];
-            roles.map( (r) => {
+            for (let y = 0; y < roles.length; y++) {
+                const r = roles[y];
                 // console.log(r);
-                rol.push({
+                let rolAux = {
                     "id": r.rolId,
                     "descripcion": r.rolDescripcion,
-                    "controlTotal": r.rolCtrlTotal,
-                    "controlEvento": r.rolCtrlEvento,
-                    "controlCliente": r.rolCtrlCliente,
-                    "controlProducto": r.rolCtrlProducto,
-                    "controlTipo": r.rolCtrlTipo,
-                    "controlHora": r.rolCtrlHora,
-                    "controlUsuario": r.rolCtrlUsuario
-                })
-            });
+                    "permisos": []
+                }
+
+                const [ permisos ] = await pool.query("SELECT * FROM rolpermiso WHERE rolPRol = ?", [ r.rolId ]);
+
+                for (let j = 0; j < permisos.length; j++) {
+                    const p = permisos[j];
+
+                    rolAux.permisos.push({
+                        "clave": p.rolPClave,
+                        "nivel": p.rolPNivel
+                    })
+                }
+                rol.push(rolAux);
+            }
 
             response.push({
                 "id": row.usuarioId,
@@ -313,20 +320,27 @@ export const getUsuario = async (usuarioId) => {
 
         const [ roles ] = await pool.query("SELECT * FROM usuariorol INNER JOIN rol ON rolId = usuRolRol WHERE usuRolUsuario = ?", [ rows[0].usuarioId ])
         let rol = [];
-        roles.map( (r) => {
+        for (let y = 0; y < roles.length; y++) {
+            const r = roles[y];
             // console.log(r);
-            rol.push({
+            let rolAux = {
                 "id": r.rolId,
                 "descripcion": r.rolDescripcion,
-                "controlTotal": r.rolCtrlTotal,
-                "controlEvento": r.rolCtrlEvento,
-                "controlCliente": r.rolCtrlCliente,
-                "controlProducto": r.rolCtrlProducto,
-                "controlTipo": r.rolCtrlTipo,
-                "controlHora": r.rolCtrlHora,
-                "controlUsuario": r.rolCtrlUsuario
-            })
-        });
+                "permisos": []
+            }
+
+            const [ permisos ] = await pool.query("SELECT * FROM rolpermiso WHERE rolPRol = ?", [ r.rolId ]);
+
+            for (let j = 0; j < permisos.length; j++) {
+                const p = permisos[j];
+
+                rolAux.permisos.push({
+                    "clave": p.rolPClave,
+                    "nivel": p.rolPNivel
+                })
+            }
+            rol.push(rolAux);
+        }
 
         if (rows[0]){
             usuario = {
@@ -377,20 +391,27 @@ export const getUsuarioToken = async (usuarioToken) => {
             
             const [ roles ] = await pool.query("SELECT * FROM usuariorol INNER JOIN rol ON rolId = usuRolRol WHERE usuRolUsuario = ?", [ rows[0].usuarioId ])
             let rol = [];
-            roles.map( (r) => {
+            for (let y = 0; y < roles.length; y++) {
+                const r = roles[y];
                 // console.log(r);
-                rol.push({
+                let rolAux = {
                     "id": r.rolId,
                     "descripcion": r.rolDescripcion,
-                    "controlTotal": r.rolCtrlTotal,
-                    "controlEvento": r.rolCtrlEvento,
-                    "controlCliente": r.rolCtrlCliente,
-                    "controlProducto": r.rolCtrlProducto,
-                    "controlTipo": r.rolCtrlTipo,
-                    "controlHora": r.rolCtrlHora,
-                    "controlUsuario": r.rolCtrlUsuario
-                })
-            });
+                    "permisos": []
+                }
+    
+                const [ permisos ] = await pool.query("SELECT * FROM rolpermiso WHERE rolPRol = ?", [ r.rolId ]);
+    
+                for (let j = 0; j < permisos.length; j++) {
+                    const p = permisos[j];
+    
+                    rolAux.permisos.push({
+                        "clave": p.rolPClave,
+                        "nivel": p.rolPNivel
+                    })
+                }
+                rol.push(rolAux);
+            }
 
             usuario = {
                 "id": rows[0].usuarioId,
@@ -556,13 +577,78 @@ export const reactivarUsuario = async (usuarioId) => {
 
         const [rows] = await pool.query(queryRol, [paramsRol]);
 
-        console.log(rows);
+        // console.log(rows);
         return 1
 
     } catch (err) {
         console.log(err);
     }
 
+}
+
+/** 
+ ** Ver un usuario
+ *
+ *i @param usuarioId: id del usuario a eliminar
+*/
+export const getUsuarioPreferencias = async (usuarioId) => {
+
+    try {
+
+        const query = 'SELECT * FROM usuariopreferencia WHERE usuPUsuario = ?';
+        let params = [usuarioId];
+
+        const [rows] = await pool.query(query, params);
+
+        let preferencias = []
+        rows.map( (r) => {
+            preferencias.push(r.usuPClave);
+        })
+
+        return preferencias
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+/** 
+ ** Ver un usuario
+ *
+ *i @param usuarioId: id del usuario a eliminar
+*/
+export const setDelUsuarioPreferencias = async (usuarioId, preferencia) => {
+
+    try {
+        const query = 'SELECT usuPClave FROM usuarioPreferencia WHERE usuPUsuario = ? AND usuPClave = ?';
+        const params = [
+            usuarioId,
+            preferencia
+        ];
+        const [rows] = await pool.query(query, params);
+        
+        console.log(rows[0])
+        if (!(rows[0])){
+            const query = 'INSERT INTO usuariopreferencia(usuPUsuario, usuPClave) VALUES (?, ?)';
+            const params = [
+                usuarioId,
+                preferencia
+            ];
+            const [rows] = await pool.query(query, params);
+        }else{
+            const query = 'DELETE FROM usuariopreferencia WHERE usuPUsuario = ? AND usuPClave = ?';
+            const params = [
+                usuarioId,
+                preferencia
+            ];
+            const [rows] = await pool.query(query, params);
+        }
+
+        return 1
+
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 /*

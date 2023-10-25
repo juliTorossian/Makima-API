@@ -443,6 +443,32 @@ INSERT INTO `rol` VALUES ('ADMIN','Administrador',1,1,1,1,1,1,1),('DESA','Desarr
 UNLOCK TABLES;
 
 --
+-- Table structure for table `rolpermiso`
+--
+
+DROP TABLE IF EXISTS `rolpermiso`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `rolpermiso` (
+  `rolPRol` char(5) NOT NULL,
+  `rolPClave` char(5) NOT NULL,
+  `rolPNivel` int DEFAULT NULL,
+  PRIMARY KEY (`rolPRol`,`rolPClave`),
+  CONSTRAINT `rolpermiso_ibfk_1` FOREIGN KEY (`rolPRol`) REFERENCES `rol` (`rolId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rolpermiso`
+--
+
+LOCK TABLES `rolpermiso` WRITE;
+/*!40000 ALTER TABLE `rolpermiso` DISABLE KEYS */;
+INSERT INTO `rolpermiso` VALUES ('ADMIN','ADM',NULL),('DESA','EVT',1),('FUNC','CLI',1),('FUNC','EVT',2),('FUNC','PRD',1);
+/*!40000 ALTER TABLE `rolpermiso` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tarea`
 --
 
@@ -530,8 +556,33 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES ('1138c392-9ed2-45cb-858b-3de37745cb62','julian','torossian','julian.torossian@outlook.com','JDESA','G3U4IjzqPdNqJSDPrePNhg==',1,'#99AE16','VocDaw7chiPBj6oKCh','2023-10-23 14:06:43'),('3c3d3557-7dab-46eb-ab9e-c373442c360c','Julian','Torossian','jtorossian@gaci.com.ar','JADMIN','G3U4IjzqPdNqJSDPrePNhg==',1,'#5F44D4','hkZL6UxQVsKMT6ZyQj','2023-10-23 16:59:29'),('eb4fc4c3-1c25-4d73-a930-97eb7d992dc6','julian','torossian','julitoro2009@gmail.com','JFUNC','G3U4IjzqPdNqJSDPrePNhg==',1,'#42F616','5UjuXX6tq6dvpnQiJV','2023-10-23 11:47:02');
+INSERT INTO `usuario` VALUES ('1138c392-9ed2-45cb-858b-3de37745cb62','julian','torossian','julian.torossian@outlook.com','JDESA','G3U4IjzqPdNqJSDPrePNhg==',1,'#99AE16','0gjZpS4t9kkJneBPPS','2023-10-25 16:42:07'),('3c3d3557-7dab-46eb-ab9e-c373442c360c','Julian','Torossian','jtorossian@gaci.com.ar','JADMIN','G3U4IjzqPdNqJSDPrePNhg==',1,'#5F44D4','p79gNPmw8MRItiCTJK','2023-10-25 15:24:33'),('eb4fc4c3-1c25-4d73-a930-97eb7d992dc6','julian','torossian','julitoro2009@gmail.com','JFUNC','G3U4IjzqPdNqJSDPrePNhg==',1,'#42F616','NUC9M8WNOr6b0HSLjt','2023-10-25 13:36:13');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `usuariopreferencia`
+--
+
+DROP TABLE IF EXISTS `usuariopreferencia`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuariopreferencia` (
+  `usuPUsuario` char(36) NOT NULL,
+  `usuPClave` char(12) NOT NULL,
+  PRIMARY KEY (`usuPUsuario`,`usuPClave`),
+  CONSTRAINT `usuariopreferencia_ibfk_1` FOREIGN KEY (`usuPUsuario`) REFERENCES `usuario` (`usuarioId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuariopreferencia`
+--
+
+LOCK TABLES `usuariopreferencia` WRITE;
+/*!40000 ALTER TABLE `usuariopreferencia` DISABLE KEYS */;
+INSERT INTO `usuariopreferencia` VALUES ('1138c392-9ed2-45cb-858b-3de37745cb62','EVENTO_ASIG');
+/*!40000 ALTER TABLE `usuariopreferencia` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1450,4 +1501,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-23 17:28:59
+-- Dump completed on 2023-10-25 17:05:36

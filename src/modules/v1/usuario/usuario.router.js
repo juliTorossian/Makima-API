@@ -16,6 +16,8 @@ usuarioRouter.delete('/:usuarioId', controller.deleteUsuario);
 usuarioRouter.get('/:usuarioId/reactivar', controller.reactivarUsuario);
 
 usuarioRouter.get('/:usuarioId/detalle', controller.getUsuarioDetalle);
+usuarioRouter.get('/:usuarioId/preferencias', controller.getUsuarioPreferencias);
+usuarioRouter.get('/:usuarioId/preferencias/:preferencia', controller.setDelUsuarioPreferencias);
 usuarioRouter.get('/gestion/iniciarSesion', controller.iniciarSesion);
 
 usuarioRouter.get('/rol/:rol', cache(ONE_MINUTE_IN_SECONDS), controller.getUsuariosRol);

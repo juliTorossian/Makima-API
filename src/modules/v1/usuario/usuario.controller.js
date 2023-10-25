@@ -164,6 +164,28 @@ export const getUsuarioDetalle = async (req, res) => {
     }
 }
 
+export const getUsuarioPreferencias = async (req, res) => {
+
+    const preferencias = await model.getUsuarioPreferencias(req.params.usuarioId);
+
+    if (!(preferencias == null)){
+        res.json(preferencias);
+    }else{
+        res.status(404).send('error');
+    }
+}
+
+export const setDelUsuarioPreferencias = async (req, res) => {
+
+    const ok = await model.setDelUsuarioPreferencias(req.params.usuarioId,req.params.preferencia);
+
+    if (ok>0){
+        res.json(ok);
+    }else{
+        res.status(404).send('error');
+    }
+}
+
 export const getEventosUsuarioEstadisticas = async (req, res) => {
     const eventos = await model.getEventosUsuarioEstadisticas(req.params.usuarioId);
 
