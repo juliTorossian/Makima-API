@@ -80,6 +80,7 @@ export const insertProducto = async (producto) => {
     /** 
     * i Objeto que tiene que llegar por parametro
     {
+        "sigla": ""
         "nombre": "CUS",            //* nombre del producto
         "entorno": "WEB"            //* entorno del producto
     }

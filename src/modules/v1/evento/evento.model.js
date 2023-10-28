@@ -1259,9 +1259,8 @@ async function formatearEvento(eventos){
             const [productoAux] = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
             producto = {
                 "id": productoAux[0].productoId,
+                "sigla": productoAux[0].productoSigla,
                 "nombre": productoAux[0].productoNombre,
-                // "modulo": productoAux[0].productoModulo,
-                // "submodulo": productoAux[0].productoSubModulo,
                 "entorno": productoAux[0].productoEntorno,
                 "activo": productoAux[0].productoActivo
             }
