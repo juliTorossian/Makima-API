@@ -1,4 +1,4 @@
-import { avisoEventoAsignado } from "../../../helper/envioMail.js";
+import { avisoEventoAsignado } from "../../../helper/mail/envioMail.js";
 import * as model from "./evento.model.js";
 import * as modelUsuario from "../usuario/usuario.model.js";
 import * as modelHora from "../hora/hora.model.js";
@@ -137,6 +137,8 @@ export const avanzarEvento = async (req, res) => {
 }
 export const retrocederEvento = async (req, res) => {
     const ok = await model.retrocederEvento(req.params.evento, req.query.usuario, req.query.comentario);
+    
+    eviarAvisoMail(req.params.evento, req.query.usuario);
 
     if (ok > 0){
         res.json("ok");
@@ -279,6 +281,6 @@ async function eviarAvisoMail(usuarioId, eventoId){
     const usuario = await modelUsuario.getUsuario(usuarioId);
     const evento  = await model.getEvento(eventoId);
 
-    // avisoEventoAsignado(usuario, evento);
+    avisoEventoAsignado(usuario, evento);
 
 }

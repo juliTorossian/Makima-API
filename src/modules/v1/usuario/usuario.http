@@ -52,3 +52,8 @@ GET http://localhost:4000/api/v1/usuario/gestion/iniciarSesion?usuario=juli1&pas
 # GET USUARIO PREFERENCIAS
 
 GET http://localhost:4000/api/v1/usuario/1138c392-9ed2-45cb-858b-3de37745cb62/preferencias
+
+###
+# GET USUARIO PREFERENCIAS
+
+GET http://localhost:4000/api/v1/usuario/1138c392-9ed2-45cb-858b-3de37745cb62/preferencias/EVENTO_ASIGN
