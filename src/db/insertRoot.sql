@@ -2,6 +2,8 @@
 CREATE DATABASE IF NOT EXISTS gacieventos;
 USE gacieventos;
 
+
+-- #This function has none of DETERMINISTIC, NO SQL, or READS SQL DATA
 SET GLOBAL log_bin_trust_function_creators = 1;
 
 INSERT INTO rol(rolId, rolDescripcion, rolCtrlTotal, rolCtrlEvento, rolCtrlCliente, rolCtrlProducto, rolCtrlTipo, rolCtrlUsuario, rolCtrlHora)

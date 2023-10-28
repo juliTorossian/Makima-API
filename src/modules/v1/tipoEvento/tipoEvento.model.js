@@ -74,10 +74,15 @@ export const getTipoEventos = async () => {
  ** Busca todos los tipos de eventos
  *
 */
-export const getTipoEvento = async (id) => {
+export const getTipoEvento = async (id, cerrados) => {
 
     try{
-        let query = 'SELECT * FROM tipoevento WHERE tipoEventoActivo = true AND tipoEventoId = ?';
+        let query = "";
+        if (cerrados){
+            query = 'SELECT * FROM tipoevento WHERE tipoEventoId = ?';
+        }else{
+            query = 'SELECT * FROM tipoevento WHERE tipoEventoActivo = true AND tipoEventoId = ?';
+        }
         let params = [
             id
         ];

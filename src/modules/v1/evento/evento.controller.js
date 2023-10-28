@@ -1,9 +1,14 @@
-import { avisoEventoAsignado } from "../../../helper/envioMail.js";
+import { avisoEventoAsignado } from "../../../helper/mail/envioMail.js";
 import * as model from "./evento.model.js";
 import * as modelUsuario from "../usuario/usuario.model.js";
+import * as modelHora from "../hora/hora.model.js";
+import * as validador from "./evento.validator.js";
+
+
 
 export const getEventos = async (req, res) => {
-    const eventos = await model.getEventos(req.query.page);
+    const { page } = req.query;
+    const eventos = await model.getEventos(page);
 
     if (!(eventos == null)){
         res.json(eventos);
@@ -24,6 +29,16 @@ export const getEvento = async (req, res) => {
 
 export const getEventoDetalle = async (req, res) => {
     const evento = await model.getEventoDetalle(req.params.evento);
+    
+    if (!(evento == null)){
+        res.json(evento);
+    }else{
+        res.status(404).send('error');
+    }
+}
+
+export const getEventoHoras = async (req, res) => {
+    const evento = await modelHora.getHorasEvento(req.params.evento);
     
     if (!(evento == null)){
         res.json(evento);
@@ -122,6 +137,8 @@ export const avanzarEvento = async (req, res) => {
 }
 export const retrocederEvento = async (req, res) => {
     const ok = await model.retrocederEvento(req.params.evento, req.query.usuario, req.query.comentario);
+    
+    eviarAvisoMail(req.params.evento, req.query.usuario);
 
     if (ok > 0){
         res.json("ok");
@@ -144,13 +161,29 @@ export const reasignarEvento = async (req, res) => {
 }
 
 export const estimarEvento = async (req, res) => {
-    const ok = await model.estimarEvento(req.params.evento, req.query.estimado, req.query.comentario);
 
-    if (ok > 0){
-        res.json("ok");
-    }else{
-        res.status(404).send('error');
+    try {
+        console.log(req.body);
+        const resultado = validador.validarEstimacion(req.body);
+        console.log(resultado);
+
+        if (!resultado.success) {
+            // 422 Unprocessable Entity
+            return res.status(400).json({ error: JSON.parse(resultado.error.message) })
+        }
+        const estimacion = await model.estimarEvento(resultado.data);
+    
+        if (estimacion != null){
+            res.status(201).json(estimacion);
+        }else{
+            res.status(404).send('error');
+        }
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
     }
+
 }
 
 export const comentarEvento = async (req, res) => {
@@ -159,9 +192,8 @@ export const comentarEvento = async (req, res) => {
 
     // console.log(JSON.parse(req.body.comentario))
     // console.log(req.file)
-    const comentario = JSON.parse(req.body.comentario);
-    const archivo = req.file;
-    const ok = await model.comentarEvento(comentario, archivo);
+    const comentario = req.body;
+    const ok = await model.comentarEvento(comentario);
 
     if (ok > 0){
         res.json("ok");
@@ -172,18 +204,16 @@ export const comentarEvento = async (req, res) => {
 }
 
 
-export const comentarEventoArchivo = async (req, res) => {
+export const adjuntarEvento = async (req, res) => {
 
-    const file = req.file
+    const files = req.files
+    const eventoId = req.params.evento
+    const usuarioId = req.query.usuario
 
-    console.log(file)
+    console.log(files)
+    // console.log(usuarioId); 
 
-    if (!req.file || Object.keys(req.file).length === 0) {
-        return res.status(400).send('No files were uploaded.');
-    }
-
-
-    const ok = await model.comentarEventoArchivo(file);
+    const ok = await model.adjuntarEvento(eventoId, usuarioId, files);
 
     if (ok > 0){
         res.json("ok");
@@ -191,6 +221,29 @@ export const comentarEventoArchivo = async (req, res) => {
         res.status(404).send('error');
     }
 
+}
+
+export const deleteAdjunto = async (req, res) => {
+
+    const adicionId = req.params.adicion
+    const ok = await model.deleteAdjunto(adicionId);
+
+    if (ok > 0){
+        res.json("ok");
+    }else{
+        res.status(404).send('error');
+    }
+}
+
+export const getAdjuntosEvento = async (req, res) => {
+    
+    const adjuntos = await model.getAdjuntosEvento(req.params.evento);
+    
+    if (!(adjuntos == null)){
+        res.json(adjuntos);
+    }else{
+        res.status(404).send('error');
+    }
 }
 
 export const getComentariosEvento = async (req, res) => {

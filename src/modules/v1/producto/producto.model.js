@@ -7,6 +7,7 @@
 
 
 import { pool } from '../../../db.js';
+import crypto from 'node:crypto';
 
 
 /** 
@@ -87,8 +88,13 @@ export const insertProducto = async (producto) => {
 
     try{
 
-        const query = "INSERT producto(productoId, productoSigla, productoNombre, productoEntorno, productoActivo) VALUE ((SELECT getNewId()), ?, ?, ?, true)";
+        console.log(producto)
+
+        const productoId = crypto.randomUUID();
+
+        const query = "INSERT producto(productoId, productoSigla, productoNombre, productoEntorno, productoActivo) VALUE (?, ?, ?, ?, true)";
         let params = [
+            productoId,
             producto.sigla,
             producto.nombre,
             producto.entorno
@@ -98,7 +104,12 @@ export const insertProducto = async (producto) => {
 
         // console.log(rows);
 
-        return rows.affectedRows;
+        let prd = {
+            id: productoId,
+            ...producto
+        }
+
+        return prd;
 
     }catch (err) {
         console.error(err);
@@ -124,7 +135,9 @@ export const updateProducto = async (producto) => {
 
     try{
 
-        const query = "UPDATE producto SET productoSigla = ? , productoNombre = ? , productoEntorno = ? WHERE productoId = ?";
+        // console.log(producto);
+
+        const query = "UPDATE producto SET productoSigla = ?, productoNombre = ? , productoEntorno = ? WHERE productoId = ?";
         let params = [
             producto.sigla,
             producto.nombre,
@@ -136,7 +149,7 @@ export const updateProducto = async (producto) => {
 
         // console.log(rows);
 
-        return rows.affectedRows;
+        return producto;
 
     }catch (err) {
         console.error(err);

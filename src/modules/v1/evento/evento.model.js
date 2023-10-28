@@ -14,15 +14,14 @@
 //TOOKVER VIDA DEL EVENTO
 
 import { pool } from '../../../db.js';
+import crypto from 'node:crypto';
 
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 import { getUsuario } from '../usuario/usuario.model.js';
 import { getComentarioTarea, getTareaAccionCompleta } from '../tarea/tarea.model.js';
-import { cadenaAleatoria } from '../../../helper/random.js';
 import { getTipoEvento } from '../tipoEvento/tipoEvento.model.js';
-import { getModulo } from '../modulo/modulo.model.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -72,100 +71,6 @@ export const getEventos = async (page) => {
             "results": await formatearEvento(rows[0])
         };
         
-        // console.log(rows[0]);
-
-        // for (let i = 0; i < rows[0].length; i++) {
-        //     const row = rows[0][i];
-
-        //     // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-        //     // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
-
-        //     const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
-        //     const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
-        //     const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
-            
-        //     const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
-
-        //     results.results.push({
-        //         "id": row.eventoId,
-        //         "tipo": row.eventoTipo,
-        //         "numero": row.eventoNumero,
-        //         "titulo": row.eventoTitulo,
-        //         "tareaNombre": row.tareaNombre,
-        //         "cliente": {
-        //             "id": row.eventoCliente,
-        //             "nombre": row.cliente
-        //         },
-        //         "producto": {
-        //             "id": producto[0].productoId,
-        //             "nombre": producto[0].productoNombre,
-        //             "modulo": producto[0].productoModulo,
-        //             "submodulo": producto[0].productoSubModulo,
-        //             "entorno": producto[0].productoEntorno,
-        //             "activo": producto[0].productoActivo
-        //         },
-        //         "cerrado": row.eventoCerrado,
-        //         "propio": row.eventoPropio,
-        //         "prioridad": row.eventoPrioridad,
-        //         "fechaAlta": row.eventoFechaAlta,
-        //         "usuarioActual": usuarioActual,
-        //         "usuarioAlta": usuarioAlta,
-        //         // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
-        //         "detalle": await getEventoDetalle(row.eventoId)
-        //     })
-        // }
-
-        // rows[0].map( (row) => {
-            
-        // })
-
-        // console.log(rows[0]);
-
-        // for (let i = 0; i < rows[0].length; i++) {
-        //     const row = rows[0][i];
-
-        //     // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-        //     // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
-
-        //     const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
-        //     const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
-        //     const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
-
-        //     const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
-
-        //     results.results.push({
-        //         "id": row.eventoId,
-        //         "tipo": row.eventoTipo,
-        //         "numero": row.eventoNumero,
-        //         "titulo": row.eventoTitulo,
-        //         "tareaNombre": row.tareaNombre,
-        //         "cliente": {
-        //             "id": row.eventoCliente,
-        //             "nombre": row.cliente
-        //         },
-        //         "producto": {
-        //             "id": producto[0].productoId,
-        //             "nombre": producto[0].productoNombre,
-        //             "modulo": producto[0].productoModulo,
-        //             "submodulo": producto[0].productoSubModulo,
-        //             "entorno": producto[0].productoEntorno,
-        //             "activo": producto[0].productoActivo
-        //         },
-        //         "modulo": row.eventoModulo,
-        //         "cerrado": row.eventoCerrado,
-        //         "propio": row.eventoPropio,
-        //         "prioridad": row.eventoPrioridad,
-        //         "fechaAlta": row.eventoFechaAlta,
-        //         "usuarioActual": usuarioActual,
-        //         "usuarioAlta": usuarioAlta,
-        //         // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
-        //         "detalle": await getEventoDetalle(row.eventoId)
-        //     })
-        // }
-        // rows[0].map( (row) => {
-            
-        // })
-        // console.log(results);
         return results;
     
     }catch (err){
@@ -219,47 +124,6 @@ export const getEventosUsuario = async (page, usuario) => {
             "results": await formatearEvento(rows[0])
         };
 
-        // for (let i = 0; i < rows[0].length; i++) {
-        //     const row = rows[0][i];
-
-        //     // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-        //     // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
-
-        //     const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
-        //     const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
-        //     const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
-
-        //     const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
-
-        //     results.results.push({
-        //         "id": row.eventoId,
-        //         "tipo": row.eventoTipo,
-        //         "numero": row.eventoNumero,
-        //         "titulo": row.eventoTitulo,
-        //         "tareaNombre": row.tareaNombre,
-        //         "cliente": {
-        //             "id": row.eventoCliente,
-        //             "nombre": row.cliente
-        //         },
-        //         "producto": {
-        //             "id": producto[0].productoId,
-        //             "nombre": producto[0].productoNombre,
-        //             "modulo": producto[0].productoModulo,
-        //             "submodulo": producto[0].productoSubModulo,
-        //             "entorno": producto[0].productoEntorno,
-        //             "activo": producto[0].productoActivo
-        //         },
-        //         "modulo": row.eventoModulo,
-        //         "cerrado": row.eventoCerrado,
-        //         "propio": row.eventoPropio,
-        //         "prioridad": row.eventoPrioridad,
-        //         "fechaAlta": row.eventoFechaAlta,
-        //         "usuarioActual": usuarioActual,
-        //         "usuarioAlta": usuarioAlta,
-        //         // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
-        //         "detalle": await getEventoDetalle(row.eventoId)
-        //     })
-        // }
         return results;
     
     }catch (err){
@@ -314,47 +178,6 @@ export const getEventosRol = async (page, rol) => {
             "results": await formatearEvento(rows[0])
         };
 
-        // for (let i = 0; i < rows[0].length; i++) {
-        //     const row = rows[0][i];
-
-        //     // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-        //     // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
-
-        //     const usuarioAlta = await getUsuario(row.eventoUsuarioAlta);
-        //     const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ row.eventoId ]);
-        //     const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
-            
-        //     const [producto]      = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ row.eventoProducto ]);
-
-        //     results.results.push({
-        //         "id": row.eventoId,
-        //         "tipo": row.eventoTipo,
-        //         "numero": row.eventoNumero,
-        //         "titulo": row.eventoTitulo,
-        //         "tareaNombre": row.tareaNombre,
-        //         "cliente": {
-        //             "id": row.eventoCliente,
-        //             "nombre": row.cliente
-        //         },
-        //         "producto": {
-        //             "id": producto[0].productoId,
-        //             "nombre": producto[0].productoNombre,
-        //             "modulo": producto[0].productoModulo,
-        //             "submodulo": producto[0].productoSubModulo,
-        //             "entorno": producto[0].productoEntorno,
-        //             "activo": producto[0].productoActivo
-        //         },
-        //         "modulo": row.eventoModulo,
-        //         "cerrado": row.eventoCerrado,
-        //         "propio": row.eventoPropio,
-        //         "prioridad": row.eventoPrioridad,
-        //         "fechaAlta": row.eventoFechaAlta,
-        //         "usuarioActual": usuarioActual,
-        //         "usuarioAlta": usuarioAlta,
-        //         // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
-        //         "detalle": await getEventoDetalle(row.eventoId)
-        //     })
-        // }
         return results;
     
     }catch (err){
@@ -389,49 +212,7 @@ export const getEvento = async (eventoId) => {
 
         const [rows] = await pool.query(query, params);
 
-        // // const [usuarioAlta]   = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.eventoUsuarioAlta ]);
-        // // const [usuarioActual] = await pool.query("SELECT * FROM usuario WHERE usuarioId = getUsuarioActivoEvento(?)", [ row.eventoId ]);
-
-        // const usuarioAlta = await getUsuario(rows[0].eventoUsuarioAlta);
-        // const [usuActualAux] = await pool.query("SELECT getUsuarioActivoEvento(?) AS usuarioId", [ rows[0].eventoId ]);
-        // const usuarioActual = await getUsuario(usuActualAux[0].usuarioId);
-
-        // let producto = [];
-        // if (rows[0].eventoProducto){
-        //     const [productoAux] = await pool.query("SELECT * FROM producto WHERE productoId = ?", [ rows[0].eventoProducto ]);
-        //     producto = {
-        //         "id": productoAux[0].productoId,
-        //         "nombre": productoAux[0].productoNombre,
-        //         "modulo": productoAux[0].productoModulo,
-        //         "submodulo": productoAux[0].productoSubModulo,
-        //         "entorno": productoAux[0].productoEntorno,
-        //         "activo": productoAux[0].productoActivo
-        //     }
-        // }
-
-
         let results = await formatearEvento(rows);
-
-        // let results = {
-        //     "id": rows[0].eventoId,
-        //     "tipo": rows[0].eventoTipo,
-        //     "numero": rows[0].eventoNumero,
-        //     "titulo": rows[0].eventoTitulo,
-        //     "tareaNombre": rows[0].tareaNombre,
-        //     "cliente": {
-        //         "id": rows[0].eventoCliente,
-        //         "sigla": rows[0].clienteSigla,
-        //         "nombre": rows[0].cliente
-        //     },
-        //     "producto": producto,
-        //     "cerrado": rows[0].eventoCerrado,
-        //     "propio": rows[0].eventoPropio,
-        //     "prioridad": rows[0].eventoPrioridad,
-        //     "usuarioActual": usuarioActual,
-        //     "usuarioAlta": usuarioAlta,
-        //     // "madre": (rows[0].eventoMadre!="") ? await getEvento(rows[0].eventoMadre) : undefined,
-        //     "detalle": await getEventoDetalle(rows[0].eventoId)
-        // }
 
         return results[0];
     }catch (err){
@@ -529,7 +310,7 @@ export const getEventoDetalle = async (eventoId) => {
                         "controla": actTareaAux[0].tareaControla,
                         "clave": actTareaAux[0].tareaClave,
                         "reqComentario": actTareaAux[0].tareaComentario,
-                        "completada": await getTareaAccionCompleta(eventoId, actTareaAux[0].tareaClave),
+                        "completada": await getTareaAccionCompleta(eventoId, actTareaAux[0].tareaClave, rows[0].eventoEtapa),
                         "comentario": ((actTareaAux[0].tareaClave) || (actTareaAux[0].tareaComentario)) ? await getComentarioTarea(eventoId, actTareaAux[0].tareaClave, rows[0].eventoEtapa) : ""
                     }
                 }
@@ -562,6 +343,25 @@ export const getEventoDetalle = async (eventoId) => {
                     }
                 }
             }
+
+            const [estimacionQuery] = await pool.query("SELECT * FROM eventoEstimacion WHERE eEstEvento = ?", eventoId);
+            // console.log(estimacionQuery);
+            let estimacion = {
+                "total": 0,
+                "detalle": []
+            }
+
+            estimacionQuery.map( (est) => {
+                let aux = {
+                    "rol": est.eEstRol,
+                    "estimacion": est.eEstEstimacion
+                }
+                estimacion.total += est.eEstEstimacion
+                estimacion.detalle.push(aux)
+            })
+            
+
+
             const [horas] = await pool.query("SELECT sum(horaTotal) AS total FROM registrohora INNER JOIN hora ON horaRegistro = regHoraId WHERE horaEvento = ? ORDER BY regHoraFecha, horaInicio", eventoId);
             // console.log(horas);
 
@@ -585,10 +385,11 @@ export const getEventoDetalle = async (eventoId) => {
                                     "totalEtapas": rows[0].totalEtapas
                                 },
                                 "eventoHoras": {
-                                    "estimacion": (rows[0].eventoEstimacion > 0) ? rows[0].eventoEstimacion : 0 ,
-                                    "total": (horas[0].total) ? horas[0].total : 0
+                                    "estimacion": estimacion,
+                                    "trabajadas": (horas[0].total) ? horas[0].total : 0
                                 }
                             }
+            //"estimacion": (rows[0].eventoEstimacion > 0) ? rows[0].eventoEstimacion : 0 ,
         }
 
         return eventoDetalle;
@@ -606,7 +407,7 @@ export const getEventoDetalle = async (eventoId) => {
  *i @param nEvento: objeto con los datos necesarios del evento - especificado mas abajo
 */
 export const insertEvento = async (nEvento) => {
-     
+    
     /** 
     * i Objeto que tiene que llegar por parametro (nEvento)
     * ! no espera este att
@@ -622,13 +423,14 @@ export const insertEvento = async (nEvento) => {
         "usuAlta": 1                            //* id del usuario de alta
         "fechaAlta": now()                      //! fecha del momento
         "madre": idMadre                        //* Evento madre
+        "descripcion":                          //* Descripcion del evento
     }
     **/
 
     try{
 
         // console.log(nEvento);
-        const query = "CALL insert_eventos(?,?,?,?,?,?,?)";
+        const query = "CALL insert_eventos(?,?,?,?,?,?,?,?)";
         let params = [
             nEvento.tipo,
             nEvento.titulo,
@@ -636,7 +438,8 @@ export const insertEvento = async (nEvento) => {
             (nEvento.producto == "") ? null : nEvento.producto,
             (nEvento.modulo == "") ? null : nEvento.modulo,
             nEvento.usuAlta,
-            nEvento.prioridad
+            nEvento.prioridad,
+            nEvento.descripcion
         ]
 
         const [rows] = await pool.query(query, params);
@@ -661,7 +464,7 @@ export const insertEvento = async (nEvento) => {
  *i @param eventoM: objeto con los datos modificados del evento - especificado mas abajo
 */
 export const updateEvento = async (eventoM) => {
-     
+    
     /** 
     * i Objeto que tiene que llegar por parametro (eventoM)
     * ! no espera este att
@@ -680,14 +483,15 @@ export const updateEvento = async (eventoM) => {
 
         // console.log(eventoM);
 
-        const query = "CALL update_eventos(?,?,?,?,?,?)";
+        const query = "CALL update_eventos(?,?,?,?,?,?,?)";
         let params = [
             eventoM.id,
             eventoM.titulo,
             eventoM.cliente,
             eventoM.producto,
             eventoM.modulo,
-            eventoM.prioridad
+            eventoM.prioridad,
+            eventoM.descripcion
         ]
         // console.log(params);
 
@@ -862,14 +666,61 @@ export const reasignarEvento = async (eventoId, usuarioAsignado) => {
  *i @param eventoId:    id del evento a estimar
  *i        estimacion:  cantidad de horas que se estiman
 */
-export const estimarEvento = async (eventoId, estimacion, comentario) => {
+export const estimarEvento = async (estimacion) => {
     try{
-        const query  = "UPDATE evento SET eventoEstimacion = ? WHERE eventoId = ?"
-        const params = [estimacion, eventoId];
+
+        /*
+            INSERT eventoEstimacion(eEstId, eEstEvento, eEstUsuario, eEstRol, eEstEstimacion)
+            VALUES 	((SELECT UUID()), "9657834b-485d-11ee-932a-1c1b0d9efeb6", "0321742d-7dcc-4e33-9b46-6d02aaf99fa1", "ADMIN", 10),
+                    ((SELECT UUID()), "9657834b-485d-11ee-932a-1c1b0d9efeb6", "0321742d-7dcc-4e33-9b46-6d02aaf99fa1", "TEST", 13)
+            ;
+        */
+        
+        const estimacionId = crypto.randomUUID();
+        let query  = "SELECT eEstId FROM eventoEstimacion WHERE eEstEvento = ? AND eEstUsuario = ? AND eEstRol = ?"
+        let params = [
+            estimacion.evento,
+            estimacion.usuario,
+            estimacion.rol
+        ];
+        const [existe] = await pool.query(query, params);
+        // console.log(existe.length);
+
+        if (existe.length > 0){
+            query = "DELETE FROM eventoEstimacion WHERE eEstId = ?"
+            params = [ existe[0].eEstId ]
+            const [rows] = await pool.query(query, params);
+        }
+
+        query  = "INSERT eventoEstimacion(eEstId, eEstEvento, eEstUsuario, eEstRol, eEstEstimacion) VALUES (?, ?, ?, ?, ?)"
+        params = [
+            estimacionId,
+            estimacion.evento, 
+            estimacion.usuario,
+            estimacion.rol,
+            estimacion.estimacion
+        ];
 
         const [rows] = await pool.query(query, params);
+        // console.log(rows);
 
-        const detalle = await getEventoDetalle(eventoId);
+        query  = "SELECT SUM(eEstEstimacion) AS total FROM eventoEstimacion WHERE eEstEvento = ?"
+        params = [
+            estimacion.evento
+        ];
+        
+        const [total] = await pool.query(query, params);
+        // console.log(total[0].total);
+        
+        query  = "UPDATE evento SET eventoEstimacion = ? WHERE eventoId = ?"
+        params = [
+            total[0].total,
+            estimacion.evento
+        ];
+        
+        const [update] = await pool.query(query, params);
+
+        const detalle = await getEventoDetalle(estimacion.evento);
 
         /*
             INSERT INTO eventoadicion(eAdId, eAdEvento, eAdTipo     , eAdComentario, eAdAdjFile, eAdPathFile, eAdNombreFile, eAdMimeFile, eAdFecha)
@@ -878,21 +729,21 @@ export const estimarEvento = async (eventoId, estimacion, comentario) => {
 
         let comentarioId = null;
         // console.log("comentario: " +comentario);
-        if (comentario){
-            comentarioId = cadenaAleatoria(24);
+        if (estimacion.comentario){
+            comentarioId = crypto.randomUUID();
 
             const queryComm = 'INSERT INTO eventoadicion(eAdId, eAdEvento, eAdTipo , eAdComentario, eAdAdjFile, eAdFecha) VALUES (?, ?, "COMENTARIO", ?, 0, Now())'
             const paramsComm = [
                 comentarioId,
-                eventoId,
-                comentario
+                estimacion.evento,
+                estimacion.comentario
             ];
 
             const [comm] = await pool.query(queryComm, paramsComm);
         }
 
         // console.log("comentarioId: " +comentarioId);
-        const [audi] = await pool.query("CALL insert_audiEvento(?, ?, (SELECT getUsuarioActivoEvento(?) ), ?, ?)", [eventoId, detalle.eventoCircuito.act.etapa, eventoId, comentarioId, detalle.eventoCircuito.act.tarea.clave])
+        const [audi] = await pool.query("CALL insert_audiEvento(?, ?, (SELECT getUsuarioActivoEvento(?) ), ?, ?)", [estimacion.evento, detalle.eventoCircuito.act.etapa, estimacion.evento, comentarioId, detalle.eventoCircuito.act.tarea.clave])
         // console.log(audi);
 
         return 1
@@ -909,8 +760,8 @@ export const estimarEvento = async (eventoId, estimacion, comentario) => {
  *
  *i @param comentario: comentario realizado al evento, con usuario
 */
-export const comentarEvento = async (comentario, archivo) => {
-     
+export const comentarEvento = async (comentario) => {
+    
     /** 
     * i Objeto que tiene que llegar por parametro
     {
@@ -924,31 +775,11 @@ export const comentarEvento = async (comentario, archivo) => {
 
     try{
 
-        // console.log("(875:evento.Model)");
-
-        // console.log(comentario);
-        // console.log(archivo);
-
-        let pathFile = null;
-        let nameFile = null;
-        let mimeFile = null;
-        const tiene = !((archivo == undefined) || (archivo == null));
-        
-        if (tiene){
-            pathFile = archivo.path;
-            nameFile = archivo.originalname;
-            mimeFile = archivo.mimetype;
-        }
-
-        const query = "CALL comentar_evento(?,?,?,?,?,?,?)";
+        const query = "CALL comentar_evento(?,?,?)";
         let params = [
             comentario.eventoId,
             comentario.comentario,
             comentario.usuario,
-            tiene,
-            pathFile,
-            nameFile,
-            mimeFile
         ]
 
         const [rows] = await pool.query(query, params);
@@ -956,6 +787,46 @@ export const comentarEvento = async (comentario, archivo) => {
         // const eventoId = rows[0][0].eventoId;
 
         return 1;
+
+    }catch (err){
+        console.error(err);
+        return 0;
+    }
+
+}
+
+/** 
+ ** Adjunta archivos al evento
+ *
+ *i @param archivos: array de archivos a adjuntar
+*/
+export const adjuntarEvento = async (eventoId, usuarioId, archivos) => {
+
+    try{
+
+        let res = 1;
+
+        for (let i = 0; i < archivos.length; i++) {
+            const archivo = archivos[i];
+
+            let pathFile = archivo.path;
+            let nameFile = archivo.originalname;
+            let mimeFile = archivo.mimetype;
+            
+            const query = "CALL adjuntar_evento(?,?,?,?,?)";
+            let params = [
+                eventoId,
+                usuarioId,
+                pathFile,
+                nameFile,
+                mimeFile
+            ]
+    
+            const [rows] = await pool.query(query, params);
+
+        }
+
+        return res;
 
     }catch (err){
         console.error(err);
@@ -1058,26 +929,117 @@ export const getComentariosEvento = async (eventoId) => {
 
 }
 
-function nombreArchivo(filePath){
-    let fileName = path.basename(filePath);
-    fileName = fileName.split('&')[1];
-    return fileName;
-}
-function datosArchivo(filePath){
+/** 
+ ** Ver los adjuntos de un evento
+ *
+ *i @param eventoId: evento a cual consultar
+*/
+export const getAdjuntosEvento = async (eventoId) => {
 
-    let content = "";
-    let extencion = path.extname(filePath);
-    extencion = extencion.slice(1);
+    try{
+        let query  = "";
+        let params = "";
 
-    if (extencion == 'png'){
-        content = "image/png";
-    }else if (extencion == 'jpg'){
-        content = "image/jpg";
-    }else if (extencion == 'pdf'){
-        content = "application/pdf";
+        let adjuntos = [];
+        query = "SELECT ea.eAdId, ea.eAdComentario, ea.eAdAdjFile, ea.eAdFecha, ae.audiEUsuario, u.usuarioUsuario, '' AS fileBase, '' AS fileName  \
+                        FROM eventoadicion AS ea    \
+                        INNER JOIN audievento AS ae ON ae.audiEAdi = ea.eAdId     \
+                        INNER JOIN usuario AS u ON u.usuarioId = ae.audiEUsuario    \
+                        WHERE   ea.eAdTipo = 'ADJUNTO' AND     \
+                                ae.audiEEvento = ?  \
+                        ORDER BY ea.eAdFecha DESC";
+        params = [
+            eventoId
+        ];
+
+        let [rows] = await pool.query(query, params);
+        
+        for (let i = 0; i < rows.length; i++){
+
+            let query = "SELECT ea.eAdId, ea.eAdPathFile AS pathFile, ea.eAdNombreFile AS nameFile, ea.eAdMimeFile AS mimeFile  \
+                        FROM eventoadicion AS ea    \
+                        WHERE   ea.eAdId = ?";
+
+            let params = [  
+                rows[i].eAdId
+            ];
+
+            let response = await pool.query(query, params);
+            response = response[0];
+
+            for (let z = 0; z < response.length; z++) {
+                const file = response[z];
+                
+                console.log(file);
+    
+                let fileBase = "";
+                let fileName = "";
+                let fileMime = "";
+    
+                if (file.pathFile != null){
+                    
+                    try{
+                        const fileBaseAux = fs.readFileSync(file.pathFile, {encoding: 'base64'});
+    
+                        fileMime = file.mimeFile;
+                        fileBase = fileBaseAux;
+                        fileName = file.nameFile;    
+                    }catch(e){
+                        console.log("No existe el archivo");
+                    }
+    
+                    adjuntos.push({
+                        "id": file.eAdId,
+                        "tipo": fileMime,
+                        "base": fileBase,
+                        "nombre": fileName
+                    })
+                }
+            }
+
+
+
+        }
+
+        return adjuntos;
+
+    }catch (err){
+        console.error(err);
+        return 0;
     }
 
-    return content;
+}
+
+/** 
+ ** Ver los adjuntos de un evento
+ *
+ *i @param eventoId: evento a cual consultar
+*/
+export const deleteAdjunto = async (adicionId) => {
+
+    try{
+
+        let query = "SELECT eAdId, eAdPathFile AS pathFile FROM eventoadicion WHERE eAdId = ?";
+        let params = [
+            adicionId
+        ]
+        let [rows] = await pool.query(query, params);
+        const pathFile = rows[0].pathFile;
+
+        fs.rmSync(pathFile);
+
+        query = "DELETE FROM eventoadicion WHERE eAdId = ?";
+        params = [
+            adicionId
+        ]
+        [rows] = await pool.query(query, params);
+
+        return 1;
+
+    }catch (err){
+        console.error(err);
+        return 0;
+    }
 
 }
 
@@ -1211,7 +1173,8 @@ export const getTareasPorTipo = async (rol) => {
             response.tareas.push({
                 "id": tarea.tareaId,
                 "nombre": tarea.tareaNombre,
-                "rol": tarea.tareaRol
+                "rol": tarea.tareaRol,
+                "color": tarea.tareaColor
             });
         })
 
@@ -1303,7 +1266,8 @@ async function formatearEvento(eventos){
             }
         }
 
-        // let tipo = await getTipoEvento(row.eventoTipo);
+        // console.log(row.eventoTipo)
+        let tipo = await getTipoEvento(row.eventoTipo, true);
         // let modulo = null;
         // if (row.modulo){
         //     modulo = await getModulo(row.modulo);
@@ -1311,7 +1275,7 @@ async function formatearEvento(eventos){
 
         eventosFinal.push({
             "id": row.eventoId,
-            "tipo": row.eventoTipo,
+            "tipo": tipo,
             "numero": row.eventoNumero,
             "titulo": row.eventoTitulo,
             "tareaNombre": row.tareaNombre,
@@ -1328,7 +1292,9 @@ async function formatearEvento(eventos){
             "usuarioActual": usuarioActual,
             "usuarioAlta": usuarioAlta,
             // "madre": (row.eventoMadre!="") ? await getEvento(row.eventoMadre) : undefined,
-            "detalle": await getEventoDetalle(row.eventoId)
+            "detalle": await getEventoDetalle(row.eventoId),
+            "busqueda": tipo.id + '-' +row.eventoNumero,
+            "descripcion": row.eventoDesc
         })
     }
 
