@@ -19,8 +19,6 @@ export const getRoles = async () => {
         let params = []
 
         const [rows] = await pool.query(query, params);
-
-        console.log(rows);
         
         let response = [];
 
@@ -115,20 +113,22 @@ export const insertRol = async (rol) => {
 
     try{
 
-        const query = "INSERT INTO rol(rolId, rolDescripcion, rolCtrlTotal, rolCtrlEvento, rolCtrlCliente, rolCtrlProducto, rolCtrlTipo, rolCtrlHora, rolCtrlUsuario) VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        const query = "INSERT INTO rol(rolId, rolDescripcion) VALUES  (?, ?)";
         let params = [
             rol.id,
-            rol.descripcion,
-            rol.controlTotal,
-            rol.controlEvento,
-            rol.controlCliente,
-            rol.controlProducto,
-            rol.controlTipo,
-            rol.controlHora,
-            rol.controlUsuario
+            rol.descripcion
         ];
 
         const [rows] = await pool.query(query, params);
+
+        const queryPermisos = 'INSERT INTO rolPermiso(rolPRol, rolPClave, rolPNivel) VALUES ?';
+        let paramsPermisos = [];
+
+        rol.permisos.map( (p) => {
+            let aux = [rol.id, p.clave, p.nivel]
+            paramsPermisos.push(aux);
+        })
+        const [rowsPermisos] = await pool.query(queryPermisos, [paramsPermisos]);
 
         // console.log(rows);
 
@@ -158,20 +158,23 @@ export const updateRol = async (rol) => {
 
     try{
 
-        const query = "UPDATE rol SET rolDescripcion = ?, rolCtrlTotal = ?, rolCtrlEvento = ?, rolCtrlCliente = ?, rolCtrlProducto = ?, rolCtrlTipo = ?, rolCtrlHora = ?, rolCtrlUsuario = ? WHERE rolId = ?";
+        const query = "UPDATE rol SET rolDescripcion = ? WHERE rolId = ?";
         let params = [
             rol.descripcion,
-            rol.controlTotal,
-            rol.controlEvento,
-            rol.controlCliente,
-            rol.controlProducto,
-            rol.controlTipo,
-            rol.controlHora,
-            rol.controlUsuario,
             rol.id
         ];
-
         const [rows] = await pool.query(query, params);
+
+        const [auxRows] = await pool.query("DELETE FROM rolpermiso WHERE rolPRol = ?", [rol.id])
+        const queryPermisos = 'INSERT INTO rolPermiso(rolPRol, rolPClave, rolPNivel) VALUES ?';
+        let paramsPermisos = [];
+
+        rol.permisos.map( (p) => {
+            let aux = [rol.id, p.clave, p.nivel]
+            paramsPermisos.push(aux);
+        })
+        const [rowsPermisos] = await pool.query(queryPermisos, [paramsPermisos]);
+
         return rows.affectedRows;
 
     }catch (err) {
@@ -189,6 +192,7 @@ export const deleteRol = async (rolId) => {
 
     try{
 
+        const [auxRows] = await pool.query("DELETE FROM rolpermiso WHERE rolPRol = ?", [rolId])
         const query = "DELETE FROM rol WHERE rolId = ?";
         let params = [
             rolId
