@@ -9,14 +9,14 @@
 
 import { pool } from '../../../db.js';
 import { cadenaAleatoria } from '../../../helper/random.js';
-
+import crypto from 'node:crypto';
 /** 
  ** Crea un nuevo usuario
  *
  *i @param usuario: objeto con los datos necesarios del usuario - especificado mas abajo
 */
 export const insertUsuario = async (usuario) => {
-     
+
     /** 
     {
         "nombre": "julian",         //* nombre del usuario
@@ -33,7 +33,9 @@ export const insertUsuario = async (usuario) => {
 
     try{
 
-        const usuarioId = cadenaAleatoria(24);
+        // const usuarioId = cadenaAleatoria(24);
+        const usuarioId = crypto.randomUUID();
+
 
         const query = 'INSERT INTO usuario(usuarioId, usuarioNombre, usuarioApellido, usuarioMail, usuarioUsuario, usuarioPass, usuarioActivo, usuarioColor) VALUES (?, ?, ?, ?, ?, ?, true, ?)';
         let params = [
@@ -46,14 +48,22 @@ export const insertUsuario = async (usuario) => {
             usuario.color
         ];
 
+
+        // console.log(usuario.rol)
+
         const [rows] = await pool.query(query, params);
         await insertRoles(usuarioId, usuario.rol);
 
-        return 1;
+        let nuevoUsuario = {
+            id: usuarioId,
+            ...usuario
+        }
+
+        return nuevoUsuario;
 
     }catch (err){
         console.error(err);
-        return 0;
+        return null;
     }
 
 }
@@ -64,7 +74,7 @@ export const insertUsuario = async (usuario) => {
  *i @param usuario: objeto con los datos necesarios del usuario - especificado mas abajo
 */
 export const updateUsuario = async (usuario) => {
-     
+
     /** 
     {
         "id": "id" ,                //* id del usuario
@@ -81,6 +91,7 @@ export const updateUsuario = async (usuario) => {
     **/
 
     try{
+
         let query = 'UPDATE usuario SET ';
         let params = [
         ];
@@ -129,7 +140,9 @@ export const updateUsuario = async (usuario) => {
 
         if (usuario.rol){
             await pool.query("DELETE FROM usuarioRol WHERE usuRolUsuario = ?", [ usuario.id ])
-            await insertRoles(usuario.id, usuario.rol);
+            if (usuario.rol.length > 0){
+                await insertRoles(usuario.id, usuario.rol);
+            }
         }
 
         return 1;
@@ -189,7 +202,6 @@ export const existeUsuario = async (usuario, password) => {
         
         if (rows[0] != undefined){
             token = cadenaAleatoria(18);
-            // console.log(token);
 
             let queryB = 'UPDATE usuario SET usuarioSesionToken = ?, usuarioFchUltLogin = now() WHERE usuarioId = ?'
             let paramsB = [
@@ -235,20 +247,27 @@ export const getUsuarios = async () => {
             const [ roles ] = await pool.query("SELECT * FROM usuariorol INNER JOIN rol ON rolId = usuRolRol WHERE usuRolUsuario = ?", [ row.usuarioId ])
             // console.log(roles);
             let rol = [];
-            roles.map( (r) => {
+            for (let y = 0; y < roles.length; y++) {
+                const r = roles[y];
                 // console.log(r);
-                rol.push({
+                let rolAux = {
                     "id": r.rolId,
                     "descripcion": r.rolDescripcion,
-                    "controlTotal": r.rolCtrlTotal,
-                    "controlEvento": r.rolCtrlEvento,
-                    "controlCliente": r.rolCtrlCliente,
-                    "controlProducto": r.rolCtrlProducto,
-                    "controlTipo": r.rolCtrlTipo,
-                    "controlHora": r.rolCtrlHora,
-                    "controlUsuario": r.rolCtrlUsuario
-                })
-            });
+                    "permisos": []
+                }
+
+                const [ permisos ] = await pool.query("SELECT * FROM rolpermiso WHERE rolPRol = ?", [ r.rolId ]);
+
+                for (let j = 0; j < permisos.length; j++) {
+                    const p = permisos[j];
+
+                    rolAux.permisos.push({
+                        "clave": p.rolPClave,
+                        "nivel": p.rolPNivel
+                    })
+                }
+                rol.push(rolAux);
+            }
 
             response.push({
                 "id": row.usuarioId,
@@ -300,20 +319,27 @@ export const getUsuario = async (usuarioId) => {
 
         const [ roles ] = await pool.query("SELECT * FROM usuariorol INNER JOIN rol ON rolId = usuRolRol WHERE usuRolUsuario = ?", [ rows[0].usuarioId ])
         let rol = [];
-        roles.map( (r) => {
+        for (let y = 0; y < roles.length; y++) {
+            const r = roles[y];
             // console.log(r);
-            rol.push({
+            let rolAux = {
                 "id": r.rolId,
                 "descripcion": r.rolDescripcion,
-                "controlTotal": r.rolCtrlTotal,
-                "controlEvento": r.rolCtrlEvento,
-                "controlCliente": r.rolCtrlCliente,
-                "controlProducto": r.rolCtrlProducto,
-                "controlTipo": r.rolCtrlTipo,
-                "controlHora": r.rolCtrlHora,
-                "controlUsuario": r.rolCtrlUsuario
-            })
-        });
+                "permisos": []
+            }
+
+            const [ permisos ] = await pool.query("SELECT * FROM rolpermiso WHERE rolPRol = ?", [ r.rolId ]);
+
+            for (let j = 0; j < permisos.length; j++) {
+                const p = permisos[j];
+
+                rolAux.permisos.push({
+                    "clave": p.rolPClave,
+                    "nivel": p.rolPNivel
+                })
+            }
+            rol.push(rolAux);
+        }
 
         if (rows[0]){
             usuario = {
@@ -364,20 +390,27 @@ export const getUsuarioToken = async (usuarioToken) => {
             
             const [ roles ] = await pool.query("SELECT * FROM usuariorol INNER JOIN rol ON rolId = usuRolRol WHERE usuRolUsuario = ?", [ rows[0].usuarioId ])
             let rol = [];
-            roles.map( (r) => {
+            for (let y = 0; y < roles.length; y++) {
+                const r = roles[y];
                 // console.log(r);
-                rol.push({
+                let rolAux = {
                     "id": r.rolId,
                     "descripcion": r.rolDescripcion,
-                    "controlTotal": r.rolCtrlTotal,
-                    "controlEvento": r.rolCtrlEvento,
-                    "controlCliente": r.rolCtrlCliente,
-                    "controlProducto": r.rolCtrlProducto,
-                    "controlTipo": r.rolCtrlTipo,
-                    "controlHora": r.rolCtrlHora,
-                    "controlUsuario": r.rolCtrlUsuario
-                })
-            });
+                    "permisos": []
+                }
+    
+                const [ permisos ] = await pool.query("SELECT * FROM rolpermiso WHERE rolPRol = ?", [ r.rolId ]);
+    
+                for (let j = 0; j < permisos.length; j++) {
+                    const p = permisos[j];
+    
+                    rolAux.permisos.push({
+                        "clave": p.rolPClave,
+                        "nivel": p.rolPNivel
+                    })
+                }
+                rol.push(rolAux);
+            }
 
             usuario = {
                 "id": rows[0].usuarioId,
@@ -534,6 +567,89 @@ const insertRoles = async (usuarioId, roles) => {
 
 }
 
+export const reactivarUsuario = async (usuarioId) => {
+
+    try {
+
+        const queryRol = 'UPDATE usuario SET usuarioActivo = True WHERE usuarioId = ? AND usuarioActivo = False';
+        let paramsRol = [usuarioId];
+
+        const [rows] = await pool.query(queryRol, [paramsRol]);
+
+        // console.log(rows);
+        return 1
+
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
+/** 
+ ** Ver un usuario
+ *
+ *i @param usuarioId: id del usuario a eliminar
+*/
+export const getUsuarioPreferencias = async (usuarioId) => {
+
+    try {
+
+        const query = 'SELECT * FROM usuariopreferencia WHERE usuPUsuario = ?';
+        let params = [usuarioId];
+
+        const [rows] = await pool.query(query, params);
+
+        let preferencias = []
+        rows.map( (r) => {
+            preferencias.push(r.usuPClave);
+        })
+
+        return preferencias
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+/** 
+ ** Ver un usuario
+ *
+ *i @param usuarioId: id del usuario a eliminar
+*/
+export const setDelUsuarioPreferencias = async (usuarioId, preferencia) => {
+
+    try {
+        const query = 'SELECT usuPClave FROM usuarioPreferencia WHERE usuPUsuario = ? AND usuPClave = ?';
+        const params = [
+            usuarioId,
+            preferencia
+        ];
+        const [rows] = await pool.query(query, params);
+        
+        console.log(rows[0])
+        if (!(rows[0])){
+            const query = 'INSERT INTO usuariopreferencia(usuPUsuario, usuPClave) VALUES (?, ?)';
+            const params = [
+                usuarioId,
+                preferencia
+            ];
+            const [rows] = await pool.query(query, params);
+        }else{
+            const query = 'DELETE FROM usuariopreferencia WHERE usuPUsuario = ? AND usuPClave = ?';
+            const params = [
+                usuarioId,
+                preferencia
+            ];
+            const [rows] = await pool.query(query, params);
+        }
+
+        return 1
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 /*
  ! 
  ! ESTADISTICAS
@@ -600,7 +716,8 @@ export const getEventosUsuarioEstadisticas = async (usuario) => {
             response.tareas.push({
                 "id": tarea.tareaId,
                 "nombre": tarea.tareaNombre,
-                "rol": tarea.tareaRol
+                "rol": tarea.tareaRol,
+                "color": tarea.tareaColor
             });
         })
 

@@ -27,7 +27,8 @@ export const getTareas = async () => {
                 "rol": row.tareaRol,
                 "controla": row.tareaControla,
                 "clave": row.tareaClave,
-                "comentario": row.tareaComentario
+                "comentario": row.tareaComentario,
+                "color": row.tareaColor
             });
         });
         return response;
@@ -59,7 +60,8 @@ export const getTarea = async (id) => {
                 "rol": row.tareaRol,
                 "controla": row.tareaControla,
                 "clave": row.tareaClave,
-                "comentario": row.tareaComentario
+                "comentario": row.tareaComentario,
+                "color": row.tareaColor
             });
         });
         return response;
@@ -86,13 +88,14 @@ export const insertTarea = async (nTarea) => {
     **/
 
     try{
-        const query = 'INSERT INTO tarea(tareaId, tareaNombre, tareaRol, tareaControla, tareaClave, tareaComentario) VALUES ((SELECT getNewId()), ?, ?, ?, ?, ?)';
+        const query = 'INSERT INTO tarea(tareaId, tareaNombre, tareaRol, tareaControla, tareaClave, tareaComentario, tareaColor) VALUES ((SELECT getNewId()), ?, ?, ?, ?, ?, ?)';
         let params = [
             nTarea.nombre,
             nTarea.rol,
             nTarea.controla,
             nTarea.clave,
-            nTarea.comentario
+            nTarea.comentario,
+            nTarea.color
         ];
 
         const [rows] = await pool.query(query, params);
@@ -123,13 +126,14 @@ export const updateTarea = async (tareaM) => {
 
     try{
         // console.log(tareaM)
-        const query = "UPDATE tarea SET tareaNombre = ?, tareaRol = ?, tareaControla = ?, tareaClave = ?, tareaComentario = ? WHERE tareaId = ?";
+        const query = "UPDATE tarea SET tareaNombre = ?, tareaRol = ?, tareaControla = ?, tareaClave = ?, tareaComentario = ?, tareaColor = ? WHERE tareaId = ?";
         let params = [
             tareaM.nombre,
             tareaM.rol,
             tareaM.controla,
             tareaM.clave,
             tareaM.comentario,
+            tareaM.color,
             tareaM.id
         ];
         const [rows] = await pool.query(query, params);
@@ -191,7 +195,8 @@ export const getTareasRol = async (rol) => {
                 "rol": row.tareaRol,
                 "controla": row.tareaControla,
                 "clave": row.tareaClave,
-                "comentario": row.tareaComentario
+                "comentario": row.tareaComentario,
+                "color": row.tareaColor
             });
         });
         return response;
@@ -255,13 +260,14 @@ export const getTareasNoEvento = async (eventoId) => {
  *
  *i @param eventoId: id del evento a consultar
 */
-export const getTareaAccionCompleta = async (eventoId, accion) => {
+export const getTareaAccionCompleta = async (eventoId, accion, etapa) => {
 
     try{
-        let query = 'SELECT * FROM gacieventos.audievento WHERE audiEEvento = ? AND audiEAccion = ?';
+        let query = 'SELECT * FROM gacieventos.audievento WHERE audiEEvento = ? AND audiEAccion = ? AND audiEEtapa = ?';
         let params = [
             eventoId,
-            accion
+            accion,
+            etapa
         ];
 
         const [rows] = await pool.query(query, params);
@@ -310,7 +316,7 @@ export const getComentarioTarea = async (eventoId, clave, etapa) => {
         return comentario;
     
     }catch (err){
-        console.error(err);
+        // console.error(err);
         return 0;
     }
 };

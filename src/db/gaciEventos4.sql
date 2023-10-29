@@ -1,10 +1,8 @@
-
--- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: gacieventos
 -- ------------------------------------------------------
--- Server version	8.0.29
-
+-- Server version	8.0.32
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -25,12 +23,12 @@ DROP TABLE IF EXISTS `audievento`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `audievento` (
-  `audiEId` char(24) NOT NULL,
-  `audiEEvento` char(24) NOT NULL,
+  `audiEId` char(36) NOT NULL,
+  `audiEEvento` char(36) NOT NULL,
   `audiEEtapa` int NOT NULL,
-  `audiEUsuario` char(24) NOT NULL,
+  `audiEUsuario` char(36) NOT NULL,
   `audiEFecha` datetime NOT NULL DEFAULT (now()),
-  `audiEAdi` char(24) DEFAULT NULL,
+  `audiEAdi` char(36) DEFAULT NULL,
   `audiEAccion` char(10) DEFAULT NULL,
   PRIMARY KEY (`audiEId`),
   KEY `audiEvento_index_13` (`audiEEvento`),
@@ -50,7 +48,7 @@ DROP TABLE IF EXISTS `cliente`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cliente` (
-  `clienteId` char(24) NOT NULL,
+  `clienteId` char(36) NOT NULL,
   `clienteSigla` char(5) NOT NULL,
   `clienteNombre` varchar(60) DEFAULT NULL,
   `clienteActivo` tinyint(1) DEFAULT NULL,
@@ -81,20 +79,20 @@ DROP TABLE IF EXISTS `evento`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `evento` (
-  `eventoId` char(24) NOT NULL,
+  `eventoId` char(36) NOT NULL,
   `eventoTipo` char(3) DEFAULT NULL,
   `eventoNumero` int DEFAULT NULL,
   `eventoTitulo` varchar(200) DEFAULT NULL,
   `eventoCerrado` tinyint(1) DEFAULT NULL,
   `eventoEtapa` int DEFAULT NULL,
-  `eventoCliente` char(24) DEFAULT NULL,
-  `eventoProducto` char(24) DEFAULT NULL,
-  `eventoUsuarioAlta` char(24) DEFAULT NULL,
+  `eventoCliente` char(36) DEFAULT NULL,
+  `eventoProducto` char(36) DEFAULT NULL,
+  `eventoUsuarioAlta` char(36) DEFAULT NULL,
   `eventoFechaAlta` datetime NOT NULL DEFAULT (now()),
   `eventoEstimacion` double DEFAULT NULL,
   `eventoPrioridad` int DEFAULT NULL,
   `eventoEsMadre` tinyint(1) DEFAULT '0',
-  `eventoMadre` char(24) DEFAULT NULL,
+  `eventoMadre` char(36) DEFAULT NULL,
   `eventoModulo` char(4) DEFAULT NULL,
   PRIMARY KEY (`eventoId`),
   UNIQUE KEY `evento_index_7` (`eventoTipo`,`eventoNumero`),
@@ -119,7 +117,7 @@ DROP TABLE IF EXISTS `evento_tarea`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `evento_tarea` (
   `etEvento` char(3) NOT NULL,
-  `etTarea` char(24) NOT NULL,
+  `etTarea` char(36) NOT NULL,
   `etEtapa` int NOT NULL,
   `etEtapaRollback` int DEFAULT NULL,
   PRIMARY KEY (`etEvento`,`etTarea`),
@@ -138,8 +136,8 @@ DROP TABLE IF EXISTS `eventoadicion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `eventoadicion` (
-  `eAdId` char(24) NOT NULL,
-  `eAdEvento` char(24) DEFAULT NULL,
+  `eAdId` char(36) NOT NULL,
+  `eAdEvento` char(36) DEFAULT NULL,
   `eAdTipo` char(10) DEFAULT NULL,
   `eAdComentario` text,
   `eAdAdjFile` tinyint(1) DEFAULT NULL,
@@ -159,8 +157,8 @@ DROP TABLE IF EXISTS `eventoadj`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `eventoadj` (
-  `evAdjId` char(24) NOT NULL,
-  `evAdjEvento` char(24) NOT NULL,
+  `evAdjId` char(36) NOT NULL,
+  `evAdjEvento` char(36) NOT NULL,
   `evAdjNombre` varchar(40) NOT NULL,
   `evAdjExt` char(5) NOT NULL,
   `evAdjFile` blob NOT NULL,
@@ -180,9 +178,9 @@ DROP TABLE IF EXISTS `hora`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `hora` (
-  `horaId` char(24) NOT NULL,
-  `horaRegistro` char(24) NOT NULL,
-  `horaEvento` char(24) NOT NULL,
+  `horaId` char(36) NOT NULL,
+  `horaRegistro` char(36) NOT NULL,
+  `horaEvento` char(36) NOT NULL,
   `horaInicio` time NOT NULL,
   `horaFinal` time NOT NULL,
   `horaTotal` decimal(5,2) DEFAULT NULL,
@@ -235,12 +233,11 @@ DROP TABLE IF EXISTS `producto`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `producto` (
-  `productoId` char(24) NOT NULL,
+  `productoId` char(36) NOT NULL,
+  `productoSigla` varchar(5) DEFAULT NULL,
   `productoNombre` varchar(60) DEFAULT NULL,
   `productoEntorno` char(5) DEFAULT NULL,
   `productoActivo` tinyint(1) DEFAULT NULL,
-  `productoSigla` char(5) DEFAULT NULL,
-
   PRIMARY KEY (`productoId`),
   KEY `producto_index_2` (`productoEntorno`),
   CONSTRAINT `producto_ibfk_3` FOREIGN KEY (`productoEntorno`) REFERENCES `entorno` (`entornoId`)
@@ -255,9 +252,9 @@ DROP TABLE IF EXISTS `registrohora`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `registrohora` (
-  `regHoraId` char(24) NOT NULL,
+  `regHoraId` char(36) NOT NULL,
   `regHoraFecha` date NOT NULL,
-  `regHoraUsuario` char(24) NOT NULL,
+  `regHoraUsuario` char(36) NOT NULL,
   PRIMARY KEY (`regHoraId`),
   KEY `regHoraUsuario` (`regHoraUsuario`),
   CONSTRAINT `registrohora_ibfk_1` FOREIGN KEY (`regHoraUsuario`) REFERENCES `usuario` (`usuarioId`)
@@ -293,7 +290,7 @@ DROP TABLE IF EXISTS `tarea`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tarea` (
-  `tareaId` char(24) NOT NULL,
+  `tareaId` char(36) NOT NULL,
   `tareaNombre` varchar(45) DEFAULT NULL,
   `tareaRol` char(5) DEFAULT NULL,
   `tareaControla` tinyint(1) DEFAULT NULL,
@@ -331,7 +328,7 @@ DROP TABLE IF EXISTS `usuario`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuario` (
-  `usuarioId` char(24) NOT NULL,
+  `usuarioId` char(36) NOT NULL,
   `usuarioNombre` varchar(45) NOT NULL,
   `usuarioApellido` varchar(45) DEFAULT NULL,
   `usuarioMail` varchar(60) NOT NULL,
@@ -354,7 +351,7 @@ DROP TABLE IF EXISTS `usuariorol`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuariorol` (
-  `usuRolUsuario` char(24) NOT NULL,
+  `usuRolUsuario` char(36) NOT NULL,
   `usuRolRol` char(5) NOT NULL,
   PRIMARY KEY (`usuRolUsuario`,`usuRolRol`),
   KEY `usuRolRol` (`usuRolRol`),
@@ -380,7 +377,7 @@ CREATE TABLE `usuariorol` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`localhost` FUNCTION `getCantEventosxCliente`(id char(24)) RETURNS int
+CREATE DEFINER=`sa`@`localhost` FUNCTION `getCantEventosxCliente`(id char(36)) RETURNS int
 BEGIN
     DECLARE cantidad INT;
 	SET cantidad = (	SELECT count(eventoId)
@@ -404,7 +401,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`localhost` FUNCTION `getCantEventosxProducto`(id char(24)) RETURNS int
+CREATE DEFINER=`sa`@`localhost` FUNCTION `getCantEventosxProducto`(id char(36)) RETURNS int
 BEGIN
     DECLARE cantidad INT;
 	SET cantidad = (	SELECT count(eventoId)
@@ -453,7 +450,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`localhost` FUNCTION `getCantEventosxUsuario`(id CHAR(24)) RETURNS int
+CREATE DEFINER=`sa`@`localhost` FUNCTION `getCantEventosxUsuario`(id char(36)) RETURNS int
 BEGIN
     DECLARE cantidad INT;
 	SET cantidad = (	SELECT count(ae.audiEId) 
@@ -532,7 +529,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`%` FUNCTION `getHorasTotalesEvento`(evento char(24)) RETURNS decimal(10,2)
+CREATE DEFINER=`sa`@`%` FUNCTION `getHorasTotalesEvento`(evento char(36)) RETURNS decimal(10,2)
 BEGIN
 	DECLARE total DECIMAL(10,2);
 	SET total = (	SELECT 	sum(horaTotal)
@@ -558,9 +555,9 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`localhost` FUNCTION `getNewId`() RETURNS char(24) CHARSET utf8mb4
+CREATE DEFINER=`sa`@`localhost` FUNCTION `getNewId`() RETURNS char(36) CHARSET utf8mb4
 BEGIN
-    DECLARE id CHAR(24);
+    DECLARE id char(36);
 	SET id = (SELECT SUBSTR(MD5(RAND()),1,24) AS RandomString);
 	RETURN id;
 END ;;
@@ -605,7 +602,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`%` FUNCTION `getRolActivoEvento`(eventoId char(24)) RETURNS char(5) CHARSET utf8mb4
+CREATE DEFINER=`sa`@`%` FUNCTION `getRolActivoEvento`(eventoId char(36)) RETURNS char(5) CHARSET utf8mb4
 BEGIN
     DECLARE rol CHAR(5);
     SET rol = ( SELECT u.usuarioRol 
@@ -655,9 +652,9 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`%` FUNCTION `getUsuarioActivoEvento`(eventoId CHAR(24)) RETURNS char(24) CHARSET utf8mb4
+CREATE DEFINER=`sa`@`%` FUNCTION `getUsuarioActivoEvento`(eventoId char(36)) RETURNS char(36) CHARSET utf8mb4
 BEGIN
-    DECLARE usuario CHAR(24);
+    DECLARE usuario char(36);
     SET usuario = ( SELECT u.usuarioId 
 					FROM usuario AS u 
 					INNER JOIN audiEvento AS ae ON ae.audiEUsuario = u.usuarioId
@@ -684,7 +681,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`localhost` PROCEDURE `circular_evento`(id char(24), etapa int, usuario char(24), comentario TEXT)
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `circular_evento`(id char(36), etapa int, usuario char(36), comentario TEXT)
 BEGIN
 
 	SET @etapaActual = (SELECT audiEEtapa FROM audievento WHERE audiEEvento = id ORDER BY audiEFecha DESC LIMIT 1);
@@ -722,7 +719,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`%` PROCEDURE `comentar_evento`(eventoId char(24), comentario TEXT, usuario char(24), tieneFile boolean, pathFile varchar(255), nameFile varchar(255), mimeFile varchar(100))
+CREATE DEFINER=`sa`@`%` PROCEDURE `comentar_evento`(eventoId char(36), comentario TEXT, usuario char(36), tieneFile boolean, pathFile varchar(255), nameFile varchar(255), mimeFile varchar(100))
 BEGIN
 	
     SELECT eventoId AS EVENTO;
@@ -754,7 +751,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`localhost` PROCEDURE `delete_cliente`(id char(24))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `delete_cliente`(id char(36))
 BEGIN
 
 	DECLARE cantidadEventos INT;
@@ -787,7 +784,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`localhost` PROCEDURE `delete_eventos`(eventoCodigo char(24), usuario char(24), accion char(10))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `delete_eventos`(eventoCodigo char(36), usuario char(36), accion char(10))
 BEGIN
     
     UPDATE evento
@@ -818,7 +815,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`localhost` PROCEDURE `delete_producto`(id char(24))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `delete_producto`(id char(36))
 BEGIN
 
 	DECLARE cantidadEventos INT;
@@ -884,7 +881,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`localhost` PROCEDURE `delete_usuario`(id char(24))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `delete_usuario`(id char(36))
 BEGIN
 
 	DECLARE cantidadEventos INT;
@@ -920,7 +917,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`%` PROCEDURE `getEventosAsignadosUsuario`(usuario CHAR(24))
+CREATE DEFINER=`sa`@`%` PROCEDURE `getEventosAsignadosUsuario`(usuario char(36))
 BEGIN
 	SELECT 	DISTINCT e.eventoTipo, 
 			(SELECT COUNT(e2.eventoTipo) 
@@ -955,7 +952,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`localhost` PROCEDURE `insert_audiEvento`(evento char(24), etapa int, usuario char(24), adicional char(24), accion char(10))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `insert_audiEvento`(evento char(36), etapa int, usuario char(36), adicional char(36), accion char(10))
 BEGIN
     SET @id = (SELECT getNewId());
     
@@ -979,7 +976,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`localhost` PROCEDURE `insert_eventos`(tipo char(3), titulo varchar(200), cliente char(24), producto char(24), modulo CHAR(4), usuario char(24), prioridad INT)
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `insert_eventos`(tipo char(3), titulo varchar(200), cliente char(36), producto char(36), modulo CHAR(4), usuario char(36), prioridad INT)
 BEGIN
 	SET @numero = (SELECT getUltimoNumero_eventos(tipo)) + 1;
     
@@ -1128,7 +1125,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`localhost` PROCEDURE `select_eventos_usuario`(paginacion boolean, pagina int, cantidad int, usuario char(24))
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `select_eventos_usuario`(paginacion boolean, pagina int, cantidad int, usuario char(36))
 BEGIN
 	
     -- SET @page = 1;
@@ -1188,7 +1185,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sa`@`localhost` PROCEDURE `update_eventos`(eventoCodigo char(24), titulo varchar(200), cliente char(24), producto char(24), modulo CHAR(4), prioridad INT)
+CREATE DEFINER=`sa`@`localhost` PROCEDURE `update_eventos`(eventoCodigo char(36), titulo varchar(200), cliente char(36), producto char(36), modulo CHAR(4), prioridad INT)
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
@@ -1223,4 +1220,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-12 17:22:43
+-- Dump completed on 2023-05-30 23:35:45

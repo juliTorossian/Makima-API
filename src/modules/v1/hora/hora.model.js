@@ -146,8 +146,8 @@ export const getHorasGenerales = async () => {
 
     try{
 
-        // await pool.query("SET GLOBAL sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'")
-        // await pool.query("SET sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'")
+        await pool.query("SET GLOBAL sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'")
+        await pool.query("SET sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'")
 
         const query = "SELECT * FROM registrohora INNER JOIN usuario ON usuarioId = regHoraUsuario group by regHoraUsuario";
         let params = []
@@ -213,11 +213,11 @@ export const getHorasEvento = async (eventoId) => {
 
     try{
 
-        const query = " SELECT 	*   \
-                        FROM registrohora   \
-                        INNER JOIN hora ON horaRegistro = regHoraId \
+        const query = " SELECT  *   \
+                        FROM hora AS h   \
+                        INNER JOIN registroHora AS r ON horaRegistro = regHoraId   \
                         WHERE horaEvento = ?   \
-                        ORDER BY regHoraFecha, horaInicio";
+                        ORDER BY regHoraFecha, horaInicio"
         let params = [
             eventoId
         ]
@@ -229,34 +229,62 @@ export const getHorasEvento = async (eventoId) => {
         for (let i = 0; i < rows.length; i++) {
             const row = rows[i];
 
-            const [horas] = await pool.query("SELECT * FROM hora WHERE horaRegistro = ? ORDER BY horaInicio", [ row.regHoraId ]);
+            const [ u ] = await pool.query("SELECT * FROM usuario WHERE usuarioId = ?", [ row.regHoraUsuario ]);
+            const usuario = {
+                id: u[0].usuarioId,
+                nombre: u[0].usuarioNombre,
+                apellido: u[0].usuarioApellido,
+                color: u[0].usuarioColor,
+                usuario: u[0].usuarioUsuario
+            }
+
+            const [evento] = await pool.query("SELECT eventoId, eventoTipo, eventoNumero, eventoTitulo FROM evento WHERE eventoId = ?", [ row.horaEvento ]);
 
             let responseAux = {
-                "id": row.regHoraId,
+                "registroId": row.regHoraId,
                 "fecha": row.regHoraFecha,
-                "usuario": row.regHoraUsuario,
-                "totalHoras": 0,
-                "horas": []
+                "usuario": usuario,
+                "horaId": row.horaId,
+                "evento": {
+                    "id": row.horaId,
+                    "tipo": evento[0].eventoTipo,
+                    "numero": evento[0].eventoNumero,
+                    "titulo": evento[0].eventoTitulo
+                },
+                "inicio": row.horaInicio,
+                "final": row.horaFinal,
+                "total": parseFloat(row.horaTotal),
+                "observaciones": row.horaObs
             }
-            for (let j = 0; j < horas.length; j++) {
-                const hora = horas[j];
 
-                const [evento] = await pool.query("SELECT eventoId, eventoTipo, eventoNumero, eventoTitulo FROM evento WHERE eventoId = ?", [ hora.horaEvento ]);
-                responseAux.horas.push({
-                    "id": hora.horaId,
-                    "evento": {
-                        "id": hora.horaId,
-                        "tipo": evento[0].eventoTipo,
-                        "numero": evento[0].eventoNumero,
-                        "titulo": evento[0].eventoTitulo
-                    },
-                    "inicio": hora.horaInicio,
-                    "final": hora.horaFinal,
-                    "total": parseFloat(hora.horaTotal),
-                    "observaciones": hora.horaObs
-                });
-                responseAux.totalHoras += parseFloat(hora.horaTotal);
-            }
+            // const [horas] = await pool.query("SELECT * FROM hora WHERE horaRegistro = ? AND horaEvento = ? ORDER BY horaInicio", [ row.regHoraId, eventoId ]);
+
+            // let responseAux = {
+            //     "registroId": row.regHoraId,
+            //     "fecha": row.regHoraFecha,
+            //     "usuario": usuario,
+            //     "totalHoras": 0,
+            //     "horas": []
+            // }
+            // for (let j = 0; j < horas.length; j++) {
+            //     const hora = horas[j];
+
+            //     const [evento] = await pool.query("SELECT eventoId, eventoTipo, eventoNumero, eventoTitulo FROM evento WHERE eventoId = ?", [ hora.horaEvento ]);
+            //     responseAux.horas.push({
+            //         "id": hora.horaId,
+            //         "evento": {
+            //             "id": hora.horaId,
+            //             "tipo": evento[0].eventoTipo,
+            //             "numero": evento[0].eventoNumero,
+            //             "titulo": evento[0].eventoTitulo
+            //         },
+            //         "inicio": hora.horaInicio,
+            //         "final": hora.horaFinal,
+            //         "total": parseFloat(hora.horaTotal),
+            //         "observaciones": hora.horaObs
+            //     });
+            //     responseAux.totalHoras += parseFloat(hora.horaTotal);
+            // }
             response.push(responseAux);
         }
 

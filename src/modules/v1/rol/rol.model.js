@@ -19,23 +19,31 @@ export const getRoles = async () => {
         let params = []
 
         const [rows] = await pool.query(query, params);
-
-        // console.log(rows);
-
+        
         let response = [];
-        rows.map( (row) => {
-            response.push({
-                "id": row.rolId,
-                "descripcion": row.rolDescripcion,
-                "controlTotal": row.rolCtrlTotal,
-                "controlEvento": row.rolCtrlEvento,
-                "controlCliente": row.rolCtrlCliente,
-                "controlProducto": row.rolCtrlProducto,
-                "controlTipo": row.rolCtrlTipo,
-                "controlHora": row.rolCtrlHora,
-                "controlUsuario": row.rolCtrlUsuario
-            });
-        });
+
+        for (let i = 0; i < rows.length; i++) {
+            const r = rows[i];
+            const [ permisos ] = await pool.query("SELECT * FROM rolpermiso WHERE rolPRol = ?", [ r.rolId ]);
+
+            let rol = {
+                "id": r.rolId,
+                "descripcion": r.rolDescripcion,
+                "permisos": []
+            }
+
+            for (let j = 0; j < permisos.length; j++) {
+                const p = permisos[j];
+
+                rol.permisos.push({
+                    "clave": p.rolPClave,
+                    "nivel": p.rolPNivel
+                })
+            }
+            response.push(rol);
+            
+        }
+
         return response;
 
     }catch (err) {
@@ -62,14 +70,18 @@ export const getRol = async (rolId) => {
         let response = {
             "id": rows[0].rolId,
             "descripcion": rows[0].rolDescripcion,
-            "controlTotal": rows[0].rolCtrlTotal,
-            "controlEvento": rows[0].rolCtrlEvento,
-            "controlCliente": rows[0].rolCtrlCliente,
-            "controlProducto": rows[0].rolCtrlProducto,
-            "controlTipo": rows[0].rolCtrlTipo,
-            "controlHora": row.rolCtrlHora,
-            "controlUsuario": rows[0].rolCtrlUsuario
+            "permisos": []
         };
+        const [ permisos ] = await pool.query("SELECT * FROM rolpermiso WHERE rolPRol = ?", [ rows[0].rolId ]);
+
+        for (let j = 0; j < permisos.length; j++) {
+            const p = permisos[j];
+
+            response.permisos.push({
+                "clave": p.rolPClave,
+                "nivel": p.rolPNivel
+            })
+        }
         return response;
 
     }catch (err) {
@@ -101,20 +113,24 @@ export const insertRol = async (rol) => {
 
     try{
 
-        const query = "INSERT INTO rol(rolId, rolDescripcion, rolCtrlTotal, rolCtrlEvento, rolCtrlCliente, rolCtrlProducto, rolCtrlTipo, rolCtrlHora, rolCtrlUsuario) VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        const query = "INSERT INTO rol(rolId, rolDescripcion) VALUES  (?, ?)";
         let params = [
             rol.id,
-            rol.descripcion,
-            rol.controlTotal,
-            rol.controlEvento,
-            rol.controlCliente,
-            rol.controlProducto,
-            rol.controlTipo,
-            rol.controlHora,
-            rol.controlUsuario
+            rol.descripcion
         ];
 
         const [rows] = await pool.query(query, params);
+
+        if (rol.permisos){
+            const queryPermisos = 'INSERT INTO rolPermiso(rolPRol, rolPClave, rolPNivel) VALUES ?';
+            let paramsPermisos = [];
+    
+            rol.permisos.map( (p) => {
+                let aux = [rol.id, p.clave, p.nivel]
+                paramsPermisos.push(aux);
+            })
+            const [rowsPermisos] = await pool.query(queryPermisos, [paramsPermisos]);
+        }
 
         // console.log(rows);
 
@@ -144,20 +160,25 @@ export const updateRol = async (rol) => {
 
     try{
 
-        const query = "UPDATE rol SET rolDescripcion = ?, rolCtrlTotal = ?, rolCtrlEvento = ?, rolCtrlCliente = ?, rolCtrlProducto = ?, rolCtrlTipo = ?, rolCtrlHora = ?, rolCtrlUsuario = ? WHERE rolId = ?";
+        const query = "UPDATE rol SET rolDescripcion = ? WHERE rolId = ?";
         let params = [
             rol.descripcion,
-            rol.controlTotal,
-            rol.controlEvento,
-            rol.controlCliente,
-            rol.controlProducto,
-            rol.controlTipo,
-            rol.controlHora,
-            rol.controlUsuario,
             rol.id
         ];
-
         const [rows] = await pool.query(query, params);
+
+        const [auxRows] = await pool.query("DELETE FROM rolpermiso WHERE rolPRol = ?", [rol.id])
+        if (rol.permisos){
+            const queryPermisos = 'INSERT INTO rolPermiso(rolPRol, rolPClave, rolPNivel) VALUES ?';
+            let paramsPermisos = [];
+    
+            rol.permisos.map( (p) => {
+                let aux = [rol.id, p.clave, p.nivel]
+                paramsPermisos.push(aux);
+            })
+            const [rowsPermisos] = await pool.query(queryPermisos, [paramsPermisos]);
+        }
+
         return rows.affectedRows;
 
     }catch (err) {
@@ -175,6 +196,7 @@ export const deleteRol = async (rolId) => {
 
     try{
 
+        const [auxRows] = await pool.query("DELETE FROM rolpermiso WHERE rolPRol = ?", [rolId])
         const query = "DELETE FROM rol WHERE rolId = ?";
         let params = [
             rolId
