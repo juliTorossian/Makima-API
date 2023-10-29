@@ -138,7 +138,6 @@ export const updateUsuario = async (usuario) => {
 
         const [rows] = await pool.query(query, params);
 
-
         if (usuario.rol){
             await pool.query("DELETE FROM usuarioRol WHERE usuRolUsuario = ?", [ usuario.id ])
             if (usuario.rol.length > 0){

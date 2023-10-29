@@ -1,8 +1,10 @@
+
 -- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: gacieventos
 -- ------------------------------------------------------
 -- Server version	8.0.29
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -238,6 +240,7 @@ CREATE TABLE `producto` (
   `productoEntorno` char(5) DEFAULT NULL,
   `productoActivo` tinyint(1) DEFAULT NULL,
   `productoSigla` char(5) DEFAULT NULL,
+
   PRIMARY KEY (`productoId`),
   KEY `producto_index_2` (`productoEntorno`),
   CONSTRAINT `producto_ibfk_3` FOREIGN KEY (`productoEntorno`) REFERENCES `entorno` (`entornoId`)

@@ -23,6 +23,7 @@ import { getUsuario } from '../usuario/usuario.model.js';
 import { getComentarioTarea, getTareaAccionCompleta } from '../tarea/tarea.model.js';
 import { getTipoEvento } from '../tipoEvento/tipoEvento.model.js';
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -431,6 +432,7 @@ export const insertEvento = async (nEvento) => {
 
         // console.log(nEvento);
         const query = "CALL insert_eventos(?,?,?,?,?,?,?,?)";
+
         let params = [
             nEvento.tipo,
             nEvento.titulo,
@@ -484,6 +486,7 @@ export const updateEvento = async (eventoM) => {
         // console.log(eventoM);
 
         const query = "CALL update_eventos(?,?,?,?,?,?,?)";
+
         let params = [
             eventoM.id,
             eventoM.titulo,
@@ -492,6 +495,7 @@ export const updateEvento = async (eventoM) => {
             eventoM.modulo,
             eventoM.prioridad,
             eventoM.descripcion
+
         ]
         // console.log(params);
 
@@ -1261,6 +1265,7 @@ async function formatearEvento(eventos){
                 "id": productoAux[0].productoId,
                 "sigla": productoAux[0].productoSigla,
                 "nombre": productoAux[0].productoNombre,
+
                 "entorno": productoAux[0].productoEntorno,
                 "activo": productoAux[0].productoActivo
             }
@@ -1268,6 +1273,7 @@ async function formatearEvento(eventos){
 
         // console.log(row.eventoTipo)
         let tipo = await getTipoEvento(row.eventoTipo, true);
+
         // let modulo = null;
         // if (row.modulo){
         //     modulo = await getModulo(row.modulo);
@@ -1295,6 +1301,7 @@ async function formatearEvento(eventos){
             "detalle": await getEventoDetalle(row.eventoId),
             "busqueda": tipo.id + '-' +row.eventoNumero,
             "descripcion": row.eventoDesc
+
         })
     }
 

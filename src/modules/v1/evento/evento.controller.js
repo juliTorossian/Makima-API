@@ -1,9 +1,9 @@
+
 import { avisoEventoAsignado } from "../../../helper/mail/envioMail.js";
 import * as model from "./evento.model.js";
 import * as modelUsuario from "../usuario/usuario.model.js";
 import * as modelHora from "../hora/hora.model.js";
 import * as validador from "./evento.validator.js";
-
 
 
 export const getEventos = async (req, res) => {

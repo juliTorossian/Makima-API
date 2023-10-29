@@ -2,8 +2,6 @@ import { log, error, flash, warning } from "./helper/debugger.js"
 import { createPool } from "mysql2/promise";
 import { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE } from "./config.js";
 
-// const debug = require("debug")("app:database");
-
 
 export const pool = createPool({
     connectionLimit: 100,

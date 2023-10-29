@@ -88,11 +88,10 @@ export const insertProducto = async (producto) => {
 
     try{
 
-        console.log(producto)
-
         const productoId = crypto.randomUUID();
 
         const query = "INSERT producto(productoId, productoSigla, productoNombre, productoEntorno, productoActivo) VALUE (?, ?, ?, ?, true)";
+
         let params = [
             productoId,
             producto.sigla,
@@ -135,9 +134,8 @@ export const updateProducto = async (producto) => {
 
     try{
 
-        // console.log(producto);
-
         const query = "UPDATE producto SET productoSigla = ?, productoNombre = ? , productoEntorno = ? WHERE productoId = ?";
+
         let params = [
             producto.sigla,
             producto.nombre,
