@@ -1265,16 +1265,6 @@ async function formatearEvento(eventos){
                 "activo": productoAux[0].productoActivo
             }
         }
-        let cliente = [];
-        if (row.eventoCliente){
-            const [clienteAux] = await pool.query("SELECT * FROM cliente WHERE clienteId = ?", [ row.eventoCliente ]);
-            cliente = {
-                "id": clienteAux[0].clienteId,
-                "sigla": clienteAux[0].clienteSigla,
-                "nombre": clienteAux[0].clienteNombre
-            }
-        }
-
 
         // console.log(row.eventoTipo)
         let tipo = await getTipoEvento(row.eventoTipo, true);
@@ -1289,7 +1279,10 @@ async function formatearEvento(eventos){
             "numero": row.eventoNumero,
             "titulo": row.eventoTitulo,
             "tareaNombre": row.tareaNombre,
-            "cliente": cliente,
+            "cliente": {
+                "id": row.eventoCliente,
+                "nombre": row.cliente
+            },
             "producto": producto,
             "modulo": row.eventoModulo,
             "cerrado": row.eventoCerrado,

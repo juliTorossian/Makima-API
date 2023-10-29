@@ -121,14 +121,16 @@ export const insertRol = async (rol) => {
 
         const [rows] = await pool.query(query, params);
 
-        const queryPermisos = 'INSERT INTO rolPermiso(rolPRol, rolPClave, rolPNivel) VALUES ?';
-        let paramsPermisos = [];
-
-        rol.permisos.map( (p) => {
-            let aux = [rol.id, p.clave, p.nivel]
-            paramsPermisos.push(aux);
-        })
-        const [rowsPermisos] = await pool.query(queryPermisos, [paramsPermisos]);
+        if (rol.permisos){
+            const queryPermisos = 'INSERT INTO rolPermiso(rolPRol, rolPClave, rolPNivel) VALUES ?';
+            let paramsPermisos = [];
+    
+            rol.permisos.map( (p) => {
+                let aux = [rol.id, p.clave, p.nivel]
+                paramsPermisos.push(aux);
+            })
+            const [rowsPermisos] = await pool.query(queryPermisos, [paramsPermisos]);
+        }
 
         // console.log(rows);
 
@@ -166,14 +168,16 @@ export const updateRol = async (rol) => {
         const [rows] = await pool.query(query, params);
 
         const [auxRows] = await pool.query("DELETE FROM rolpermiso WHERE rolPRol = ?", [rol.id])
-        const queryPermisos = 'INSERT INTO rolPermiso(rolPRol, rolPClave, rolPNivel) VALUES ?';
-        let paramsPermisos = [];
-
-        rol.permisos.map( (p) => {
-            let aux = [rol.id, p.clave, p.nivel]
-            paramsPermisos.push(aux);
-        })
-        const [rowsPermisos] = await pool.query(queryPermisos, [paramsPermisos]);
+        if (rol.permisos){
+            const queryPermisos = 'INSERT INTO rolPermiso(rolPRol, rolPClave, rolPNivel) VALUES ?';
+            let paramsPermisos = [];
+    
+            rol.permisos.map( (p) => {
+                let aux = [rol.id, p.clave, p.nivel]
+                paramsPermisos.push(aux);
+            })
+            const [rowsPermisos] = await pool.query(queryPermisos, [paramsPermisos]);
+        }
 
         return rows.affectedRows;
 

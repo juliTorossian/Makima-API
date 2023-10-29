@@ -48,10 +48,8 @@ const upload = multer({ storage: storage });
 // Custom file upload middleware
 export const uploadMiddleware = (req, res, next) => {
 
-    console.log(req)
-    console.log(req.files)
 
-    // Use multer upload instance
+  // Use multer upload instance
     upload.array("files", 5)(req, res, (err) => {
         if (err) {
             console.log(err);
