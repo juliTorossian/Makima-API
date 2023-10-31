@@ -1,0 +1,36 @@
+
+# GET PRODUCTOS
+
+GET http://localhost:4000/api/v1/producto/
+
+
+
+###
+# GET PRODUCTO
+
+GET http://localhost:4000/api/v1/producto/6c115116-9634-4aef-8e5a-ada7f960f507
+
+
+###
+# INSERT PRODUCTO
+
+POST http://localhost:4000/api/v1/producto/ 
+Content-Type: application/json
+
+{
+    "sigla": "SIGLA",
+    "nombre": "Producto de testeo",
+    "entorno": "SQL"
+}
+
+###
+# UPDATE PRODUCTO
+
+PATCH http://localhost:4000/api/v1/producto/6c115116-9634-4aef-8e5a-ada7f960f507
+Content-Type: application/json
+
+{
+    "sigla": "SIG",
+    "nombre": "productossss"
+}
+

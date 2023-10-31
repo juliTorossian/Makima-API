@@ -1,10 +1,10 @@
-DROP DATABASE IF EXISTS GaciEven;
-CREATE DATABASE IF NOT EXISTS GaciEven;
+DROP DATABASE IF EXISTS GaciEventos;
+CREATE DATABASE IF NOT EXISTS GaciEventos;
 
-USE GaciEven;
+USE GaciEventos;
 
 CREATE TABLE `cliente` (
-  `clienteId` int auto_increment,
+  `clienteId` char(24),
   `clienteSigla` char(5) NOT NULL,
   `clienteNombre` varchar(60),
   PRIMARY KEY (`clienteId`)
@@ -22,11 +22,12 @@ CREATE TABLE `entorno` (
 );
 
 CREATE TABLE `producto` (
-  `productoId` int PRIMARY KEY auto_increment,
+  `productoId` char(24) PRIMARY KEY,
   `productoNombre` varchar(60),
   `productoModulo` char(4),
   `productoSubModulo` char(4),
-  `productoEntorno` char(5)
+  `productoEntorno` char(5),
+  `productoActivo` boolean
 );
 
 CREATE TABLE `rol` (
@@ -36,50 +37,52 @@ CREATE TABLE `rol` (
 );
 
 CREATE TABLE `usuario` (
-  `usuarioId` int PRIMARY KEY auto_increment,
+  `usuarioId` char(24) PRIMARY KEY,
   `usuarioNombre` varchar(45) NOT NULL,
   `usuarioApellido` varchar(45),
   `usuarioMail` varchar(60) NOT NULL,
   `usuarioUsuario` varchar(45) NOT NULL,
   `usuarioPass` varchar(25) NOT NULL,
-  `usuarioRol` char(5) NOT NULL
+  `usuarioRol` char(5) NOT NULL,
+  `usuarioActivo` boolean
 );
 
 CREATE TABLE `tarea` (
-  `tareaId` int PRIMARY KEY auto_increment,
+  `tareaId` char(24) PRIMARY KEY,
   `tareaNombre` varchar(45),
   `tareaRol` char(5)
 );
 
 CREATE TABLE `tipoEvento` (
   `tipoEventoId` char(3) PRIMARY KEY,
-  `tipoEventoDesc` varchar(60)
+  `tipoEventoDesc` varchar(60),
+  `tipoEventoActivo` boolean
 );
 
 CREATE TABLE `evento_tarea` (
   `etEvento` char(3),
-  `etTarea` int,
+  `etTarea` char(24),
   `etEtapa` int NOT NULL,
   PRIMARY KEY (`etEvento`, `etTarea`)
 );
 
 CREATE TABLE `evento` (
-  `eventoId` int PRIMARY KEY auto_increment,
+  `eventoId` char(24) PRIMARY KEY,
   `eventoTipo` char(3),
   `eventoNumero` int,
   `eventoTitulo` varchar(200),
   `eventoCerrado` boolean,
   `eventoEtapa` int,
-  `eventoCliente` int,
-  `eventoProducto` int,
-  `eventoUsuarioAlta` int,
+  `eventoCliente` char(24),
+  `eventoProducto` char(24),
+  `eventoUsuarioAlta` char(24),
   `eventoFechaAlta` datetime NOT NULL DEFAULT (now()),
   `eventoEstimacion` double
 );
 
 CREATE TABLE `EventoAdj` (
-  `evAdjId` int PRIMARY KEY auto_increment,
-  `evAdjEvento` int NOT NULL,
+  `evAdjId` char(24) PRIMARY KEY,
+  `evAdjEvento` char(24) NOT NULL,
   `evAdjNombre` varchar(40) NOT NULL,
   `evAdjExt` char(5) NOT NULL,
   `evAdjFile` blob NOT NULL,
@@ -88,19 +91,19 @@ CREATE TABLE `EventoAdj` (
 );
 
 CREATE TABLE `hora` (
-  `horaId` int PRIMARY KEY auto_increment,
+  `horaId` char(24) PRIMARY KEY,
   `horaInicio` char(8) NOT NULL,
   `horaFinal` char(8) NOT NULL,
   `horaFecha` date NOT NULL,
-  `horaUsuario` int NOT NULL,
-  `horaEvento` int NOT NULL
+  `horaUsuario` char(24) NOT NULL,
+  `horaEvento` char(24) NOT NULL
 );
 
 CREATE TABLE `audiEvento` (
-  `audiEId` int PRIMARY KEY auto_increment,
-  `audiEEvento` int NOT NULL,
+  `audiEId` char(24) PRIMARY KEY,
+  `audiEEvento` char(24) NOT NULL,
   `audiEEtapa` int NOT NULL,
-  `audiEUsuario` int NOT NULL,
+  `audiEUsuario` char(24) NOT NULL,
   `audiEFecha` datetime NOT NULL DEFAULT (now())
 );
 
@@ -175,8 +178,8 @@ ALTER TABLE `audiEvento` ADD FOREIGN KEY (`audiEUsuario`) REFERENCES `usuario` (
 
 CREATE TABLE parametros(
 	paramId     char(10) primary key,
-    paramCodigo varchar(20),
-    paramValor  varchar(200)
+  paramCodigo varchar(20),
+  paramValor  varchar(200)
 );
 
 

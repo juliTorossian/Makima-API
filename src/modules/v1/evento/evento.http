@@ -1,0 +1,31 @@
+
+# Get Eventos
+
+get http://localhost:4000/api/v1/evento/
+
+###
+
+# Get Evento
+
+get http://localhost:4000/api/v1/evento/10058395-4ac6-11ee-9c8d-1c1b0d9efeb6
+
+###
+
+# Estimar
+
+post http://localhost:4000/api/v1/evento/b5294d37-48d0-11ee-932a-1c1b0d9efeb6/estimar
+Content-Type: application/json
+
+{
+    "evento": "b5294d37-48d0-11ee-932a-1c1b0d9efeb6",
+    "usuario": "0321742d-7dcc-4e33-9b46-6d02aaf99fa1",
+    "comentario": "Algun comentario",
+    "rol": "TES",
+    "estimacion": 10
+}
+
+###
+
+# Get Evento Adjunto
+
+get http://localhost:4000/api/v1/evento/52f1fab2-57ba-11ee-931b-30d0421a74c1/adjuntos

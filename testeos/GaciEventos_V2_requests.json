@@ -1,0 +1,1014 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "GaciEventos V2",
+    "dateExported": "2023-04-03T02:56:36.512Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "b814f299-246a-49ba-bf96-aa4aaca79391",
+            "name": "usuario",
+            "containerId": "",
+            "created": "2023-03-29T23:35:34.736Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "b44b5bcc-5a95-458f-a953-026ce26bc839",
+            "name": "eventos",
+            "containerId": "",
+            "created": "2023-03-29T23:35:34.738Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "8120b3bf-f3f5-4d18-a953-a464ce39d2e9",
+            "name": "cliente",
+            "containerId": "",
+            "created": "2023-03-29T23:35:34.739Z",
+            "sortNum": 30000
+        },
+        {
+            "_id": "9d429ba7-baaf-4260-afb1-045e51f3e490",
+            "name": "producto",
+            "containerId": "",
+            "created": "2023-03-29T23:35:34.740Z",
+            "sortNum": 40000
+        },
+        {
+            "_id": "fd6c486c-8599-4eb1-8715-c4d2df5dda67",
+            "name": "modulo",
+            "containerId": "",
+            "created": "2023-03-29T23:35:34.741Z",
+            "sortNum": 45000
+        },
+        {
+            "_id": "8d24bfb2-122e-4d3a-a133-38e9bbbffd54",
+            "name": "entorno",
+            "containerId": "",
+            "created": "2023-03-29T23:35:34.742Z",
+            "sortNum": 47500
+        },
+        {
+            "_id": "8ddaf7d6-bb40-4db0-8fcb-c0c4dd04ee7c",
+            "name": "tipoEvento",
+            "containerId": "",
+            "created": "2023-03-29T23:35:34.743Z",
+            "sortNum": 50000
+        },
+        {
+            "_id": "2b6d7339-83a8-473b-aac5-94448d35ed69",
+            "name": "tarea",
+            "containerId": "",
+            "created": "2023-03-29T23:35:34.744Z",
+            "sortNum": 60000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "2d487d5c-57f3-4933-a85c-10f677ca76d6",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b814f299-246a-49ba-bf96-aa4aaca79391",
+            "name": "getUsuarios",
+            "url": "localhost:4000/api/usuario/",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-03-29T23:35:34.737Z",
+            "modified": "2023-03-29T23:35:34.737Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "692eb9b1-84d8-4365-98fd-9d75020ab6e9",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b44b5bcc-5a95-458f-a953-026ce26bc839",
+            "name": "Todos los eventos",
+            "url": "localhost:4000/api/v2/evento",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-03-29T23:35:34.738Z",
+            "modified": "2023-03-31T16:43:45.583Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "page",
+                    "value": "1",
+                    "isDisabled": true,
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "dc39526a-1afb-4b26-a2ae-ee4f260072d9",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b44b5bcc-5a95-458f-a953-026ce26bc839",
+            "name": "eventoXId",
+            "url": "localhost:4000/api/evento/19",
+            "method": "GET",
+            "sortNum": 25000,
+            "created": "2023-03-29T23:35:34.740Z",
+            "modified": "2023-03-29T23:35:34.740Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "8fe00ae9-d303-4861-98c5-5a1f558b2467",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b44b5bcc-5a95-458f-a953-026ce26bc839",
+            "name": "eventoXUsuario",
+            "url": "localhost:4000/api/v2/evento/usuario/264b0ce34fa762a3dba657fe",
+            "method": "GET",
+            "sortNum": 27500,
+            "created": "2023-03-29T23:35:34.741Z",
+            "modified": "2023-04-01T17:57:08.520Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "d352dc8a-9c8b-45d8-859e-508bba4aa9df",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b44b5bcc-5a95-458f-a953-026ce26bc839",
+            "name": "eventoXRol",
+            "url": "localhost:4000/api/v2/evento/rol/CONS",
+            "method": "GET",
+            "sortNum": 28750,
+            "created": "2023-03-29T23:35:34.742Z",
+            "modified": "2023-04-01T17:58:34.540Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "46b528a7-1eff-4729-a1a1-cb02d4727175",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b44b5bcc-5a95-458f-a953-026ce26bc839",
+            "name": "nuevo evento",
+            "url": "localhost:4000/api/evento/",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-03-29T23:35:34.743Z",
+            "modified": "2023-03-29T23:35:34.743Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"tipo\": \"CUS\",\n    \"titulo\": \"nuevo Evento desde la api 3\",\n    \"cliente\": \"bcb7086e71c855c23d13ac6a\",\n    \"producto\": \"dfce9dfa343c716eff442a41\",\n    \"usuAlta\": \"d246a6b26efc4cf129a40361\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "ae1cd86a-abdc-4758-9657-6a9653813be3",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b44b5bcc-5a95-458f-a953-026ce26bc839",
+            "name": "modificar evento",
+            "url": "localhost:4000/api/evento/",
+            "method": "PUT",
+            "sortNum": 30000,
+            "created": "2023-03-29T23:35:34.744Z",
+            "modified": "2023-03-29T23:35:34.744Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": 15,\n  \"titulo\": \"Evento modificado desde la api2\",\n  \"cliente\": 1,\n  \"producto\": 2\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "bdecb726-afea-4fab-898c-3ae51f0439dd",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b44b5bcc-5a95-458f-a953-026ce26bc839",
+            "name": "eliminar evento",
+            "url": "localhost:4000/api/evento/del?eventoId=15",
+            "method": "DELETE",
+            "sortNum": 40000,
+            "created": "2023-03-29T23:35:34.745Z",
+            "modified": "2023-03-29T23:35:34.745Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "eventoId",
+                    "value": "15",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "46bea804-59e4-4031-a997-1ecbcc325a6a",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b44b5bcc-5a95-458f-a953-026ce26bc839",
+            "name": "avanzar Evento",
+            "url": "localhost:4000/api/evento/5/circular/a?usuario=3",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2023-03-29T23:35:34.746Z",
+            "modified": "2023-03-29T23:35:34.746Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "evento",
+                    "value": "5",
+                    "isDisabled": true,
+                    "isPath": false
+                },
+                {
+                    "name": "usuario",
+                    "value": "3",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "46c30af0-18ed-47df-85bd-2d6e9cfce0ef",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b44b5bcc-5a95-458f-a953-026ce26bc839",
+            "name": "retoceder Evento",
+            "url": "localhost:4000/api/evento/5/circular/r?usuario=3",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2023-03-29T23:35:34.747Z",
+            "modified": "2023-03-29T23:35:34.747Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "evento",
+                    "value": "5",
+                    "isDisabled": true,
+                    "isPath": false
+                },
+                {
+                    "name": "usuario",
+                    "value": "3",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "c1468c2a-271f-44d1-b13a-4ef2c739ad7e",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b44b5bcc-5a95-458f-a953-026ce26bc839",
+            "name": "reasignar Evento",
+            "url": "localhost:4000/api/evento/5/reasignar?usuario=1",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2023-03-29T23:35:34.748Z",
+            "modified": "2023-03-29T23:35:34.748Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "evento",
+                    "value": "5",
+                    "isDisabled": true,
+                    "isPath": false
+                },
+                {
+                    "name": "usuario",
+                    "value": "1",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "3f00b1f9-01c0-4f2a-8efb-d32b2a76e0db",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b44b5bcc-5a95-458f-a953-026ce26bc839",
+            "name": "estimar Evento",
+            "url": "localhost:4000/api/evento/5/estimar?estimado=55",
+            "method": "GET",
+            "sortNum": 90000,
+            "created": "2023-03-29T23:35:34.749Z",
+            "modified": "2023-03-29T23:35:34.749Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "evento",
+                    "value": "5",
+                    "isDisabled": true,
+                    "isPath": false
+                },
+                {
+                    "name": "estimado",
+                    "value": "55",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "c02324bc-303f-40dd-8418-5761f6afb328",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "8120b3bf-f3f5-4d18-a953-a464ce39d2e9",
+            "name": "getClientes",
+            "url": "localhost:4000/api/v2/cliente",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2023-03-29T23:35:34.750Z",
+            "modified": "2023-04-02T22:05:47.938Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "59b5042f-8dc5-4e84-8627-9bf6ab2be8d1",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "9d429ba7-baaf-4260-afb1-045e51f3e490",
+            "name": "getProductos",
+            "url": "localhost:4000/api/producto",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2023-03-29T23:35:34.751Z",
+            "modified": "2023-03-29T23:35:34.751Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "2ed14943-bd31-4914-bc85-3f7c46dd23e4",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "fd6c486c-8599-4eb1-8715-c4d2df5dda67",
+            "name": "getModulos",
+            "url": "localhost:4000/api/modulo",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2023-03-29T23:35:34.752Z",
+            "modified": "2023-03-29T23:35:34.752Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "dd9c94b5-214e-4035-a8ba-e64ab9afc82e",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "8d24bfb2-122e-4d3a-a133-38e9bbbffd54",
+            "name": "getEntornos",
+            "url": "localhost:4000/api/entorno",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2023-03-29T23:35:34.753Z",
+            "modified": "2023-03-29T23:35:34.753Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "a3149a43-51c3-4b6a-ab30-a1ddaec8bf80",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "8120b3bf-f3f5-4d18-a953-a464ce39d2e9",
+            "name": "getCliente",
+            "url": "localhost:4000/api/v2/cliente/1585833c648dfe42b2e7b878",
+            "method": "GET",
+            "sortNum": 110000,
+            "created": "2023-03-29T23:35:34.754Z",
+            "modified": "2023-04-02T22:08:06.263Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "0a279e10-3bde-4a8a-a529-8240b518524d",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "9d429ba7-baaf-4260-afb1-045e51f3e490",
+            "name": "getProducto",
+            "url": "localhost:4000/api/producto/2",
+            "method": "GET",
+            "sortNum": 110000,
+            "created": "2023-03-29T23:35:34.755Z",
+            "modified": "2023-03-29T23:35:34.755Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f12b0699-aeff-4269-854d-5237b9cbd5bd",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "fd6c486c-8599-4eb1-8715-c4d2df5dda67",
+            "name": "getModulo",
+            "url": "localhost:4000/api/modulo/SQLs",
+            "method": "GET",
+            "sortNum": 110000,
+            "created": "2023-03-29T23:35:34.756Z",
+            "modified": "2023-03-29T23:35:34.756Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "535e6fe7-9db5-4368-83d6-aa9a8833a8f8",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "8d24bfb2-122e-4d3a-a133-38e9bbbffd54",
+            "name": "getEntorno",
+            "url": "localhost:4000/api/entorno/WIN",
+            "method": "GET",
+            "sortNum": 110000,
+            "created": "2023-03-29T23:35:34.757Z",
+            "modified": "2023-03-29T23:35:34.757Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f99652a1-a5a8-4593-b360-05e490370c61",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b814f299-246a-49ba-bf96-aa4aaca79391",
+            "name": "getUsuario",
+            "url": "localhost:4000/api/v2/usuario/d246a6b26efc4cf129a40361",
+            "method": "GET",
+            "sortNum": 115000,
+            "created": "2023-03-29T23:35:34.739Z",
+            "modified": "2023-04-01T21:52:07.596Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "37e493c3-bc5b-407d-b352-4565210346a1",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "8120b3bf-f3f5-4d18-a953-a464ce39d2e9",
+            "name": "insertCliente",
+            "url": "localhost:4000/api/cliente/",
+            "method": "POST",
+            "sortNum": 120000,
+            "created": "2023-03-29T23:35:34.758Z",
+            "modified": "2023-03-29T23:35:34.758Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"sigla\": \"CMP\",\n  \"nombre\": \"Comercial CMP\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "e0eb85b0-aa1b-4296-920c-f43340f62510",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "9d429ba7-baaf-4260-afb1-045e51f3e490",
+            "name": "insertProducto",
+            "url": "localhost:4000/api/producto/",
+            "method": "POST",
+            "sortNum": 120000,
+            "created": "2023-03-29T23:35:34.759Z",
+            "modified": "2023-03-29T23:35:34.759Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"nombre\": \"Producto de testeo\",\n    \"modulo\": \"VEN\",\n    \"submodulo\": \"MSQL\",\n    \"entorno\": \"WEB\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "2df7caa9-308a-4015-a749-7779f7a1ff99",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "fd6c486c-8599-4eb1-8715-c4d2df5dda67",
+            "name": "insertModulo",
+            "url": "localhost:4000/api/modulo/",
+            "method": "POST",
+            "sortNum": 120000,
+            "created": "2023-03-29T23:35:34.760Z",
+            "modified": "2023-03-29T23:35:34.760Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": \"MSQL\",\n  \"nombre\": \"MySQL\",\n  \"padre\": \"\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "222fea11-e92d-46cd-837a-0da4115ba163",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "8d24bfb2-122e-4d3a-a133-38e9bbbffd54",
+            "name": "insertEntorno",
+            "url": "localhost:4000/api/entorno/",
+            "method": "POST",
+            "sortNum": 120000,
+            "created": "2023-03-29T23:35:34.761Z",
+            "modified": "2023-03-29T23:35:34.761Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": \"WIN\",\n  \"nombre\": \"Windows App\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "c382a441-fe4b-4313-b847-e23f5d955a75",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "8120b3bf-f3f5-4d18-a953-a464ce39d2e9",
+            "name": "updateCliente",
+            "url": "localhost:4000/api/cliente",
+            "method": "PUT",
+            "sortNum": 130000,
+            "created": "2023-03-29T23:35:34.762Z",
+            "modified": "2023-03-29T23:35:34.762Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": 7,\n  \"sigla\": \"TE3\",\n  \"nombre\": \"Update desde la api de Testeo\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "33f094cd-9e72-44dd-9363-0326c60ce3f1",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "9d429ba7-baaf-4260-afb1-045e51f3e490",
+            "name": "updateProducto",
+            "url": "localhost:4000/api/producto/",
+            "method": "PUT",
+            "sortNum": 130000,
+            "created": "2023-03-29T23:35:34.763Z",
+            "modified": "2023-03-29T23:35:34.763Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": 5,\n  \"nombre\": \"Producto de testeo modificado\",\n  \"modulo\": \"STK\",\n  \"submodulo\": \"MSQL\",\n  \"entorno\": \"WEB\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "1c3a0156-624d-44cd-9436-4233d0a03853",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "fd6c486c-8599-4eb1-8715-c4d2df5dda67",
+            "name": "updateModulo",
+            "url": "localhost:4000/api/modulo/",
+            "method": "PUT",
+            "sortNum": 130000,
+            "created": "2023-03-29T23:35:34.764Z",
+            "modified": "2023-03-29T23:35:34.764Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\r\n  \"id\": \"CUS\",\r\n  \"nombre\": \"NOOO\",\r\n  \"padre\": \"STK\"\r\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "fc3cb856-2dd5-4a64-ba9a-13d08613dcfa",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "8d24bfb2-122e-4d3a-a133-38e9bbbffd54",
+            "name": "updateEntorno",
+            "url": "localhost:4000/api/modulo/",
+            "method": "PUT",
+            "sortNum": 130000,
+            "created": "2023-03-29T23:35:34.765Z",
+            "modified": "2023-03-29T23:35:34.765Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\r\n  \"id\": \"CUS\",\r\n  \"nombre\": \"UPDATE\"\r\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "71f578bc-b7c0-4c7f-b75f-8a42d494cb86",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "8120b3bf-f3f5-4d18-a953-a464ce39d2e9",
+            "name": "deleteCliente",
+            "url": "localhost:4000/api/cliente/7",
+            "method": "DELETE",
+            "sortNum": 140000,
+            "created": "2023-03-29T23:35:34.766Z",
+            "modified": "2023-03-29T23:35:34.766Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "a6804635-5051-4dc8-8a31-3ecab8de7453",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "9d429ba7-baaf-4260-afb1-045e51f3e490",
+            "name": "deleteProducto",
+            "url": "localhost:4000/api/producto/1",
+            "method": "DELETE",
+            "sortNum": 140000,
+            "created": "2023-03-29T23:35:34.767Z",
+            "modified": "2023-03-29T23:35:34.767Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "ecc80821-5592-47b4-ad40-1d69e4813f38",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "fd6c486c-8599-4eb1-8715-c4d2df5dda67",
+            "name": "deleteModulo",
+            "url": "localhost:4000/api/modulo/CUS",
+            "method": "DELETE",
+            "sortNum": 140000,
+            "created": "2023-03-29T23:35:34.768Z",
+            "modified": "2023-03-29T23:35:34.768Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "1407cf80-0d51-4cc8-9bca-10d77340e524",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "8d24bfb2-122e-4d3a-a133-38e9bbbffd54",
+            "name": "deleteEntorno",
+            "url": "localhost:4000/api/entorno/CUS",
+            "method": "DELETE",
+            "sortNum": 140000,
+            "created": "2023-03-29T23:35:34.769Z",
+            "modified": "2023-03-29T23:35:34.769Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "2f4fc5b2-b900-4414-910a-3e50944682b4",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "8ddaf7d6-bb40-4db0-8fcb-c0c4dd04ee7c",
+            "name": "GetTipoEventos",
+            "url": "localhost:4000/api/tipoEvento/",
+            "method": "GET",
+            "sortNum": 150000,
+            "created": "2023-03-29T23:35:34.770Z",
+            "modified": "2023-03-29T23:35:34.770Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "c469046a-936f-4503-8ac6-a03e6113a516",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "2b6d7339-83a8-473b-aac5-94448d35ed69",
+            "name": "GetTareas",
+            "url": "localhost:4000/api/tarea/",
+            "method": "GET",
+            "sortNum": 150000,
+            "created": "2023-03-29T23:35:34.771Z",
+            "modified": "2023-03-29T23:35:34.771Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "2449706d-1359-4d6e-b3f9-96414cc707cf",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "8120b3bf-f3f5-4d18-a953-a464ce39d2e9",
+            "name": "reactivarCliente",
+            "url": "localhost:4000/api/cliente/4/reactivar",
+            "method": "GET",
+            "sortNum": 150000,
+            "created": "2023-03-29T23:35:34.772Z",
+            "modified": "2023-03-29T23:35:34.772Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "5729846c-9c77-4ad9-a4ff-8614a322eafa",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "9d429ba7-baaf-4260-afb1-045e51f3e490",
+            "name": "reactivarProducto",
+            "url": "localhost:4000/api/producto/1/reactivar",
+            "method": "GET",
+            "sortNum": 150000,
+            "created": "2023-03-29T23:35:34.773Z",
+            "modified": "2023-03-29T23:35:34.773Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "42af3e9a-bf6e-4169-a487-c9ffd49b3ae1",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "fd6c486c-8599-4eb1-8715-c4d2df5dda67",
+            "name": "getModuloPadre",
+            "url": "localhost:4000/api/modulo/STK",
+            "method": "GET",
+            "sortNum": 150000,
+            "created": "2023-03-29T23:35:34.774Z",
+            "modified": "2023-03-29T23:35:34.774Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "0adee0d4-81f8-476a-b958-da3fb76357b7",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "8ddaf7d6-bb40-4db0-8fcb-c0c4dd04ee7c",
+            "name": "insertTipoEventos",
+            "url": "localhost:4000/api/tipoEvento/",
+            "method": "POST",
+            "sortNum": 160000,
+            "created": "2023-03-29T23:35:34.775Z",
+            "modified": "2023-03-29T23:35:34.775Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": \"CUS\",\n  \"descripcion\": \"Customizaciones para el cliente\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "8af5c08f-ebe6-4601-ab29-acec019b3729",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "2b6d7339-83a8-473b-aac5-94448d35ed69",
+            "name": "insertTarea",
+            "url": "localhost:4000/api/tarea/",
+            "method": "POST",
+            "sortNum": 160000,
+            "created": "2023-03-29T23:35:34.776Z",
+            "modified": "2023-03-29T23:35:34.776Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre\": \"Desarrollo\",\n  \"rol\": \"DESA\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "0d9c8eb9-9fee-4394-91e5-a2cba9741029",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "fd6c486c-8599-4eb1-8715-c4d2df5dda67",
+            "name": "getModuloBusqueda",
+            "url": "localhost:4000/api/modulo/busqueda/bus",
+            "method": "GET",
+            "sortNum": 160000,
+            "created": "2023-03-29T23:35:34.777Z",
+            "modified": "2023-03-29T23:35:34.777Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "aa693c88-b721-4136-b76e-70b9b36dc76a",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b44b5bcc-5a95-458f-a953-026ce26bc839",
+            "name": "comentarEvento",
+            "url": "localhost:4000/api/evento/69abf03efd8b500f50fe948b/comentar",
+            "method": "POST",
+            "sortNum": 160000,
+            "created": "2023-03-29T23:35:34.778Z",
+            "modified": "2023-03-29T23:35:34.778Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"eventoId\": \"69abf03efd8b500f50fe948b\",\n    \"comentario\": \"Segundo comentario\",\n    \"usuario\": \"2f0727442b3125f656ec12de\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "81e93992-b82b-41e8-bb10-52581f931427",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b814f299-246a-49ba-bf96-aa4aaca79391",
+            "name": "getUsuarioToken",
+            "url": "localhost:4000/api/v2/usuario/POanJJBCsF8bbTH2g9?token=true",
+            "method": "GET",
+            "sortNum": 167500,
+            "created": "2023-03-30T00:17:42.209Z",
+            "modified": "2023-04-01T21:25:29.876Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "token",
+                    "value": "true",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "afcd8efd-be13-4ce9-9d41-1e2a3c54ea04",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "8ddaf7d6-bb40-4db0-8fcb-c0c4dd04ee7c",
+            "name": "updateTipoEventos",
+            "url": "localhost:4000/api/tipoEvento",
+            "method": "PUT",
+            "sortNum": 170000,
+            "created": "2023-03-29T23:35:34.779Z",
+            "modified": "2023-03-29T23:35:34.779Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": \"TES\",\n  \"descripcion\": \"Update desde la api de Testeo\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "dc11df51-f158-4a7f-9fa1-661cc5243ee8",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "2b6d7339-83a8-473b-aac5-94448d35ed69",
+            "name": "updateTarea",
+            "url": "localhost:4000/api/tarea",
+            "method": "PUT",
+            "sortNum": 170000,
+            "created": "2023-03-29T23:35:34.780Z",
+            "modified": "2023-03-29T23:35:34.780Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": \"18\",\n  \"nombre\": \"testTarea\",\n  \"rol\": \"CONS\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "b60bec4a-2dbd-4807-b96e-25f8ddc4f10d",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "8ddaf7d6-bb40-4db0-8fcb-c0c4dd04ee7c",
+            "name": "deleteTipoEventos",
+            "url": "localhost:4000/api/tipoEvento/TE2",
+            "method": "DELETE",
+            "sortNum": 180000,
+            "created": "2023-03-29T23:35:34.781Z",
+            "modified": "2023-03-29T23:35:34.781Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f8320208-1158-4451-8c39-a54a793c19e2",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "2b6d7339-83a8-473b-aac5-94448d35ed69",
+            "name": "deleteTarea",
+            "url": "localhost:4000/api/tarea/18",
+            "method": "DELETE",
+            "sortNum": 180000,
+            "created": "2023-03-29T23:35:34.782Z",
+            "modified": "2023-03-29T23:35:34.782Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "ab211513-74f7-4907-a57d-24bbc916c76e",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "2b6d7339-83a8-473b-aac5-94448d35ed69",
+            "name": "GetTareasRol",
+            "url": "localhost:4000/api/tarea/rol/DESA",
+            "method": "GET",
+            "sortNum": 190000,
+            "created": "2023-03-29T23:35:34.783Z",
+            "modified": "2023-03-29T23:35:34.783Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "efda34f9-ace6-43cb-8017-7f5e167bff41",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "8ddaf7d6-bb40-4db0-8fcb-c0c4dd04ee7c",
+            "name": "AsignarTareas",
+            "url": "localhost:4000/api/tipoEvento/TES/asignarTareas",
+            "method": "POST",
+            "sortNum": 190000,
+            "created": "2023-03-29T23:35:34.784Z",
+            "modified": "2023-03-29T23:35:34.784Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"tipoEvento\": \"cus\",\n  \"tareas\": [\n    {\n      \"id\": \"0d355641e6eeceb030511c95\",\n      \"orden\": 1\n    }\n  ]\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "e50e047b-181a-4a11-8faf-2412768d9704",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b44b5bcc-5a95-458f-a953-026ce26bc839",
+            "name": "getComentariosEvento",
+            "url": "localhost:4000/api/evento/69abf03efd8b500f50fe948b/comentarios",
+            "method": "GET",
+            "sortNum": 195000,
+            "created": "2023-03-29T23:35:34.785Z",
+            "modified": "2023-03-29T23:35:34.785Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f31afca8-2c67-46ac-a8ef-4e04804aca28",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "2b6d7339-83a8-473b-aac5-94448d35ed69",
+            "name": "GetTareasEvento",
+            "url": "localhost:4000/api/tarea/evento/TES",
+            "method": "GET",
+            "sortNum": 200000,
+            "created": "2023-03-29T23:35:34.786Z",
+            "modified": "2023-03-29T23:35:34.786Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "beb07899-f2e5-4398-a1f5-8d2b475bb3fa",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "2b6d7339-83a8-473b-aac5-94448d35ed69",
+            "name": "GetTareasNoEvento",
+            "url": "localhost:4000/api/tarea/evento/CUS?no=1",
+            "method": "GET",
+            "sortNum": 210000,
+            "created": "2023-03-29T23:35:34.787Z",
+            "modified": "2023-03-29T23:35:34.787Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "no",
+                    "value": "1",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "ff86107e-0f2a-4f6b-bbf2-d000aeac62c2",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b44b5bcc-5a95-458f-a953-026ce26bc839",
+            "name": "getVidaEvento",
+            "url": "localhost:4000/api/evento/3f6dc9d64d14339cf46bf6dd/vida",
+            "method": "GET",
+            "sortNum": 212500,
+            "created": "2023-03-29T23:35:34.788Z",
+            "modified": "2023-03-29T23:35:34.788Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "45f1fe3a-ef37-4cb2-af74-1f953fab587e",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b814f299-246a-49ba-bf96-aa4aaca79391",
+            "name": "login",
+            "url": "http://localhost:4000/api/v2/usuario/gestion/iniciarSesion?usuario=JTAdmin&password=123",
+            "method": "GET",
+            "sortNum": 220000,
+            "created": "2023-03-29T23:35:34.789Z",
+            "modified": "2023-03-29T23:42:57.013Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "usuario",
+                    "value": "JTAdmin",
+                    "isPath": false
+                },
+                {
+                    "name": "password",
+                    "value": "123",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "1a7d6dc4-ce79-4296-9089-1ca6e66b2fd6",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b44b5bcc-5a95-458f-a953-026ce26bc839",
+            "name": "getDetalle",
+            "url": "localhost:4000/api/v2/evento/e4ef8c7dfdb534fefda389c2/detalle",
+            "method": "GET",
+            "sortNum": 221250,
+            "created": "2023-04-01T12:53:54.059Z",
+            "modified": "2023-04-01T12:54:56.130Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "9ec7bf5d-ef09-4bb6-84d0-66e99b51a2c8",
+            "colId": "ea4105a6-fb07-4416-99fe-dc459fccf3fa",
+            "containerId": "b44b5bcc-5a95-458f-a953-026ce26bc839",
+            "name": "tareasPorTipo",
+            "url": "localhost:4000/api/evento/dashboard/tareaPortipo",
+            "method": "GET",
+            "sortNum": 230000,
+            "created": "2023-03-29T23:35:34.790Z",
+            "modified": "2023-03-29T23:35:34.790Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        }
+    ]
+}
