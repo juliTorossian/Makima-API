@@ -1,212 +1,193 @@
-// TOOK VER TODOS LOS ROLES
-// TOOK VER UN ROL
-// TOOK CREAR UN ROL
-// TOOK MODIFICAR ROL
-// TOOK ELIMINAR ROL
-
-
 import { pool } from '../../../db.js';
 
-/** 
- ** Busca todos los roles en la base de datos
- *
-*/
+/**
+ * Busca todos los roles
+ */
 export const getRoles = async () => {
-
-    try{
-
+    try {
         const query = "SELECT * FROM rol";
-        let params = []
-
+        let params = [];
         const [rows] = await pool.query(query, params);
-        
         let response = [];
 
         for (let i = 0; i < rows.length; i++) {
             const r = rows[i];
-            const [ permisos ] = await pool.query("SELECT * FROM rolpermiso WHERE rolPRol = ?", [ r.rolId ]);
-
-            let rol = {
-                "id": r.rolId,
-                "descripcion": r.rolDescripcion,
-                "permisos": []
-            }
-
-            for (let j = 0; j < permisos.length; j++) {
-                const p = permisos[j];
-
-                rol.permisos.push({
-                    "clave": p.rolPClave,
-                    "nivel": p.rolPNivel
-                })
-            }
+            let rol = format(r);
+            rol.permisos = await getPermisosPorRol(rol.id)
             response.push(rol);
-            
         }
 
         return response;
-
     }catch (err) {
-        console.error(err);
-        return null;
+        throw new Error(err);
     }
 }
 
 
-/** 
- ** Busca un rol
- *
- *i @param rolId: id del rol a consultar
-*/
+/**
+ * Busca rol por id
+ * @param {string} rolId - Id del rol
+ * @returns Rol
+ */
 export const getRol = async (rolId) => {
-
-    try{
-
+    try {
         const query = "SELECT * FROM rol WHERE rolId = ?";
         let params = [rolId]
-
         const [rows] = await pool.query(query, params);
+        let response = format(rows[0]);
+        response.permisos = await getPermisosPorRol(rolId);
 
-        let response = {
-            "id": rows[0].rolId,
-            "descripcion": rows[0].rolDescripcion,
-            "permisos": []
-        };
-        const [ permisos ] = await pool.query("SELECT * FROM rolpermiso WHERE rolPRol = ?", [ rows[0].rolId ]);
-
-        for (let j = 0; j < permisos.length; j++) {
-            const p = permisos[j];
-
-            response.permisos.push({
-                "clave": p.rolPClave,
-                "nivel": p.rolPNivel
-            })
-        }
         return response;
-
     }catch (err) {
-        console.error(err);
-        return null;
+        throw new Error(err);
     }
 }
 
-/** 
- ** Crea un nuevo rol
- *
- *i @param rol: objeto con los datos necesarios del rol - especificado mas abajo
-*/
+/**
+ * Crea un nuevo Rol
+ * @param {Object} rol 
+ */
 export const insertRol = async (rol) => {
-
-    /** 
-    * i Objeto que tiene que llegar por parametro (rol)
-    {
-        "id": "CUS",                //* sigla del rol
-        "descripcion": "CUSTOM",    //* nombre del rol
-        "controlTotal": false
-        "controlEvento": true
-        "controlCliente": true
-        "controlProducto": true
-        "controlTipo": true
-        "controlUsuario": false
-    }
-    **/
-
-    try{
-
+    try {
         const query = "INSERT INTO rol(rolId, rolDescripcion) VALUES  (?, ?)";
         let params = [
             rol.id,
             rol.descripcion
         ];
-
         const [rows] = await pool.query(query, params);
-
         if (rol.permisos){
-            const queryPermisos = 'INSERT INTO rolPermiso(rolPRol, rolPClave, rolPNivel) VALUES ?';
-            let paramsPermisos = [];
-    
-            rol.permisos.map( (p) => {
-                let aux = [rol.id, p.clave, p.nivel]
-                paramsPermisos.push(aux);
-            })
-            const [rowsPermisos] = await pool.query(queryPermisos, [paramsPermisos]);
+            insertPermiso(rol.id, rol.permisos)
         }
 
-        // console.log(rows);
-
         return rows.affectedRows;
-
     }catch (err) {
-        console.error(err);
-        return null;
+        throw new Error(err);
     }
 }
 
-/** 
- ** Modifica un rol
- *
- *i @param rol: objeto con los datos modificados del rol - especificado mas abajo
-*/
+/**
+ * Modifica un rol
+ * @param {Object} rol 
+ */
 export const updateRol = async (rol) => {
-
-    /** 
-    * i Objeto que tiene que llegar por parametro (rol)
-    {
-        "id": "CUS",                //* sigla del rol
-        "descripcion": "CUSTOM",    //* nombre del rol
-        "nivel": 0                  //* nivel del rol
-    }
-    **/
-
-    try{
-
+    try {
         const query = "UPDATE rol SET rolDescripcion = ? WHERE rolId = ?";
         let params = [
             rol.descripcion,
             rol.id
         ];
         const [rows] = await pool.query(query, params);
-
-        const [auxRows] = await pool.query("DELETE FROM rolpermiso WHERE rolPRol = ?", [rol.id])
+        // elimino todos los permisos del rol
+        deletePermisosPorRol(rol.id);
         if (rol.permisos){
-            const queryPermisos = 'INSERT INTO rolPermiso(rolPRol, rolPClave, rolPNivel) VALUES ?';
-            let paramsPermisos = [];
-    
-            rol.permisos.map( (p) => {
-                let aux = [rol.id, p.clave, p.nivel]
-                paramsPermisos.push(aux);
-            })
-            const [rowsPermisos] = await pool.query(queryPermisos, [paramsPermisos]);
+            insertPermiso(rol.id, rol.permisos)
         }
 
         return rows.affectedRows;
-
     }catch (err) {
-        console.error(err);
-        return null;
+        throw new Error(err);
     }
 }
 
-/** 
- ** Eliminar un rol
- *
- *i @param rolId: id del rol a eliminar
-*/
+/**
+ * Elimina el rol y sus permisos
+ * @param {string} rolId 
+ */
 export const deleteRol = async (rolId) => {
-
-    try{
-
-        const [auxRows] = await pool.query("DELETE FROM rolpermiso WHERE rolPRol = ?", [rolId])
+    try {
+        // elimino los permisos
+        deletePermisosPorRol(rolId)
         const query = "DELETE FROM rol WHERE rolId = ?";
         let params = [
             rolId
         ];
+        const [rows] = await pool.query(query, params);
 
+        return rows.affectedRows;
+    }catch (err) {
+        throw new Error(err);
+    }
+}
+
+/**
+ * Busca los permisos de un rol
+ * @param {string} rolId 
+ * @returns Permisos de un rol
+ */
+async function getPermisosPorRol(rolId) {
+    try {
+        const [ rows ] = await pool.query("SELECT * FROM rolpermiso WHERE rolPRol = ?", [ rolId ]);
+        let permisos = []
+        rows.map( (row) => {
+            permisos.push(formatPermiso(row))
+        });
+
+        return permisos;
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
+/**
+ * Crea un registro de permiso
+ * @param {string} rol
+ * @param {Objeto[]} permisos
+ */
+async function insertPermiso(rol, permisos) {
+    try {
+        const query = 'INSERT INTO rolPermiso(rolPRol, rolPClave, rolPNivel) VALUES ?';
+        let params = [];
+
+        permisos.map( (p) => {
+            let aux = [rol, p.clave, p.nivel]
+            params.push(aux);
+        })
+        const [rows] = await pool.query(query, [params]);
+
+        return rows.affectedRows;
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
+/**
+ * Elimina los permisos de un rol
+ * @param {string} rol
+ */
+async function deletePermisosPorRol(rol) {
+    try {
+        const query = "DELETE FROM rolpermiso WHERE rolPRol = ?";
+        let params = [
+            rol
+        ];
         const [rows] = await pool.query(query, params);
         return rows.affectedRows;
+    } catch (err) {
+        throw new Error(err);
+    }
+}
 
-    }catch (err) {
-        console.error(err);
-        return null;
+/**
+ * Formatea el objeto traido de la base de datos.
+ * @param {Object} rol - Entidad rol
+ * @returns Objeto rol formateado
+ */
+function format(rol){
+    return {
+        id: rol.rolId,
+        descripcion: rol.rolDescripcion,
+        permisos: []
+    }
+}
+
+/**
+ * Formatea el objeto traido de la base de datos.
+ * @param {Object} permiso - Entidad permiso
+ * @returns Objeto permiso formateado
+ */
+function formatPermiso(permiso){
+    return {
+        clave: permiso.rolPClave,
+        nivel: permiso.rolPNivel
     }
 }

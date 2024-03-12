@@ -1,123 +1,138 @@
 import * as model from "./producto.model.js";
-import * as validador from "./producto.validator.js";
 
-export const insertProducto = async (req, res) => {
-
+export const insertProducto = async (req, res, next) => {
     try {
+        const { body } = req;
+        const producto = await model.insertProducto(body);
 
-        const resultado = validador.validarProducto(req.body);
-        console.log(resultado);
-
-        if (!resultado.success) {
-            // 422 Unprocessable Entity
-            return res.status(400).json({ error: JSON.parse(resultado.error.message) })
-        }
-        const nuevoProducto = await model.insertProducto(resultado.data);
-    
-        if (nuevoProducto != null){
-            res.status(201).json(nuevoProducto);
+        if (producto){
+            res.status(201).json({
+                success: true,
+                data: producto
+            });
         }else{
-            res.status(404).send('error');
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const updateProducto = async (req, res, next) => {
+    try {
+        const { body } = req;
+        const producto = await model.updateProducto(body);
+
+        if (producto){
+            res.status(200).json({
+                success: true,
+                data: producto
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const deleteProducto = async (req, res, next) => {
+    try {
+        const { productoId } = req.params; 
+        let ok = await model.deleteProducto(productoId);
+
+        if (ok){
+            res.status(200).json({
+                success: true,
+                data: { productoId: productoId}
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const reactivarProducto = async (req, res, next) => {
+    try {
+        const { productoId } = req.params; 
+        let ok = await model.reactivarProducto(productoId);
+
+        if (ok){
+            res.status(200).json({
+                success: true,
+                data: { productoId: productoId}
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const getProductos = async (req, res, next) => {
+    try {
+        let productos = await model.getProductos();
+        if (productos){
+            res.status(200).json({
+                success: true,
+                data: productos
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const getProducto = async (req, res, next) => {
+    try {
+        const { productoId } = req.params; 
+        let producto = await model.getProducto(productoId);
+
+        if (producto){
+            res.status(200).json({
+                success: true,
+                data: producto
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
         }
 
     } catch (err) {
-        // console.log(err);
-        res.status(500).json(err);
-    }
-
-
-    // let ok = await model.insertProducto(req.body);
-
-    // if (ok > 0){
-    //     res.status(201).json("ok");
-    // }else{
-    //     res.status(404).send('error');
-    // }
-
-}
-
-export const updateProducto = async (req, res) => {
-    
-    try {
-
-        const resultado = validador.validacionParcialProducto(req.body);
-        // console.log(resultado);
-
-        if (!resultado.success) {
-            // 422 Unprocessable Entity
-            return res.status(400).json({ error: JSON.parse(resultado.error.message) })
-        }
-
-        let aux;
-        if (!resultado.data.id){
-            aux = {id:req.params.productoId, ...resultado.data}
-        }else{
-            aux = resultado.data
-        }
-
-        const productoMod = await model.updateProducto(aux);
-
-        if (productoMod != null){
-            res.status(201).json(productoMod);
-        }else{
-            res.status(404).send('error');
-        }
-
-    } catch (err) {
-        // console.log(err);
-        res.status(500).json(err);
-    }
-
-    // let ok = await model.updateProducto(req.body);
-
-    // if (ok > 0){
-    //     res.status(201).json("ok");
-    // }else{
-    //     res.status(404).send('error');
-    // }
-
-}
-
-export const deleteProducto = async (req, res) => {
-
-    let ok = await model.deleteProducto(req.params.productoId);
-
-    if (ok > 0){
-        res.status(201).json("ok");
-    }else{
-        res.status(404).send('error');
-    }
-
-}
-
-export const reactivarProducto = async (req, res) => {
-
-    let ok = await model.reactivarProducto(req.params.productoId);
-
-    if (ok > 0){
-        res.status(201).json("ok");
-    }else{
-        res.status(404).send('error');
-    }
-
-}
-
-export const getProductos = async (req, res) => {
-    const productos = await model.getProductos();
-
-    if (!(productos == null)){
-        res.json(productos);
-    }else{
-        res.status(404).send('error');
-    }
-}
-
-export const getProducto = async (req, res) => {
-    const producto = await model.getProducto(req.params.productoId);
-
-    if (!(producto == null)){
-        res.json(producto);
-    }else{
-        res.status(404).send('error');
+        next(err);
     }
 }

@@ -1,77 +1,168 @@
 import * as model from "./modulo.model.js";
 
-export const insertModulo = async (req, res) => {
+export const insertModulo = async (req, res, next) => {
+    try {
+        const { body } = req; 
+        let modulo = await model.insertModulo(body);
 
-    let ok = await model.insertModulo(req.body);
+        if (modulo){
+            res.status(201).json({
+                success: true,
+                data: modulo
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
 
-    if (ok > 0){
-        res.status(201).json("ok");
-    }else{
-        res.status(404).send('error');
-    }
-
-}
-
-export const updateModulo = async (req, res) => {
-
-    let ok = await model.updateModulo(req.body);
-
-    if (ok > 0){
-        res.status(201).json("ok");
-    }else{
-        res.status(404).send('error');
-    }
-
-}
-
-export const deleteModulo = async (req, res) => {
-
-    let ok = await model.deleteModulo(req.params.moduloId);
-
-    if (ok > 0){
-        res.status(201).json("ok");
-    }else{
-        res.status(404).send('error');
-    }
-
-}
-
-export const getModulos = async (req, res) => {
-    const clientes = await model.getModulos();
-
-    if (!(clientes == null)){
-        res.json(clientes);
-    }else{
-        res.status(404).send('error');
+    } catch (err) {
+        next(err);
     }
 }
 
-export const getModulo = async (req, res) => {
-    const cliente = await model.getModulo(req.params.moduloId);
+export const updateModulo = async (req, res, next) => {
+    try {
+        const { body } = req; 
+        let modulo = await model.updateModulo(body);
 
-    if (!(cliente == null)){
-        res.json(cliente);
-    }else{
-        res.status(404).send('error');
+        if (modulo){
+            res.status(200).json({
+                success: true,
+                data: modulo
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+
+    } catch (err) {
+        next(err);
     }
 }
 
-export const getModulosBusqueda = async (req, res) => {
-    const cliente = await model.getModulosBusqueda();
+export const deleteModulo = async (req, res, next) => {
+    try {
+        const { moduloId } = req.params; 
+        let ok = await model.deleteModulo(moduloId);
 
-    if (!(cliente == null)){
-        res.json(cliente);
-    }else{
-        res.status(404).send('error');
+        if (ok){
+            res.status(200).json({
+                success: true,
+                data: { moduloId: moduloId}
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+
+    } catch (err) {
+        next(err);
     }
 }
 
-export const getModulosPadre = async (req, res) => {
-    const cliente = await model.getModulosPadre(req.params.padreId);
+export const getModulos = async (req, res, next) => {
+    try {
+        let modulos = await model.getModulos();
+        if (modulos){
+            res.status(200).json({
+                success: true,
+                data: modulos
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
 
-    if (!(cliente == null)){
-        res.json(cliente);
-    }else{
-        res.status(404).send('error');
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const getModulo = async (req, res, next) => {
+    try {
+        const { moduloId } = req.params; 
+        let modulo = await model.getModulo(moduloId);
+
+        if (modulo){
+            res.status(200).json({
+                success: true,
+                data: JSON.parse(modulo)
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const getModulosBusqueda = async (req, res, next) => {
+
+    try {
+        let modulos = await model.getModulosBusqueda();
+
+        if (modulos){
+            res.status(201).json({
+                success: true,
+                data: JSON.parse(modulos)
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const getModulosPadre = async (req, res, next) => {
+
+    try {
+        const { padreId } = req.params; 
+        let modulos = await model.getModulosPadre(padreId);
+
+        if (modulos){
+            res.status(201).json({
+                success: true,
+                data: JSON.parse(modulos)
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+
+    } catch (err) {
+        next(err);
     }
 }

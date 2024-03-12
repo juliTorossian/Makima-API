@@ -1,29 +1,16 @@
-// TOOK VER TOOKS LOS PRODUCTOS
-// TOOK VER UN PRODUCTO
-// TOOK CREAR UN NUEVO PRODUCTO
-// TOOK MODIFICAR UN PRODUCTO
-// TOOK ELIMINAR PRODUCTO
-// TOOK REACTIVAR PRODUCTO
-
-
 import { pool } from '../../../db.js';
 import crypto from 'node:crypto';
 
 
 /** 
- ** Busca TOOKs los productos en la base de datos
+ ** Busca todos los productos en la base de datos
  *
 */
 export const getProductos = async () => {
-
     try{
-
         const query = "SELECT * FROM producto";
         let params = []
-
         const [rows] = await pool.query(query, params);
-
-        // console.log(rows);
 
         let response = [];
         rows.map( (row) => {
@@ -39,20 +26,20 @@ export const getProductos = async () => {
         });
         return response;
     }catch (err) {
-        console.error(err);
-        return null;
+        throw new Error(err);
     }
 }
 
+/** 
+ ** Busca un producto en especifico
+ *
+ * @param {string} productoId - id del producto
+*/
 export const getProducto = async (productoId) => {
-
     try{
-
         const query = "SELECT * FROM producto WHERE productoId = ?";
         let params = [productoId]
-
         const [rows] = await pool.query(query, params);
-
         let response = {
             "id": rows[0].productoId,
             "sigla": rows[0].productoSigla,
@@ -63,35 +50,20 @@ export const getProducto = async (productoId) => {
             "activo": rows[0].productoActivo
         };
         return response;
-
     }catch (err) {
-        console.error(err);
-        return null;
+        throw new Error(err);
     }
 }
 
 /** 
  ** Crea un nuevo producto
  *
- *i @param producto: objeto con los datos necesarios del producto - especificado mas abajo
+ * @param {object} producto - objeto con los datos necesarios del producto
 */
 export const insertProducto = async (producto) => {
-
-    /** 
-    * i Objeto que tiene que llegar por parametro
-    {
-        "sigla": ""
-        "nombre": "CUS",            //* nombre del producto
-        "entorno": "WEB"            //* entorno del producto
-    }
-    **/
-
     try{
-
         const productoId = crypto.randomUUID();
-
         const query = "INSERT producto(productoId, productoSigla, productoNombre, productoEntorno, productoActivo) VALUE (?, ?, ?, ?, true)";
-
         let params = [
             productoId,
             producto.sigla,
@@ -100,105 +72,70 @@ export const insertProducto = async (producto) => {
         ];
 
         const [rows] = await pool.query(query, params);
-
-        // console.log(rows);
-
         let prd = {
             id: productoId,
             ...producto
         }
 
         return prd;
-
     }catch (err) {
-        console.error(err);
-        return null;
+        throw new Error(err);
     }
 }
 
 /** 
  ** Modifica un nuevo producto
  *
- *i @param producto: objeto con los datos necesarios del producto - especificado mas abajo
+ * @param {object} producto - objeto con los datos necesarios del producto
 */
 export const updateProducto = async (producto) => {
-
-    /** 
-    * i Objeto que tiene que llegar por parametro
-    {
-        "id": 1                     //* id del producto
-        "nombre": "CUS",            //* nombre del producto
-        "entorno": "WEB"            //* entorno del producto
-    }
-    **/
-
     try{
-
         const query = "UPDATE producto SET productoSigla = ?, productoNombre = ? , productoEntorno = ? WHERE productoId = ?";
-
         let params = [
             producto.sigla,
             producto.nombre,
             producto.entorno,
             producto.id
         ];
-
         const [rows] = await pool.query(query, params);
-
-        // console.log(rows);
-
         return producto;
-
     }catch (err) {
-        console.error(err);
-        return null;
+        throw new Error(err);
     }
 }
 
 /** 
  ** Elimina un nuevo producto
  *
- *i @param productoId: id del producto a eliminar
+ * @param {string} productoId: id del producto a eliminar
 */
 export const deleteProducto = async (productoId) => {
-
     try{
-
         const query = "CALL delete_producto(?)";
         let params = [
             productoId
         ];
-
         const [rows] = await pool.query(query, params);
-
-        return rows.affectedRows;
-
+        return 1;
     }catch (err) {
-        console.error(err);
-        return null;
+        throw new Error(err);
     }
 }
 
 /** 
  ** Reactiva un nuevo producto
  *
- *i @param productoId: id del producto a eliminar
+ * @param {string} productoId: id del producto a eliminar
 */
 export const reactivarProducto = async (productoId) => {
-
     try{
-
         const query = "UPDATE producto SET productoActivo = true WHERE productoId = ? AND productoActivo = false";
         let params = [
             productoId
         ];
-
         const [rows] = await pool.query(query, params);
-
-        return rows.affectedRows;
-
+        return 1;
     }catch (err) {
-        console.error(err);
-        return null;
+        throw new Error(err);
     }
 }

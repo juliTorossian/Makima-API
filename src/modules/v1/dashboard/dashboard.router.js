@@ -6,6 +6,10 @@ import { ONE_MINUTE_IN_SECONDS } from '../../../helper/time.js';
 
 const dashboardRouter = express.Router();
 
-dashboardRouter.get('/ultimosMovimientos', cache(ONE_MINUTE_IN_SECONDS), controller.getUltimosMovimientos);
+dashboardRouter.get(
+    '/ultimosMovimientos',
+    cache(ONE_MINUTE_IN_SECONDS),
+    controller.getUltimosMovimientos
+);
 
 export default dashboardRouter;

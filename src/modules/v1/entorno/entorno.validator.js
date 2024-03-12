@@ -2,20 +2,17 @@ import z from "zod";
 
 /** 
     {
-        "sigla": "SIG"
-        "nombre": "Producto de testeo",
-        "entorno": "WEB"
+        id: id del entorno,
+        nombre: nombre del entorno,
     }
 **/
 
 const esquema = z.object({
-    sigla: z.string().max(5),
-    nombre: z.string().max(45),
-    entorno: z.string().max(5)
+    nombre: z.string().max(45)
 });
 
 export const validarId = (input) => {
-    return z.object({ productoId: z.string().max(36) }).safeParse(input);
+    return z.object({ entornoId: z.string().max(4) }).safeParse(input);
 }
 export const validar = (input) => {
     return esquema.safeParse(input);

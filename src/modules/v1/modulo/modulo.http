@@ -1,0 +1,15 @@
+
+# GET modulos
+GET http://localhost:4000/api/v1/modulo/
+
+###
+
+# POST modulo
+POST http://localhost:4000/api/v1/modulo/
+Content-Type: application/json
+
+{
+    "id": "TES",
+    "nombre": "TESTEO",
+    "padre": ""
+}

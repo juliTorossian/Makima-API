@@ -15,7 +15,7 @@ import z from "zod";
 **/
 
 
-const usuarioEsquema = z.object({
+const esquema = z.object({
     nombre: z.string(),
     apellido: z.string(),
     mail: z.string().email(),
@@ -27,39 +27,13 @@ const usuarioEsquema = z.object({
     // )
 });
 
-export const validarUsuario = (input) => {
-    return usuarioEsquema.safeParse(input);
+export const validarId = (input) => {
+    return z.object({ eventoId: z.string().max(36) }).safeParse(input);
+}
+export const validar = (input) => {
+    return esquema.safeParse(input);
+}
+export const validacionParcial = (input) => {
+    return esquema.partial().safeParse(input);
 }
 
-export const validacionParcialUsuario = (input) => {
-    return usuarioEsquema.partial().safeParse(input);
-}
-
-
-//! ESTIMACION
-/**
-    {
-        "evento": "b5294d37-48d0-11ee-932a-1c1b0d9efeb6",
-        "usuario": "0321742d-7dcc-4e33-9b46-6d02aaf99fa1",
-        "comentario": "Algun comentario",
-        "rol": "ADMIN",
-        "estimacion": 31
-    }
-**/
-
-const estimacionEsquema = z.object({
-    evento: z.string().max(36),
-    usuario: z.string().max(36),
-    comentario: z.string(),
-    rol: z.string(),
-    estimacion: z.number().nonnegative(),
-    descripcion: z.string().max(1000).optional()
-});
-
-export const validarEstimacion = (input) => {
-    return estimacionEsquema.safeParse(input);
-}
-
-export const validacionParcialEstimacion = (input) => {
-    return estimacionEsquema.partial().safeParse(input);
-}

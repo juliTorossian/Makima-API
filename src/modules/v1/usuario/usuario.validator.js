@@ -15,11 +15,7 @@ import * as rolModel from "./../rol/rol.model.js";
     }
 **/
 
-// const roles = await rolModel.getRoles();
-
-const usuarioEsquema = z.object({
-    // id: z.string().cuid().optional(),
-    id: z.string().optional(),
+const esquema = z.object({
     nombre: z.string().max(45),
     apellido: z.string().max(60),
     mail: z.string().email().max(60),
@@ -29,10 +25,12 @@ const usuarioEsquema = z.object({
     rol: z.string().array().max(5)
 });
 
-export const validarUsuario = (input) => {
-    return usuarioEsquema.safeParse(input);
+export const validarId = (input) => {
+    return z.object({ usuarioId: z.string().max(36) }).safeParse(input);
 }
-
-export const validacionParcialUsuario = (input) => {
-    return usuarioEsquema.partial().safeParse(input);
+export const validar = (input) => {
+    return esquema.safeParse(input);
+}
+export const validacionParcial = (input) => {
+    return esquema.partial().safeParse(input);
 }
