@@ -1,0 +1,19 @@
+
+# GET entornos
+GET http://localhost:60500/api/v1/entorno/
+
+###
+
+# GET entorno
+GET http://localhost:4000/api/v1/entorno/TES
+
+###
+
+# POST entorno
+POST http://localhost:4000/api/v1/entorno/
+Content-Type: application/json
+
+{
+    "id": "TES",
+    "nombre": "TESTEO"
+}

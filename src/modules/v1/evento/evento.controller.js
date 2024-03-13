@@ -3,278 +3,497 @@ import { avisoEventoAsignado } from "../../../helper/mail/envioMail.js";
 import * as model from "./evento.model.js";
 import * as modelUsuario from "../usuario/usuario.model.js";
 import * as modelHora from "../hora/hora.model.js";
-import * as validador from "./evento.validator.js";
 
 
-export const getEventos = async (req, res) => {
-    const { page } = req.query;
-    const eventos = await model.getEventos(page);
-
-    if (!(eventos == null)){
-        res.json(eventos);
-    }else{
-        res.status(404).send('error');
-    }
-}
-
-export const getEvento = async (req, res) => {
-    const evento = await model.getEvento(req.params.eventoId);
-    
-    if (!(evento == null)){
-        res.json(evento);
-    }else{
-        res.status(404).send('error');
-    }
-}
-
-export const getEventoDetalle = async (req, res) => {
-    const evento = await model.getEventoDetalle(req.params.evento);
-    
-    if (!(evento == null)){
-        res.json(evento);
-    }else{
-        res.status(404).send('error');
-    }
-}
-
-export const getEventoHoras = async (req, res) => {
-    const evento = await modelHora.getHorasEvento(req.params.evento);
-    
-    if (!(evento == null)){
-        res.json(evento);
-    }else{
-        res.status(404).send('error');
-    }
-}
-
-export const getEventosUsuario = async (req, res) => {
-    const eventos = await model.getEventosUsuario(req.query.page, req.params.usuario);
-    
-    if (!(eventos == null)){
-        res.json(eventos);
-    }else{
-        res.status(404).send('error');
-    }
-}
-
-export const getEventosRol = async (req, res) => {
-    const eventos = await model.getEventosRol(req.query.page, req.params.rol);
-    
-    if (!(eventos == null)){
-        res.json(eventos);
-    }else{
-        res.status(404).send('error');
-    }
-}
-
-export const insertEvento = async (req, res) => {
-
-    let eventoId = await model.insertEvento(req.body);
-
-    if (!(eventoId === "" || eventoId === undefined)){
-        res.json(eventoId);
-    }else{
-        res.status(404).send('error');
-    }
-
-}
-
-export const updateEvento = async (req, res) => {
-
-    
-
-    let ok = await model.updateEvento(req.body);
-
-    if (ok > 0){
-        res.json("ok");
-    }else{
-        res.status(404).send('error');
-    }
-
-}
-
-export const deleteEvento = async (req, res) => {
-
-    let ok = await model.deleteEvento(req.params.eventoId, req.query.usuario);
-
-    if (ok > 0){
-        res.json("ok");
-    }else{
-        res.status(404).send('error');
-    }
-
-}
-
-export const cerrarEvento = async (req, res) => {
-
-    let ok = await model.cerrarEvento(req.params.evento, req.query.usuario);
-
-    if (ok > 0){
-        res.json("ok");
-    }else{
-        res.status(404).send('error');
-    }
-
-}
-
-export const avanzarEvento = async (req, res) => {
-
-    
-
-    const eventoId = req.params.evento;
-    const usuarioId = req.query.usuario;
-    const comentario = req.query.comentario;
-
-    const ok = await model.avanzarEvento(eventoId,usuarioId,comentario);
-
-    eviarAvisoMail(usuarioId, eventoId);
-
-    if (ok > 0){
-        res.json("ok");
-    }else{
-        res.status(404).send('error');
-    }
-}
-export const retrocederEvento = async (req, res) => {
-    const ok = await model.retrocederEvento(req.params.evento, req.query.usuario, req.query.comentario);
-    
-    eviarAvisoMail(req.params.evento, req.query.usuario);
-
-    if (ok > 0){
-        res.json("ok");
-    }else{
-        res.status(404).send('error');
-    }
-}
-
-export const reasignarEvento = async (req, res) => {
-    const ok = await model.reasignarEvento(req.params.evento, req.query.usuario);
-
-    
-    eviarAvisoMail(req.params.evento, req.query.usuario);
-
-    if (ok > 0){
-        res.json("ok");
-    }else{
-        res.status(404).send('error');
-    }
-}
-
-export const estimarEvento = async (req, res) => {
-
+export const getEventos = async (req, res, next) => {
     try {
-        console.log(req.body);
-        const resultado = validador.validarEstimacion(req.body);
-        console.log(resultado);
-
-        if (!resultado.success) {
-            // 422 Unprocessable Entity
-            return res.status(400).json({ error: JSON.parse(resultado.error.message) })
-        }
-        const estimacion = await model.estimarEvento(resultado.data);
-    
-        if (estimacion != null){
-            res.status(201).json(estimacion);
+        const { page } = req.query;
+        let eventos = await model.getEventos(page);
+        if (eventos){
+            res.status(200).json({
+                success: true,
+                data: eventos
+            });
         }else{
-            res.status(404).send('error');
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
         }
-
     } catch (err) {
-        console.log(err);
-        res.status(500).json(err);
-    }
-
-}
-
-export const comentarEvento = async (req, res) => {
-
-    // console.log("(145:evento.controller)")
-
-    // console.log(JSON.parse(req.body.comentario))
-    // console.log(req.file)
-    const comentario = req.body;
-    const ok = await model.comentarEvento(comentario);
-
-    if (ok > 0){
-        res.json("ok");
-    }else{
-        res.status(404).send('error');
-    }
-
-}
-
-
-export const adjuntarEvento = async (req, res) => {
-
-    const files = req.files
-    const eventoId = req.params.evento
-    const usuarioId = req.query.usuario
-
-    console.log(files)
-    // console.log(usuarioId); 
-
-    const ok = await model.adjuntarEvento(eventoId, usuarioId, files);
-
-    if (ok > 0){
-        res.json("ok");
-    }else{
-        res.status(404).send('error');
-    }
-
-}
-
-export const deleteAdjunto = async (req, res) => {
-
-    const adicionId = req.params.adicion
-    const ok = await model.deleteAdjunto(adicionId);
-
-    if (ok > 0){
-        res.json("ok");
-    }else{
-        res.status(404).send('error');
+        next(err);
     }
 }
 
-export const getAdjuntosEvento = async (req, res) => {
-    
-    const adjuntos = await model.getAdjuntosEvento(req.params.evento);
-    
-    if (!(adjuntos == null)){
-        res.json(adjuntos);
-    }else{
-        res.status(404).send('error');
+export const getEvento = async (req, res, next) => {
+    try {
+        const { eventoId } = req.params; 
+        let evento = await model.getEvento(eventoId);
+
+        if (evento){
+            res.status(200).json({
+                success: true,
+                data: evento
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
     }
 }
 
-export const getComentariosEvento = async (req, res) => {
-    const comentarios = await model.getComentariosEvento(req.params.evento);
+export const getEventoDetalle = async (req, res, next) => {
+    try {
+        const { eventoId } = req.params; 
+        let evento = await model.getEventoDetalle(eventoId);
 
-    if (comentarios != null){
-        res.json(comentarios);
-    }else{
-        res.status(404).send('error');
+        if (evento){
+            res.status(200).json({
+                success: true,
+                data: evento
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
     }
 }
-export const getTareasPorTipo = async (req, res) => {
-    const rol = req.query.rol;
-    const tareasTipo = await model.getTareasPorTipo(rol);
-    
-    if (!(tareasTipo == null)){
-        res.json(tareasTipo);
-    }else{
-        res.status(404).send('error');
+
+export const getEventoHoras = async (req, res, next) => {
+    try {
+        const { eventoId } = req.params; 
+        let evento = await modelHora.getHorasEvento(eventoId);
+
+        if (evento){
+            res.status(200).json({
+                success: true,
+                data: evento
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
     }
 }
 
-export const getVidaEvento = async (req, res) => {
-    const vida = await model.getVidaEvento(req.params.evento);
+export const getEventosUsuario = async (req, res, next) => {
+    try {
+        const { usuarioId } = req.params;
+        const { page } = req.query;
+        let eventos = await model.getEventosUsuario(page, usuarioId);
 
-    if (vida.length > 0){
-        res.json(vida);
-    }else{
-        res.status(404).send('error');
+        if (eventos){
+            res.status(200).json({
+                success: true,
+                data: eventos
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
     }
 }
+
+export const getEventosRol = async (req, res, next) => {
+    try {
+        const { rolId } = req.params;
+        const { page } = req.query;
+        let eventos = await model.getEventosUsuario(page, rolId);
+
+        if (eventos){
+            res.status(200).json({
+                success: true,
+                data: eventos
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const insertEvento = async (req, res, next) => {
+    try {
+        const { body } = req; 
+        let evento = await model.insertEvento(body);
+
+        if (evento){
+            res.status(201).json({
+                success: true,
+                data: evento
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const updateEvento = async (req, res, next) => {
+    try {
+        const { body } = req; 
+        let evento = await model.updateEvento(body);
+
+        if (evento){
+            res.status(200).json({
+                success: true,
+                data: evento
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const deleteEvento = async (req, res, next) => {
+    try {
+        const { eventoId } = req.params;
+        const { usuario } = req.query; 
+        let ok = await model.deleteEvento(eventoId, usuario);
+
+        if (ok){
+            res.status(200).json({
+                success: true,
+                data: { eventoId: eventoId}
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const cerrarEvento = async (req, res, next) => {
+    try {
+        const { eventoId } = req.params;
+        const { usuario } = req.query; 
+        let evento = await model.cerrarEvento(eventoId, usuario);
+
+        if (evento){
+            res.status(200).json({
+                success: true,
+                data: evento
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const avanzarEvento = async (req, res, next) => {
+    try {
+        const { eventoId } = req.params;
+        const { usuario, comentario } = req.query; 
+        let evento = await model.avanzarEvento(eventoId, usuario, comentario);
+
+        if (evento){
+            eviarAvisoMail(usuario, eventoId);
+            res.status(200).json({
+                success: true,
+                data: evento
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+export const retrocederEvento = async (req, res, next) => {
+    try {
+        const { eventoId } = req.params;
+        const { usuario, comentario } = req.query; 
+        let evento = await model.retrocederEvento(eventoId, usuario, comentario);
+
+        if (evento){
+            eviarAvisoMail(usuario, eventoId);
+            res.status(200).json({
+                success: true,
+                data: evento
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const reasignarEvento = async (req, res, next) => {
+    try {
+        const { eventoId } = req.params;
+        const { usuario } = req.query; 
+        let evento = await model.reasignarEvento(eventoId, usuario,);
+
+        if (evento){
+            eviarAvisoMail(usuario, eventoId);
+            res.status(200).json({
+                success: true,
+                data: evento
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const estimarEvento = async (req, res, next) => {
+    try {
+        const { body } = req;
+        const estimacion = await model.estimarEvento(body);
+        if (estimacion){
+            res.status(200).json({
+                success: true,
+                data: estimacion
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const comentarEvento = async (req, res, next) => {
+    try {
+        const { eventoId } = req.params; 
+        let ok = await model.comentarEvento(eventoId);
+
+        if (ok){
+            res.status(200).json({
+                success: true,
+                data: { eventoId: eventoId}
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const adjuntarEvento = async (req, res, next) => {
+    try {
+        const { eventoId } = req.params; 
+        const { usuarioId } = req.query;
+        const { files } = req;
+        let ok = await model.adjuntarEvento(eventoId, usuarioId, files);
+
+        if (ok){
+            res.status(200).json({
+                success: true,
+                data: { entornoId: entornoId}
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const deleteAdjunto = async (req, res, next) => {
+    try {
+        const { adicionId } = req.params; 
+        let ok = await model.deleteAdjunto(adicionId);
+
+        if (ok){
+            res.status(200).json({
+                success: true,
+                data: { adicionId: adicionId}
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const getAdjuntosEvento = async (req, res, next) => {
+    try {
+        const { eventoId } = req.params;
+        let adjuntos = await model.getAdjuntosEvento(eventoId);
+        if (adjuntos){
+            res.status(200).json({
+                success: true,
+                data: adjuntos
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const getComentariosEvento = async (req, res, next) => {
+    try {
+        const { eventoId } = req.params;
+        let comentarios = await model.getComentariosEvento(eventoId);
+        if (comentarios){
+            res.status(200).json({
+                success: true,
+                data: comentarios
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const getTareasPorTipo = async (req, res, next) => {
+    try {
+        const { rol } = req.query;
+        const tareasTipo = await model.getTareasPorTipo(rol);
+        if (tareasTipo){
+            res.status(200).json({
+                success: true,
+                data: tareasTipo
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const getVidaEvento = async (req, res, next) => {
+    try {
+        const { eventoId } = req.params;
+        let vida = await model.getVidaEvento(eventoId);
+        if (vida){
+            res.status(200).json({
+                success: true,
+                data: vida
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                data: {
+                    message: "Not found"
+                }
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+// SUBS
 
 async function eviarAvisoMail(usuarioId, eventoId){
 

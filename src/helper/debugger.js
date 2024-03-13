@@ -2,6 +2,7 @@ import debug from 'debug';
 
 let l = debug("app:log");
 let e = debug("app:error");
+let i = debug("app:info");
 let w = debug("app:warning");
 let f = debug("app:flash");
 
@@ -15,11 +16,13 @@ let f = debug("app:flash");
 */
 
 l.color = debug.colors[1];
-e.color = debug.colors[5];
 w.color = debug.colors[2];
+i.color = debug.colors[3];
 f.color = debug.colors[4];
+e.color = debug.colors[5];
 
 export const log = l;
-export const error = e;
 export const warning = w;
+export const info = i;
 export const flash = f;
+export const error = e;

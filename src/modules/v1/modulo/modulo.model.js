@@ -1,36 +1,19 @@
-// TOOK VER TOOKS LOS MODULOS
-// TOOK VER UN MODULO
-// TOOK CREAR UN MODULO
-// TOOK MODIFICAR MODULO
-// TOOK ELIMINAR MODULO
-// TOOK VER BUSQUEDA MODULO
-// TOOK VER MODULOS POR PADREs
-
 import { pool } from '../../../db.js';
 
 /** 
  ** Busca todos los modulos
- *
 */
 export const getModulos = async () => {
-
-    try{
-
+    try {
         const query = "SELECT * FROM modulo";
         let params = []
-
         const [rows] = await pool.query(query, params);
-
         let response = [];
         rows.map( (row) => {
-            response.push({
-                "id": row.moduloId,
-                "nombre": row.moduloNombre,
-                "padre": row.moduloPadre
-            });
+            response.push(format(row));
         });
-        return response;
 
+        return response;
     }catch (err) {
         console.error(err);
         return null;
@@ -40,24 +23,15 @@ export const getModulos = async () => {
 /** 
  ** Busca un modulo
  *
- *i @param moduloId: id del modulo a consultar
+ * @param {string} moduloId - id del modulo a consultar
 */
 export const getModulo = async (moduloId) => {
-
-    try{
-
+    try {
         const query = "SELECT * FROM modulo WHERE moduloId = ?";
         let params = [moduloId]
-
         const [rows] = await pool.query(query, params);
 
-        let response = {
-            "id": rows[0].moduloId,
-            "nombre": rows[0].moduloNombre,
-            "padre": rows[0].moduloPadre
-        };
-        return response;
-
+        return format(rows[0]);
     }catch (err) {
         console.error(err);
         return null;
@@ -67,127 +41,86 @@ export const getModulo = async (moduloId) => {
 /** 
  ** Crea un nuevo modulo
  *
- *i @param modulo: objeto con los datos necesarios del modulo - especificado mas abajo
+ * @param {Object} modulo - objeto con los datos necesarios del modulo - especificado mas abajo
 */
 export const insertModulo = async (modulo) => {
-
-    /** 
-    * i Objeto que tiene que llegar por parametro
-    {
-        "id": "CUS",                 //* id del modulo
-        "nombre": "CUSTOM",          //* nombre del modulo
-        "padre": "STK"                   //* modulo padre
-    }
-    **/
-
     try{
-
         const query = "INSERT modulo(moduloId, moduloNombre, moduloPadre) VALUE (?, ?, ?)";
         let params = [
             modulo.id,
             modulo.nombre,
             (modulo.padre != "") ? modulo.padre : null
         ];
-
         const [rows] = await pool.query(query, params);
 
-        // console.log(rows);
-
-        return rows.affectedRows;
-
+        return modulo;
     }catch (err) {
-        console.error(err);
-        return null;
+        throw new Error(err)
     }
 }
 
 /** 
  ** Modifica un modulo
  *
- *i @param modulo: objeto con los datos modificados del modulo - especificado mas abajo
+ * @param {Object} modulo - objeto con los datos modificados del modulo - especificado mas abajo
 */
 export const updateModulo = async (modulo) => {
-
-    /** 
-    * i Objeto que tiene que llegar por parametro
-    {
-        "id": "CUS",                 //* id del modulo
-        "nombre": "CUSTOM",          //* nombre del modulo
-        "padre": "STK"               //* modulo padre
-    }
-    **/
-
     try{
-
         const query = "UPDATE modulo SET moduloNombre = ?, moduloPadre = ? WHERE moduloId = ?";
         let params = [
             modulo.nombre,
             (modulo.padre != "") ? modulo.padre : null,
             modulo.id
         ];
-
         const [rows] = await pool.query(query, params);
-        return rows.affectedRows;
 
+        return modulo;
     }catch (err) {
-        console.error(err);
-        return null;
+        throw new Error(err)
     }
 }
 
 /** 
  ** Eliminar un modulo
  *
- *i @param moduloId: id del modulo a eliminar
+ * @param {string} moduloId - id del modulo a eliminar
 */
 export const deleteModulo = async (moduloId) => {
-
     try{
-
         const query = "DELETE FROM modulo WHERE moduloId = ?";
         let params = [
             moduloId
         ];
-
         const [rows] = await pool.query(query, params);
-        return rows.affectedRows;
 
+        return rows.affectedRows;
     }catch (err) {
-        console.error(err);
-        return null;
+        throw new Error(err)
     }
 }
 
 /** 
  ** Busca todos los modulos formato busqueda
- *
 */
 export const getModulosBusqueda = async () => {
-
     try{
-
         const query = 'SELECT CONCAT(moduloId, " - ", moduloNombre) AS busqueda FROM modulo';
         let params = []
-
         const [rows] = await pool.query(query, params);
-        
-        return rows;
 
+        return rows;
     }catch (err) {
-        console.error(err);
-        return null;
+        throw new Error(err)
     }
 }
 
 /** 
- ** Busca TOOKs los modulos con el mismo padre
+ ** Busca modulos con el mismo padre
  *
- *i @param padreId: id del modulo padre
+ * @param {string} padreId - id del modulo padre
 */
 export const getModulosPadre = async (padreId) => {
-
     try{
-
         const query = 'SELECT * FROM modulo WHERE moduloPadre = ?';
         let params = [
             padreId
@@ -197,17 +130,24 @@ export const getModulosPadre = async (padreId) => {
 
         let response = [];
         rows.map( (row) => {
-            response.push({
-                "id": row.moduloId,
-                "nombre": row.moduloNombre,
-                "padre": row.moduloPadre
-            });
+            response.push(format(row));
         });
         return response;
 
     }catch (err) {
-        console.error(err);
-        return null;
+        throw new Error(err)
     }
 }
 
+/**
+ * Formatea el objeto traido de la base de datos.
+ * @param {Object} modulo - Entidad modulo
+ * @returns Objeto modulo formateado
+ */
+function format(modulo){
+    return {
+        id: modulo.moduloId,
+        nombre: modulo.moduloNombre,
+        padre: modulo.moduloPadre
+    }
+}

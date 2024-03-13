@@ -2,14 +2,12 @@
 import { pool } from '../../../db.js';
 
 /** 
- ** ultimos movimientos
- *
- *i @param cant: cantidad a consultar
+ * Busca los ultimos movimientos
+ * @param {number} cantidad - cantidad a consultar
+ * @param {string} rol - rol especifico a consultar
 */
 export const getUltimosMovimientos = async (cantidad, rol) => {
-
     try{
-        // console.log(rol);
         let params = [];
         let query = 'SELECT 	audiEEvento AS eventoId,    \
                                 (SELECT CONCAT(eventoTipo, "-", eventoNumero) FROM evento WHERE eventoId = ae.audiEEvento) AS evento,   \
@@ -37,8 +35,7 @@ export const getUltimosMovimientos = async (cantidad, rol) => {
             params.push(parseInt(cantidad));
         }
         const [rows] = await pool.query(query, params);
-        // console.log(rows);
-
+    
         let response = []
         rows.map( (row) => {
             let res = {
@@ -61,9 +58,7 @@ export const getUltimosMovimientos = async (cantidad, rol) => {
             response.push(res);
         });
         return response;
-
     }catch (err){
-        console.error(err);
-        return 0;
+        throw new Error(err);
     }
 }

@@ -1,322 +1,261 @@
-// TODO VER TODAS LAS TAREAS
-// TODO CREAR NUEVA TAREA
-// TODO MODIFICAR UNA TAREA
-// TODO ELIMINAR UNA TAREA
-// TODO VER TAREAS NO ASIGNADAS A UN TIPO EVENTO
-
 import { pool } from '../../../db.js';
 
 
-/** 
- ** Busca todas las tareas
- *
-*/
+/**
+ * Busca todas las tareas
+ */
 export const getTareas = async () => {
-
     try{
         let query = 'SELECT * FROM tarea ORDER BY tareaNombre';
         let params = [];
-
         const [rows] = await pool.query(query, params);
-
         let response = [];
         rows.map( (row) => {
-            response.push({
-                "id": row.tareaId,
-                "nombre": row.tareaNombre,
-                "rol": row.tareaRol,
-                "controla": row.tareaControla,
-                "clave": row.tareaClave,
-                "comentario": row.tareaComentario,
-                "color": row.tareaColor
-            });
+            response.push(format(row));
         });
+
         return response;
-    
     }catch (err){
-        console.error(err);
-        return 0;
+        throw new Error(err);
     }
 };
-/** 
- ** Busca todas las tareas
- *
-*/
-export const getTarea = async (id) => {
 
+/**
+ * Busca una tarea en especifico
+ * @param {string} tareaId - id de la tarea a consultar
+ * @returns Tarea
+ */
+export const getTarea = async (tareaId) => {
     try{
         let query = 'SELECT * FROM tarea WHERE tareaId = ?';
         let params = [
-            id
+            tareaId
         ];
-
         const [rows] = await pool.query(query, params);
 
-        let response = [];
-        rows.map( (row) => {
-            response.push({
-                "id": row.tareaId,
-                "nombre": row.tareaNombre,
-                "rol": row.tareaRol,
-                "controla": row.tareaControla,
-                "clave": row.tareaClave,
-                "comentario": row.tareaComentario,
-                "color": row.tareaColor
-            });
-        });
-        return response;
-    
+        return format(rows[0]);    
     }catch (err){
-        console.error(err);
-        return 0;
+        throw new Error(err);
     }
 };
 
-/** 
- ** Crea una nueva tarea
- *
- *i @param nTarea: objeto con los datos necesarios del tipo - especificado mas abajo
-*/
-export const insertTarea = async (nTarea) => {
-     
-    /** 
-    * i Objeto que tiene que llegar por parametro (nTarea)
-    {
-        "nombre": "Ingreso",                //* nombre de la tarea
-        "rol": "ADMIM",                     //* rol encargado de dicha tarea
-    }
-    **/
-
-    try{
+/**
+ * 
+ * @param {Object} tarea - Entidad tarea
+ */
+export const insertTarea = async (tarea) => {
+    try {
         const query = 'INSERT INTO tarea(tareaId, tareaNombre, tareaRol, tareaControla, tareaClave, tareaComentario, tareaColor) VALUES ((SELECT getNewId()), ?, ?, ?, ?, ?, ?)';
         let params = [
-            nTarea.nombre,
-            nTarea.rol,
-            nTarea.controla,
-            nTarea.clave,
-            nTarea.comentario,
-            nTarea.color
+            tarea.nombre,
+            tarea.rol,
+            tarea.controla,
+            tarea.clave,
+            tarea.comentario,
+            tarea.color
         ];
-
         const [rows] = await pool.query(query, params);
-        return rows.affectedRows;
 
+        return tarea;
     }catch (err){
-        console.error(err);
-        return 0;
+        throw new Error(err);
     }
-
 }
 
-/** 
- ** Modifica una tarea
- *
- *i @param tareaM: objeto con los datos modificados del tipo evento - especificado mas abajo
-*/
-export const updateTarea = async (tareaM) => {
-     
-    /** 
-    * i Objeto que tiene que llegar por parametro (tareaM)
-    {
-        "id": 1                             //* id de la tarea
-        "nombre": "Ingreso",                //* nombre de la tarea
-        "rol": "ADMIM",                     //* rol encargado de dicha tarea
-    }
-    **/
-
-    try{
+/**
+ * 
+ * @param {Object} tarea - Entidad tarea
+ */
+export const updateTarea = async (tarea) => {
+    try {
         // console.log(tareaM)
         const query = "UPDATE tarea SET tareaNombre = ?, tareaRol = ?, tareaControla = ?, tareaClave = ?, tareaComentario = ?, tareaColor = ? WHERE tareaId = ?";
         let params = [
-            tareaM.nombre,
-            tareaM.rol,
-            tareaM.controla,
-            tareaM.clave,
-            tareaM.comentario,
-            tareaM.color,
-            tareaM.id
+            tarea.nombre,
+            tarea.rol,
+            tarea.controla,
+            tarea.clave,
+            tarea.comentario,
+            tarea.color,
+            tarea.id
         ];
         const [rows] = await pool.query(query, params);
-        return rows.affectedRows;
 
+        return tarea;
     }catch (err){
-        console.error(err);
-        return 0;
+        throw new Error(err);
     }
-
 }
 
-/** 
- ** Elimina una tarea
- *
- *i @param tareaId: id del tipo evento a eliminar
-*/
+/**
+ * Eliminar una tarea
+ * @param {string} tareaId - Id de la tarea a eliminar
+ */
 export const deleteTarea = async (tareaId) => {
-
     try{
-
         console.log("no implementado");
-
-        // const query = "CALL delete_tipoEvento(?)";
-        // let params = [
-        //     tareaId
-        // ]
-
-        // const [rows] = await pool.query(query, params);
-        // return rows.affectedRows;
-
     }catch (err){
-        console.error(err);
-        return 0;
+        throw new Error(err);
     }
-
 }
 
-/** 
- ** Busca todas las tareas asignadas a un rol
- *
- *i @param rol: id del evento a consultar
-*/
+/**
+ * Busca las tareas por rol
+ * @param {string} rol - rol a filtrar
+ * @returns Tareas que puede hacer un rol
+ */
 export const getTareasRol = async (rol) => {
-
-    try{
+    try {
         let query = 'SELECT * FROM tarea WHERE tareaRol = ?';
         let params = [
             rol
         ];
-
         const [rows] = await pool.query(query, params);
-        
         let response = [];
         rows.map( (row) => {
-            response.push({
-                "id": row.tareaId,
-                "nombre": row.tareaNombre,
-                "rol": row.tareaRol,
-                "controla": row.tareaControla,
-                "clave": row.tareaClave,
-                "comentario": row.tareaComentario,
-                "color": row.tareaColor
-            });
+            response.push(format(row));
         });
+
         return response;
-    
     }catch (err){
-        console.error(err);
-        return 0;
+        throw new Error(err);
     }
 };
 
-/** 
- ** Busca todas las tareas que estan asignadas al evento
- *
- *i @param eventoId: id del evento a consultar
-*/
-export const getTareasEvento = async (eventoId) => {
-
-    try{
+/**
+ * Busca las tareas asignadas al tipo evento
+ * @param {string} tipoEventoId - id del tipo evento buscar las tareas
+ * @returns Todas las tareas de un tipo evento
+ */
+export const getTareasEvento = async (tipoEventoId) => {
+    try {
         let query = 'SELECT t.tareaId, t.tareaNombre, t.tareaRol, et.etEvento, et.etEtapaRollback   \
                      FROM tarea AS t    \
                      INNER JOIN evento_tarea AS et ON et.etTarea = t.tareaId    \
                      WHERE et.etEvento = ? ORDER BY etEtapa';
         let params = [
-            eventoId
+            tipoEventoId
         ];
-
         const [rows] = await pool.query(query, params);
-        
-        return rows;
-    
+        let response = [];
+        rows.map( (row) => {
+            response.push(formatTipoEvento(row));
+        });
+
+        return response;
     }catch (err){
-        console.error(err);
-        return 0;
+        throw new Error(err);
     }
 };
 
-/** 
- ** Busca todas las tareas que NO estan asignadas al evento
- *
- *i @param eventoId: id del evento a consultar
-*/
+/**
+ * Busca las tareas asignadas NO al tipo evento
+ * @param {string} tipoEventoId - id del tipo evento
+ * @returns Todas las tareas que no tenga un tipo evento
+ */
 export const getTareasNoEvento = async (eventoId) => {
-
-    try{
+    try {
         let query = 'SELECT * FROM tarea AS t WHERE (SELECT count(et.etTarea) FROM evento_tarea AS et WHERE et.etEvento = ? AND et.etTarea = t.tareaId) = 0 ORDER BY t.tareaId';
         let params = [
             eventoId
         ];
-
         const [rows] = await pool.query(query, params);
-        return rows;
-    
+        let response = [];
+        rows.map( (row) => {
+            response.push(formatTipoEvento(row));
+        });
+
+        return response;
     }catch (err){
-        console.error(err);
-        return 0;
+        throw new Error(err);
     }
 };
 
-/** 
- ** Busca todas las tareas que NO estan asignadas al evento
- *
- *i @param eventoId: id del evento a consultar
-*/
+/**
+ * Checkea si se cumplio una accion en un evento en x etapa 
+ * @param {string} eventoId  - Id del evento
+ * @param {string} accion - Clave de la acciona a consultar
+ * @param {number} etapa - numero de etapa a consultar
+ * @returns true -> si se cumplio la accion | false -> si no se cumplio la accion
+ */
 export const getTareaAccionCompleta = async (eventoId, accion, etapa) => {
-
-    try{
-        let query = 'SELECT * FROM gacieventos.audievento WHERE audiEEvento = ? AND audiEAccion = ? AND audiEEtapa = ?';
+    try {
+        let query = 'SELECT count(*) as existe FROM gacieventos.audievento WHERE audiEEvento = ? AND audiEAccion = ? AND audiEEtapa = ?';
         let params = [
             eventoId,
             accion,
             etapa
         ];
-
         const [rows] = await pool.query(query, params);
 
-        // console.log(rows[0]);
-        // console.log(rows[0]!=undefined);
-        return (rows[0]!=undefined);
-    
+        return (rows[0].existe > 0);
     }catch (err){
-        console.error(err);
-        return 0;
+        throw new Error(err);
     }
 };
+
+/**
+ * Busca el comentario realizado en alguna accion o etapa
+ * @param {string} eventoId - Id del evento
+ * @param {string} clave - Clave de accion | si esta esta vacia solo consulta por la etapa
+ * @param {number} etapa - Numero de Etapa
+ */
 export const getComentarioTarea = async (eventoId, clave, etapa) => {
-
-    try{
-
-        /*
-            SELECT * FROM gacieventos.audievento WHERE audiEEVento = "58ae366952ccff746c9814ee" AND audiEAccion = 'ESTIMAR';
-
-            SELECT * FROM gacieventos.audievento WHERE audiEEVento = "58ae366952ccff746c9814ee" AND audiEEtapa = 5 AND audiEAccion = 'AVANZO';
-        */
-
+    try {
         let query = "";
         let params = [];
         if (clave){
+            // si se paso una clave
             query = 'SELECT *, (SELECT eAdComentario FROM gacieventos.eventoadicion WHERE eAdId = ae.audiEAdi) AS comentario FROM audievento AS ae WHERE audiEEVento = ? AND audiEAccion = ?'
             params.push(eventoId),
             params.push(clave);
         }else{
+            // si no se le paso una clave, solo ve por etapa
             query = 'SELECT *, (SELECT eAdComentario FROM gacieventos.eventoadicion WHERE eAdId = ae.audiEAdi) AS comentario FROM audievento AS ae WHERE audiEEVento = ? AND audiEEtapa = ? AND audiEAccion = "AVANZO"'
             params.push(eventoId),
             params.push(etapa);
         }
-
         const [rows] = await pool.query(query, params);
-
-        // console.log(rows[0]);
-        // console.log(rows[0].comentario);
-
         let comentario = "";
-        if (rows[0].comentario) {
-            comentario = rows[0].comentario;
+        if (rows.length > 0){
+            if (rows[0].comentario) {
+                comentario = rows[0].comentario;
+            }
         }
-
         return comentario;
-    
     }catch (err){
-        // console.error(err);
-        return 0;
+        throw new Error(err);
     }
 };
+
+/**
+ * Formatea el objeto traido de la base de datos.
+ * @param {Object} tarea - Entidad tarea
+ * @returns Objeto tarea formateado
+ */
+function format(tarea){
+    return {
+        id: tarea.tareaId,
+        nombre: tarea.tareaNombre,
+        rol: tarea.tareaRol,
+        controla: tarea.tareaControla,
+        clave: tarea.tareaClave,
+        comentario: tarea.tareaComentario,
+        color: tarea.tareaColor
+    }
+}
+
+/**
+ * Formatea el objeto traido de la base de datos.
+ * @param {Object} tarea - Entidad tarea
+ * @returns Objeto tarea formateado
+ */
+function formatTipoEvento(tarea){
+    return {
+        id: tarea.tareaId,
+        nombre: tarea.tareaNombre,
+        rol: tarea.tareaRol,
+        tipoEvento: tarea.etEvento,
+        rollback: etEtapaRollback
+    }
+}

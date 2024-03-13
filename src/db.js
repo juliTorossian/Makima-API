@@ -1,4 +1,4 @@
-import { log, error, flash, warning } from "./helper/debugger.js"
+import { log, error, flash, warning, info } from "./helper/debugger.js"
 import { createPool } from "mysql2/promise";
 import { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE } from "./config.js";
 
@@ -12,7 +12,8 @@ export const pool = createPool({
     database: DB_DATABASE
 });
 
-log("conectado a la base de datos");
-error("Mensaje de error");
-flash("flash");
-warning("warning")
+// log("conectado a la base de datos");
+// error("Mensaje de error");
+// info("mesaje de informacion");
+// flash("flash");
+// warning("warning")
