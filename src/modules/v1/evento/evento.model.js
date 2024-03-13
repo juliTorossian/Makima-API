@@ -262,7 +262,6 @@ export const getEventoDetalle = async (eventoId) => {
                     }
                 }
             }
-
             const [estimacionQuery] = await pool.query("SELECT * FROM eventoEstimacion WHERE eEstEvento = ?", eventoId);
             let estimacion = {
                 "total": 0,
@@ -304,7 +303,6 @@ export const getEventoDetalle = async (eventoId) => {
                             }
             //"estimacion": (rows[0].eventoEstimacion > 0) ? rows[0].eventoEstimacion : 0 ,
         }
-
         return eventoDetalle;
     }catch (err){
         throw new Error(err);
@@ -518,7 +516,6 @@ export const estimarEvento = async (estimacion) => {
         const detalle = await getEventoDetalle(estimacion.evento);
 
         let comentarioId = null;
-        // console.log("comentario: " +comentario);
         if (estimacion.comentario){
             comentarioId = crypto.randomUUID();
 

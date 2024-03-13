@@ -217,10 +217,11 @@ export const getComentarioTarea = async (eventoId, clave, etapa) => {
         }
         const [rows] = await pool.query(query, params);
         let comentario = "";
-        if (rows[0].comentario) {
-            comentario = rows[0].comentario;
+        if (rows.length > 0){
+            if (rows[0].comentario) {
+                comentario = rows[0].comentario;
+            }
         }
-
         return comentario;
     }catch (err){
         throw new Error(err);
